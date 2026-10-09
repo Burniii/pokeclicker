@@ -481,6 +481,11 @@ ItemList.Arctozolt              = new PokemonItem('Arctozolt', 100000);
 ItemList.Dracovish              = new PokemonItem('Dracovish', 100000);
 ItemList.Arctovish              = new PokemonItem('Arctovish', 100000);
 ItemList['Zarude (Dada)']       = new PokemonItem('Zarude (Dada)', 500000);
+//Paldea
+ItemList.Cyclizar               = new PokemonItem('Cyclizar', 2500);
+ItemList['Paldean Tauros (Blaze)'] = new PokemonItem('Paldean Tauros (Blaze)', 3500);
+ItemList['Paldean Tauros (Aqua)'] = new PokemonItem('Paldean Tauros (Aqua)', 3500);
+ItemList['Maushold (Family of Three)'] = new PokemonItem('Maushold (Family of Three)', 2000);
 // Dream orbs
 ItemList.Staryu  = new PokemonItem('Staryu');
 ItemList.Igglybuff  = new PokemonItem('Igglybuff');

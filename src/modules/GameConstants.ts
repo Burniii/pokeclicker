@@ -49,7 +49,7 @@ export enum Region {
     final = 10,
 }
 
-export const MAX_AVAILABLE_REGION = Region.hisui;
+export const MAX_AVAILABLE_REGION = Region.paldea;
 
 export const MaxIDPerRegion = [
     151, // 151 - Kanto
@@ -1271,6 +1271,8 @@ export enum BulletinBoards {
     Hisui,
     Arceus,
     Paldea,
+    Kitakami,
+    Blueberry,
 }
 
 // Underground
@@ -1500,6 +1502,11 @@ export const PaldeaGyms = [
     'Pokémon Trainer Arven',
     'AI Sada',
     'AI Turo',
+    'Elite Crispin',
+    'Elite Amarys',
+    'Elite Lacey',
+    'Elite Drayton',
+    'Champion Kieran',
 ];
 
 export const OrangeGyms = [
@@ -1821,6 +1828,10 @@ export const PaldeaDungeons = [
     'Firescourge Shrine',
     'Area Zero',
     'Area Zero Depths', // 221
+    'Alfornada Cavern',
+    'Oni\'s Maw',
+    'Dreaded Den',
+    'Area Zero Underdepths',
 ];
 
 export const RegionDungeons = [
@@ -2339,6 +2350,21 @@ export const TemporaryBattles = [
     'Enamorus 3',
     'Arceus',
     'Paradise Protection Protocol',
+    'Nemona 1',
+    'Nemona 2',
+    'Nemona 3',
+    'Arven 1',
+    'Carmine 1',
+    'Kieran 1',
+    'Okidogi',
+    'Munkidori',
+    'Fezandipiti',
+    'Kieran 2',
+    'Ogerpon',
+    'Carmine 2',
+    'Kieran 3',
+    'Terapagos',
+    'Pecharunt',
 ];
 
 export enum ShardTraderLocations {

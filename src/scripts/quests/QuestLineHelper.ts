@@ -4220,29 +4220,59 @@ class QuestLineHelper {
 
     // Paldea Questlines
 
-    public static createPaldeaLegendsQuestLine() {
-        const paldeaLegendsQuestLine = new QuestLine('Path of Legends', 'Help Arven search for the Herba Mystica.');
-
-        const clearTrainerArven = new DefeatGymQuest(1, 0, 'Pokémon Trainer Arven').withDescription('Arven wants to test you and himself. Defeat him at Poco Path Lighthouse');
-        paldeaLegendsQuestLine.addQuest(clearTrainerArven);
-
-        App.game.quests.questLines.push(paldeaLegendsQuestLine);
-    }
-
     public static createPaldeaVictoryQuestLine() {
-        const paldeaVictoryQuestLine = new QuestLine('Victory Road', 'Challenge Paldea\'s Gyms to challenge your new rival, Nemona.');
+        const paldeaVictoryQuestLine = new QuestLine('Victory Road', 'Challenge Paldea\'s Gyms to challenge your new rival, Nemona.', new GymBadgeRequirement(BadgeEnums.Azure), GameConstants.BulletinBoards.Paldea);
 
-        const clearChampionNemona = new DefeatGymQuest(1, 0, 'Champion Nemona').withDescription('Finally, it\'s time to fight Nemona as equals! Defeat Champion Nemona in Mesagoza.');
-        paldeaVictoryQuestLine.addQuest(clearChampionNemona);
+        paldeaVictoryQuestLine.addQuest(new TalkToNPCQuest(PaldeaNemona1, 'Talk to Nemona in Cabo Poco.'));
+        paldeaVictoryQuestLine.addQuest(new DefeatTemporaryBattleQuest('Nemona 1', 'Nemona wants to battle you right away! Defeat her in Cabo Poco.'));
+        paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Cortondo').withDescription('Defeat Katy at the Cortondo Gym.'));
+        paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Artazon').withDescription('Defeat Brassius at the Artazon Gym.'));
+        paldeaVictoryQuestLine.addQuest(new DefeatTemporaryBattleQuest('Nemona 2', 'Nemona is waiting for you in Artazon. Show her how much you have grown!'));
+        paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Levincia').withDescription('Defeat Iono at the Levincia Gym.'));
+        paldeaVictoryQuestLine.addQuest(new DefeatTemporaryBattleQuest('Nemona 3', 'Nemona caught up with you in Levincia. Battle her again!'));
+        paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Cascarrafa').withDescription('Defeat Kofu at the Cascarrafa Gym.'));
+        paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Medali').withDescription('Defeat Larry at the Medali Gym.'));
+        paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Alfornada').withDescription('Defeat Tulip at the Alfornada Gym.'));
+        paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Montenevera').withDescription('Defeat Ryme at the Montenevera Gym.'));
+        paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Glaseado Mountain').withDescription('Defeat Grusha at the Glaseado Gym.'));
+        paldeaVictoryQuestLine.addQuest(new MultipleQuestsQuest(
+            [
+                new DefeatGymQuest(1, 0, 'Elite Rika'),
+                new DefeatGymQuest(1, 0, 'Elite Poppy'),
+                new DefeatGymQuest(1, 0, 'Elite Larry'),
+                new DefeatGymQuest(1, 0, 'Elite Hassel'),
+            ], 'Defeat the Elite Four at the Pokémon League Paldea.'));
+        paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Top Champion Geeta').withDescription('Defeat Top Champion Geeta to become a Champion.'));
+        paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Champion Nemona').withDescription('As promised, battle Champion Nemona in Mesagoza as equals!'));
 
         App.game.quests.questLines.push(paldeaVictoryQuestLine);
     }
 
-    public static createPaldeaStarfallQuestLine() {
-        const paldeaStarfallQuestLine = new QuestLine('Starfall Street', 'Help Cassiopeia disband Team Star.');
+    public static createPaldeaLegendsQuestLine() {
+        const paldeaLegendsQuestLine = new QuestLine('Path of Legends', 'Help Arven search for the Herba Mystica.', new GymBadgeRequirement(BadgeEnums.Azure), GameConstants.BulletinBoards.Paldea);
 
-        const clearCassiopeia = new DefeatGymQuest(1, 0, 'Penny of Team Star').withDescription('Penny has revealed herself to be Cassiopeia. Defeat her at Naranjuva Academy.');
-        paldeaStarfallQuestLine.addQuest(clearCassiopeia);
+        paldeaLegendsQuestLine.addQuest(new TalkToNPCQuest(PaldeaArven1, 'Talk to Arven at Poco Path Lighthouse.'));
+        paldeaLegendsQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Stony Cliff Titan').withDescription('Defeat the Stony Cliff Titan, Klawf, near Los Platos.'));
+        paldeaLegendsQuestLine.addQuest(new DefeatTemporaryBattleQuest('Arven 1', 'Arven wants to test your strength in Los Platos.'));
+        paldeaLegendsQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Open Sky Titan').withDescription('Defeat the Open Sky Titan, Bombirdier, near Cortondo.'));
+        paldeaLegendsQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Lurking Steel Titan').withDescription('Defeat the Lurking Steel Titan, Orthworm, near Zapapico.'));
+        paldeaLegendsQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Asado Desert').withDescription('Defeat the Quaking Earth Titans in the Asado Desert near Cascarrafa.'));
+        paldeaLegendsQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Casseroya Lake').withDescription('Defeat the False Dragon Titan, Dondozo and Tatsugiri, at Casseroya Lake.'));
+        paldeaLegendsQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Pokémon Trainer Arven').withDescription('Mabosstiff has recovered! Accept Arven\'s challenge at Poco Path Lighthouse.'));
+
+        App.game.quests.questLines.push(paldeaLegendsQuestLine);
+    }
+
+    public static createPaldeaStarfallQuestLine() {
+        const paldeaStarfallQuestLine = new QuestLine('Starfall Street', 'Help Cassiopeia disband Team Star.', new GymBadgeRequirement(BadgeEnums.Azure), GameConstants.BulletinBoards.Paldea);
+
+        paldeaStarfallQuestLine.addQuest(new TalkToNPCQuest(PaldeaCassiopeia1, 'Someone called Cassiopeia is trying to reach you. Check your messages at Naranjuva Academy.'));
+        paldeaStarfallQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Segin Squad\'s Base').withDescription('Take down Giacomo of Team Star\'s Dark Crew.'));
+        paldeaStarfallQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Schedar Squad\'s Base').withDescription('Take down Mela of Team Star\'s Fire Crew.'));
+        paldeaStarfallQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Navi Squad\'s Base').withDescription('Take down Atticus of Team Star\'s Poison Crew.'));
+        paldeaStarfallQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Ruchbah Squad\'s Base').withDescription('Take down Ortega of Team Star\'s Fairy Crew.'));
+        paldeaStarfallQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Caph Squad\'s Base').withDescription('Take down Eri of Team Star\'s Fighting Crew.'));
+        paldeaStarfallQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Penny of Team Star').withDescription('Cassiopeia has revealed herself as Penny. Battle her at Naranjuva Academy.'));
 
         App.game.quests.questLines.push(paldeaStarfallQuestLine);
     }
@@ -4254,7 +4284,75 @@ class QuestLineHelper {
             new QuestLineCompletedRequirement('Starfall Street'),
         ]), GameConstants.BulletinBoards.Paldea);
 
+        paldeaWayHomeQuestLine.addQuest(new TalkToNPCQuest(PaldeaZeroGateProfessor, 'The Professor is calling for help. Go to the Zero Gate.'));
+        paldeaWayHomeQuestLine.addQuest(new DefeatDungeonQuest(1, 0, 'Area Zero').withDescription('Descend into the Great Crater of Paldea and clear Area Zero.'));
+        paldeaWayHomeQuestLine.addQuest(new DefeatDungeonQuest(1, 0, 'Area Zero Depths').withDescription('Go deeper and clear the Area Zero Depths.'));
+        paldeaWayHomeQuestLine.addQuest(new MultipleQuestsQuest(
+            [
+                new DefeatGymQuest(1, 0, 'AI Sada'),
+                new DefeatGymQuest(1, 0, 'AI Turo'),
+            ], 'The Professor was an AI all along. Defeat it in the Zero Lab.'));
+        paldeaWayHomeQuestLine.addQuest(new DefeatTemporaryBattleQuest('Paradise Protection Protocol', 'The AI has activated the Paradise Protection Protocol! Defeat the Guardians of Paradise.'));
+
         App.game.quests.questLines.push(paldeaWayHomeQuestLine);
+    }
+
+    // Kitakami & Blueberry Academy Questlines
+
+    public static createKitakamiTealMaskQuestLine() {
+        const tealMaskQuestLine = new QuestLine('Kitakami: The Teal Mask', 'Join the school trip to Kitakami and uncover the truth behind the legend of the ogre.', new GymBadgeRequirement(BadgeEnums.Elite_Nemona), GameConstants.BulletinBoards.Kitakami);
+
+        tealMaskQuestLine.addQuest(new TalkToNPCQuest(KitakamiCarmine1, 'Meet Carmine in Mossui Town.'));
+        tealMaskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Carmine 1', 'Carmine wants to see what a Paldean Champion can do. Battle her in Mossui Town.'));
+        tealMaskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Kieran 1', 'Carmine\'s little brother Kieran wants to battle too.'));
+        tealMaskQuestLine.addQuest(new MultipleQuestsQuest(
+            [
+                new DefeatTemporaryBattleQuest('Okidogi', 'Defeat Okidogi.'),
+                new DefeatTemporaryBattleQuest('Munkidori', 'Defeat Munkidori.'),
+                new DefeatTemporaryBattleQuest('Fezandipiti', 'Defeat Fezandipiti.'),
+            ], 'The Loyal Three have appeared at Loyalty Plaza! Defeat all three of them.'));
+        tealMaskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Kieran 2', 'Kieran is upset that you kept Ogerpon a secret. Battle him at Kitakami Hall.'));
+        tealMaskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Ogerpon', 'Ogerpon wants to test you. Face it at the Dreaded Den.'));
+        tealMaskQuestLine.addQuest(new TalkToNPCQuest(KitakamiKieran1, 'Talk to Kieran at Kitakami Hall.'));
+        tealMaskQuestLine.addQuest(new CaptureSpecificPokemonQuest('Ogerpon (Teal Mask)').withDescription('Catch Ogerpon in the Dreaded Den.'));
+        tealMaskQuestLine.addQuest(new TalkToNPCQuest(KitakamiCarmine2, 'Say goodbye to Carmine in Mossui Town.'));
+
+        App.game.quests.questLines.push(tealMaskQuestLine);
+    }
+
+    public static createBlueberryIndigoDiskQuestLine() {
+        const indigoDiskQuestLine = new QuestLine('Blueberry: The Indigo Disk', 'Transfer to Blueberry Academy, climb the BB League and follow Briar into the Area Zero Underdepths.', new QuestLineCompletedRequirement('Kitakami: The Teal Mask'), GameConstants.BulletinBoards.Blueberry);
+
+        indigoDiskQuestLine.addQuest(new TalkToNPCQuest(BlueberryCarmine1, 'Carmine is waiting for you at Blueberry Academy.'));
+        indigoDiskQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Elite Crispin').withDescription('Defeat Crispin of the BB Elite Four.'));
+        indigoDiskQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Elite Amarys').withDescription('Defeat Amarys of the BB Elite Four.'));
+        indigoDiskQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Elite Lacey').withDescription('Defeat Lacey of the BB Elite Four.'));
+        indigoDiskQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Elite Drayton').withDescription('Defeat Drayton of the BB Elite Four.'));
+        indigoDiskQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Champion Kieran').withDescription('Kieran has become the BB League Champion. Defeat him!'));
+        indigoDiskQuestLine.addQuest(new TalkToNPCQuest(BlueberryBriar1, 'Talk to Briar at Blueberry Academy.'));
+        indigoDiskQuestLine.addQuest(new DefeatDungeonQuest(1, 0, 'Area Zero Underdepths').withDescription('Join Briar\'s expedition and clear the Area Zero Underdepths.'));
+        indigoDiskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Kieran 3', 'Kieran followed you into the Underdepths. Battle him one last time.'));
+        indigoDiskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Terapagos', 'Terapagos has gone out of control! Calm it down.'));
+        indigoDiskQuestLine.addQuest(new CaptureSpecificPokemonQuest('Terapagos').withDescription('Catch Terapagos in the Area Zero Underdepths.'));
+        indigoDiskQuestLine.addQuest(new TalkToNPCQuest(BlueberryBriar2, 'Tell Briar about Terapagos at Blueberry Academy.'));
+
+        App.game.quests.questLines.push(indigoDiskQuestLine);
+    }
+
+    public static createKitakamiMochiMayhemQuestLine() {
+        const mochiMayhemQuestLine = new QuestLine('Kitakami: Mochi Mayhem', 'Something strange is happening in Kitakami. Find out who is behind the mysterious mochi.', new QuestLineCompletedRequirement('Blueberry: The Indigo Disk'), GameConstants.BulletinBoards.Kitakami);
+
+        mochiMayhemQuestLine.addQuest(new TalkToNPCQuest(MochiCarmine1, 'Carmine needs your help. Meet her at Kitakami Hall.'));
+        mochiMayhemQuestLine.addQuest(new MultipleQuestsQuest(
+            [
+                new CaptureSpecificPokemonQuest('Okidogi').withDescription('Catch Okidogi.'),
+                new CaptureSpecificPokemonQuest('Munkidori').withDescription('Catch Munkidori.'),
+                new CaptureSpecificPokemonQuest('Fezandipiti').withDescription('Catch Fezandipiti.'),
+            ], 'The Loyal Three have returned to Oni\'s Maw. Catch all three of them.'));
+        mochiMayhemQuestLine.addQuest(new DefeatTemporaryBattleQuest('Pecharunt', 'The mastermind behind the mochi has shown itself at Kitakami Hall. Defeat Pecharunt!'));
+        mochiMayhemQuestLine.addQuest(new TalkToNPCQuest(MochiCarmine2, 'Talk to Carmine at Kitakami Hall.'));
+
+        App.game.quests.questLines.push(mochiMayhemQuestLine);
     }
 
     /* Event QuestLines */
@@ -4367,6 +4465,9 @@ class QuestLineHelper {
         this.createPaldeaVictoryQuestLine();
         this.createPaldeaStarfallQuestLine();
         this.createPaldeaWayHomeQuestLine();
+        this.createKitakamiTealMaskQuestLine();
+        this.createBlueberryIndigoDiskQuestLine();
+        this.createKitakamiMochiMayhemQuestLine();
         this.createEasterQuestLine();
         this.createHoopaDayPikabluQuestLine();
         this.createDrSplashQuestLine();

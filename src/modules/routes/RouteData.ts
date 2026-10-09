@@ -1,6 +1,6 @@
 import BadgeEnums from '../enums/Badges';
 import {
-    Region, KantoSubRegions, getDungeonIndex, AlolaSubRegions, GalarSubRegions, HoennSubRegions, AchievementOption, DayOfWeek,
+    Region, KantoSubRegions, getDungeonIndex, AlolaSubRegions, GalarSubRegions, HoennSubRegions, PaldeaSubRegions, AchievementOption, DayOfWeek,
 } from '../GameConstants';
 import ClearDungeonRequirement from '../requirements/ClearDungeonRequirement';
 import GymBadgeRequirement from '../requirements/GymBadgeRequirement';
@@ -4256,7 +4256,7 @@ Routes.add(new RegionRoute(
         land: ['Hoppip', 'Paldean Wooper', 'Wingull', 'Ralts', 'Combee', 'Sunkern', 'Buizel', 'Pawmi', 'Gastly', 'Fletchling', 'Scatterbug', 'Spewpa', 'Oricorio (Pom-Pom)', 'Lechonk', 'Tarountula', 'Fidough', 'Happiny', 'Pichu', 'Bonsly', 'Skwovet', 'Shroodle', 'Bounsweet', 'Igglybuff', 'Drowzee', /*Fixed encounter only:*/'Wiglett', 'Pachirisu', 'Flamigo', 'Gimmighoul (Chest)'],
         water: ['Magikarp', 'Arrokuda', 'Azurill', 'Chewtle', 'Psyduck', 'Surskit'],
     }),
-    [new GymBadgeRequirement(BadgeEnums.Elite_GalarChampion)],
+    [new RouteKillRequirement(10, Region.paldea, 1)],
 ));
 Routes.add(new RegionRoute(
     'South Province (Area Two)', Region.paldea, 3,
@@ -4264,14 +4264,346 @@ Routes.add(new RegionRoute(
         land: ['Pikachu', 'Jigglypuff', 'Eevee', 'Mareep', 'Hoppip', 'Starly', 'Fletchling', 'Smoliv', 'Fidough', 'Maschiff', 'Happiny', 'Pichu', 'Bonsly', 'Bounsweet', 'Skwovet', 'Shroodle', 'Applin', 'Igglybuff', 'Rockruff', 'Misdreavus', 'Makuhita', 'Skiddo', 'Yungoos', 'Nacli', 'Sunkern', 'Combee', 'Flabébé (Red)', 'Flabébé (Yellow)', 'Flabébé (Orange)', 'Flabébé (Blue)', 'Flabébé (White)', 'Kricketot', 'Diglett', 'Gastly', 'Drowzee', 'Bronzor', 'Tinkatink', 'Squawkabilly (Green)', 'Squawkabilly (Blue)', 'Squawkabilly (Yellow)', 'Squawkabilly (White)', /*Fixed encounter only:*/'Staravia', 'Vespiquen', 'Gimmighoul (Chest)'],
         water: ['Psyduck', 'Magikarp', 'Azurill', 'Buizel', 'Chewtle', 'Arrokuda', 'Tadbulb'],
     }),
-    [new GymBadgeRequirement(BadgeEnums.Elite_GalarChampion)],
+    [new RouteKillRequirement(10, Region.paldea, 2)],
 ));
 Routes.add(new RegionRoute(
     'South Province (Area Three)', Region.paldea, 4,
     new RoutePokemon({
         land: ['Growlithe', 'Gulpin', 'Spoink', 'Shuppet', 'Shinx', 'Oricorio (Baile)', 'Rookidee', 'Nymble', 'Pawmi', 'Klawf', 'Murkrow', 'Dunsparce', 'Happiny', 'Tandemaus', 'Squawkabilly (Green)', 'Squawkabilly (Blue)', 'Squawkabilly (Yellow)', 'Squawkabilly (White)', 'Drifloon', 'Makuhita', 'Yungoos', 'Skiddo', 'Nacli', 'Gastly', 'Drowzee', 'Bronzor', 'Tinkatink', /*Fixed encounter only:*/'Talonflame', 'Staraptor', 'Gimmighoul (Chest)'],
     }),
-    [new GymBadgeRequirement(BadgeEnums.Elite_GalarChampion)],
+    [new RouteKillRequirement(10, Region.paldea, 3)],
+));
+
+Routes.add(new RegionRoute(
+    'South Province (Area Four)', Region.paldea, 5,
+    new RoutePokemon({
+        land: ['Lechonk', 'Tarountula', 'Pawmi', 'Fidough', 'Smoliv', 'Maschiff', 'Shroodle', 'Hoppip', 'Yungoos', 'Combee', 'Sunkern', 'Charcadet', 'Toedscool', 'Phanpy', 'Bonsly', 'Wingull', 'Fletchling', 'Scatterbug'],
+        water: ['Magikarp', 'Arrokuda', 'Wiglett', 'Buizel', 'Psyduck'],
+    }),
+    [
+        new RouteKillRequirement(10, Region.paldea, 4),
+        new GymBadgeRequirement(BadgeEnums.Bug_Gym),
+    ],
+));
+Routes.add(new RegionRoute(
+    'West Province (Area One)', Region.paldea, 6,
+    new RoutePokemon({
+        land: ['Lechonk', 'Nymble', 'Rookidee', 'Flittle', 'Bramblin', 'Hawlucha', 'Toedscool', 'Kricketot', 'Starly', 'Shinx', 'Sudowoodo', 'Tinkatink', 'Pikachu', 'Eevee', 'Spoink', 'Grimer', 'Wingull', 'Flamigo'],
+        headbutt: ['Bombirdier', 'Squawkabilly (Green)', 'Squawkabilly (Blue)'],
+    }),
+    [
+        new RouteKillRequirement(10, Region.paldea, 5),
+        new GymBadgeRequirement(BadgeEnums.Rock_Titan),
+    ],
+));
+Routes.add(new RegionRoute(
+    'South Province (Area Five)', Region.paldea, 7,
+    new RoutePokemon({
+        land: ['Capsakid', 'Rellor', 'Wattrel', 'Gothita', 'Bonsly', 'Pikachu', 'Petilil', 'Hoppip', 'Pineco', 'Ralts', 'Gastly', 'Dunsparce', 'Tandemaus', 'Shroodle', 'Fidough', 'Murkrow', 'Mareep', 'Igglybuff'],
+        water: ['Magikarp', 'Finizen', 'Mantyke', 'Wiglett', 'Luvdisc', 'Shellos (East)'],
+    }),
+    [
+        new RouteKillRequirement(10, Region.paldea, 6),
+        new GymBadgeRequirement(BadgeEnums.Grass_Gym),
+    ],
+));
+Routes.add(new RegionRoute(
+    'East Province (Area One)', Region.paldea, 8,
+    new RoutePokemon({
+        land: ['Shinx', 'Pawmi', 'Wattrel', 'Tadbulb', 'Mareep', 'Pachirisu', 'Voltorb', 'Magnemite', 'Varoom', 'Rotom', 'Dedenne', 'Toxel', 'Rellor', 'Gulpin', 'Fletchinder', 'Skwovet', 'Houndour', 'Cufant', 'Snubbull'],
+        water: ['Magikarp', 'Finizen', 'Tentacool', 'Wingull', 'Shellos (East)', 'Gyarados'],
+    }),
+    [
+        new RouteKillRequirement(10, Region.paldea, 7),
+        new GymBadgeRequirement(BadgeEnums.Flying_Titan),
+    ],
+));
+Routes.add(new RegionRoute(
+    'East Province (Area Two)', Region.paldea, 9,
+    new RoutePokemon({
+        land: ['Luxio', 'Pawmo', 'Kilowattrel', 'Bellibolt', 'Flaaffy', 'Voltorb', 'Magneton', 'Varoom', 'Cyclizar', 'Rotom', 'Tinkatuff', 'Orthworm', 'Klefki', 'Sableye', 'Grafaiai', 'Shuppet', 'Meditite', 'Electrike', 'Glimmet'],
+        water: ['Magikarp', 'Finizen', 'Veluza', 'Tentacruel', 'Pelipper', 'Shellos (East)'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 8)],
+));
+Routes.add(new RegionRoute(
+    'East Province (Area Three)', Region.paldea, 10,
+    new RoutePokemon({
+        land: ['Orthworm', 'Glimmet', 'Glimmora', 'Nacli', 'Naclstack', 'Magnemite', 'Varoom', 'Revavroom', 'Sandile', 'Krokorok', 'Tinkatuff', 'Bronzor', 'Sandshrew', 'Salandit', 'Torkoal', 'Diglett', 'Rolycoly', 'Cufant', 'Gimmighoul (Roaming)'],
+    }),
+    [
+        new RouteKillRequirement(10, Region.paldea, 9),
+        new GymBadgeRequirement(BadgeEnums.Electric_Gym),
+    ],
+));
+Routes.add(new RegionRoute(
+    'Asado Desert', Region.paldea, 11,
+    new RoutePokemon({
+        land: ['Sandaconda', 'Silicobra', 'Sandile', 'Krokorok', 'Hippopotas', 'Hippowdon', 'Rellor', 'Rabsca', 'Toedscool', 'Toedscruel', 'Cacnea', 'Larvitar', 'Pupitar', 'Numel', 'Camerupt', 'Salandit', 'Hawlucha', 'Bramblin', 'Brambleghast'],
+    }),
+    [
+        new RouteKillRequirement(10, Region.paldea, 10),
+        new GymBadgeRequirement(BadgeEnums.Steel_Titan),
+    ],
+));
+Routes.add(new RegionRoute(
+    'West Province (Area Two)', Region.paldea, 12,
+    new RoutePokemon({
+        land: ['Tauros', 'Paldean Tauros (Combat)', 'Mudbray', 'Mudsdale', 'Flittle', 'Espathra', 'Girafarig', 'Farigiraf', 'Sudowoodo', 'Squawkabilly (Yellow)', 'Squawkabilly (White)', 'Oinkologne (Male)', 'Oinkologne (Female)', 'Pawniard', 'Bisharp', 'Zangoose', 'Seviper', 'Lokix', 'Spidops'],
+        water: ['Magikarp', 'Barboach', 'Whiscash', 'Basculin (Red-Striped)', 'Basculin (Blue-Striped)'],
+    }),
+    [
+        new RouteKillRequirement(10, Region.paldea, 11),
+        new GymBadgeRequirement(BadgeEnums.Water_Gym),
+    ],
+));
+Routes.add(new RegionRoute(
+    'West Province (Area Three)', Region.paldea, 13,
+    new RoutePokemon({
+        land: ['Wiglett', 'Wugtrio', 'Shellder', 'Cloyster', 'Toedscruel', 'Clauncher', 'Clawitzer', 'Mareanie', 'Toxapex', 'Croagunk', 'Toxicroak', 'Grimer', 'Muk', 'Salandit', 'Salazzle', 'Gastly', 'Haunter', 'Bombirdier', 'Kilowattrel'],
+        water: ['Magikarp', 'Finizen', 'Palafin (Zero)', 'Dondozo', 'Veluza', 'Lumineon', 'Qwilfish', 'Mantine', 'Dhelmise'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 12)],
+));
+Routes.add(new RegionRoute(
+    'Tagtree Thicket', Region.paldea, 14,
+    new RoutePokemon({
+        land: ['Toedscool', 'Toedscruel', 'Bramblin', 'Foongus', 'Amoonguss', 'Tangela', 'Shroomish', 'Breloom', 'Morelull', 'Shiinotic', 'Tarountula', 'Spidops', 'Pineco', 'Forretress', 'Applin', 'Dipplin', 'Indeedee (Male)', 'Indeedee (Female)', 'Grafaiai', 'Bounsweet', 'Steenee', 'Tsareena', 'Flabébé (Blue)', 'Floette (Blue)', 'Impidimp', 'Morgrem'],
+    }),
+    [
+        new RouteKillRequirement(10, Region.paldea, 13),
+        new GymBadgeRequirement(BadgeEnums.Normal_Gym),
+    ],
+));
+Routes.add(new RegionRoute(
+    'South Province (Area Six)', Region.paldea, 15,
+    new RoutePokemon({
+        land: ['Espathra', 'Flittle', 'Gothita', 'Gothorita', 'Indeedee (Male)', 'Indeedee (Female)', 'Hatenna', 'Hattrem', 'Rufflet', 'Braviary', 'Vullaby', 'Mandibuzz', 'Bronzor', 'Bronzong', 'Drowzee', 'Hypno', 'Girafarig', 'Farigiraf', 'Slowpoke', 'Slowbro', 'Grumpig'],
+        water: ['Magikarp', 'Gyarados', 'Azumarill', 'Golduck', 'Quagsire'],
+    }),
+    [
+        new RouteKillRequirement(10, Region.paldea, 14),
+        new GymBadgeRequirement(BadgeEnums.Ground_Titan),
+    ],
+));
+Routes.add(new RegionRoute(
+    'Dalizapa Passage', Region.paldea, 16,
+    new RoutePokemon({
+        land: ['Cetoddle', 'Frigibax', 'Arctibax', 'Snorunt', 'Glalie', 'Froslass', 'Snover', 'Abomasnow', 'Bergmite', 'Avalugg', 'Swinub', 'Piloswine', 'Sneasel', 'Weavile', 'Delibird', 'Cryogonal', 'Eiscue (Ice Face)', 'Frosmoth', 'Snom'],
+    }),
+    [
+        new RouteKillRequirement(10, Region.paldea, 15),
+        new GymBadgeRequirement(BadgeEnums.Psychic_Gym),
+    ],
+));
+Routes.add(new RegionRoute(
+    'North Province (Area One)', Region.paldea, 17,
+    new RoutePokemon({
+        land: ['Greavard', 'Houndstone', 'Mabosstiff', 'Maschiff', 'Pawniard', 'Bisharp', 'Kingambit', 'Annihilape', 'Primeape', 'Mankey', 'Hawlucha', 'Falinks', 'Riolu', 'Lucario', 'Crabrawler', 'Crabominable', 'Makuhita', 'Hariyama', 'Sawk', 'Throh'],
+    }),
+    [
+        new RouteKillRequirement(10, Region.paldea, 16),
+        new GymBadgeRequirement(BadgeEnums.Ghost_Gym),
+    ],
+));
+Routes.add(new RegionRoute(
+    'North Province (Area Two)', Region.paldea, 18,
+    new RoutePokemon({
+        land: ['Cetitan', 'Cetoddle', 'Arctibax', 'Baxcalibur', 'Snom', 'Frosmoth', 'Beartic', 'Cubchoo', 'Sneasel', 'Weavile', 'Lycanroc (Midday)', 'Lycanroc (Midnight)', 'Rockruff', 'Glimmora', 'Garganacl', 'Naclstack', 'Skarmory', 'Corviknight', 'Corvisquire', 'Noibat', 'Noivern'],
+    }),
+    [
+        new RouteKillRequirement(10, Region.paldea, 17),
+        new GymBadgeRequirement(BadgeEnums.Ice_Gym),
+    ],
+));
+Routes.add(new RegionRoute(
+    'Casseroya Lake', Region.paldea, 19,
+    new RoutePokemon({
+        land: ['Dondozo', 'Wugtrio', 'Pelipper', 'Altaria', 'Swablu', 'Dratini', 'Dragonair', 'Goomy', 'Sliggoo', 'Goodra', 'Wingull', 'Gyarados', 'Tropius', 'Lapras', 'Eiscue (Ice Face)'],
+        water: ['Tatsugiri (Curly)', 'Tatsugiri (Droopy)', 'Tatsugiri (Stretchy)', 'Dondozo', 'Veluza', 'Lapras', 'Gyarados', 'Dragonair', 'Finizen', 'Palafin (Zero)', 'Clawitzer'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 18)],
+));
+Routes.add(new RegionRoute(
+    'North Province (Area Three)', Region.paldea, 20,
+    new RoutePokemon({
+        land: ['Dragonite', 'Dragonair', 'Haxorus', 'Fraxure', 'Axew', 'Bagon', 'Shelgon', 'Salamence', 'Deino', 'Zweilous', 'Hydreigon', 'Gible', 'Gabite', 'Garchomp', 'Tyrunt', 'Noivern', 'Flapple', 'Appletun', 'Dipplin', 'Hydrapple'],
+    }),
+    [
+        new RouteKillRequirement(10, Region.paldea, 19),
+        new GymBadgeRequirement(BadgeEnums.Dragon_Titan),
+    ],
+));
+Routes.add(new RegionRoute(
+    'Socarrat Trail', Region.paldea, 21,
+    new RoutePokemon({
+        land: ['Charcadet', 'Armarouge', 'Ceruledge', 'Salandit', 'Salazzle', 'Torkoal', 'Magmar', 'Magmortar', 'Houndoom', 'Heatmor', 'Durant', 'Larvesta', 'Volcarona', 'Litleo', 'Pyroar', 'Turtonator', 'Rolycoly', 'Coalossal', 'Sizzlipede', 'Centiskorch'],
+    }),
+    [
+        new RouteKillRequirement(10, Region.paldea, 20),
+        new GymBadgeRequirement(BadgeEnums.Elite_PaldeaChampion),
+    ],
+));
+Routes.add(new RegionRoute(
+    'Kitakami Road', Region.paldea, 22,
+    new RoutePokemon({
+        land: ['Poltchageist', 'Hoothoot', 'Noctowl', 'Sentret', 'Furret', 'Spinarak', 'Ariados', 'Ekans', 'Arbok', 'Vulpix', 'Mankey', 'Bellsprout', 'Weepinbell', 'Sunkern', 'Sunflora', 'Applin', 'Pichu', 'Pikachu', 'Yanma', 'Lotad'],
+        water: ['Magikarp', 'Lotad', 'Poliwag', 'Basculin (Red-Striped)'],
+    }),
+    [new GymBadgeRequirement(BadgeEnums.Elite_Nemona)],
+    undefined,
+    PaldeaSubRegions.Kitakami,
+));
+Routes.add(new RegionRoute(
+    'Apple Hills', Region.paldea, 23,
+    new RoutePokemon({
+        land: ['Applin', 'Dipplin', 'Flapple', 'Appletun', 'Poltchageist', 'Phanpy', 'Donphan', 'Sentret', 'Ledyba', 'Ledian', 'Cutiefly', 'Ribombee', 'Swablu', 'Altaria', 'Seedot', 'Nuzleaf', 'Shiftry', 'Munchlax', 'Snorlax', 'Petilil'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 22)],
+    undefined,
+    PaldeaSubRegions.Kitakami,
+));
+Routes.add(new RegionRoute(
+    'Reveler\'s Road', Region.paldea, 24,
+    new RoutePokemon({
+        land: ['Mankey', 'Primeape', 'Annihilape', 'Morpeko', 'Gligar', 'Gliscor', 'Skwovet', 'Greedent', 'Lotad', 'Lombre', 'Ludicolo', 'Pichu', 'Pikachu', 'Raichu', 'Timburr', 'Gurdurr', 'Conkeldurr', 'Bonsly', 'Sudowoodo'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 23)],
+    undefined,
+    PaldeaSubRegions.Kitakami,
+));
+Routes.add(new RegionRoute(
+    'Oni Mountain', Region.paldea, 25,
+    new RoutePokemon({
+        land: ['Geodude', 'Graveler', 'Golem', 'Gligar', 'Gliscor', 'Duskull', 'Dusclops', 'Dusknoir', 'Litwick', 'Lampent', 'Chandelure', 'Charcadet', 'Barboach', 'Whiscash', 'Shuppet', 'Banette', 'Glimmet', 'Glimmora', 'Ursaring', 'Teddiursa'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 24)],
+    undefined,
+    PaldeaSubRegions.Kitakami,
+));
+Routes.add(new RegionRoute(
+    'Crystal Pool', Region.paldea, 26,
+    new RoutePokemon({
+        land: ['Chingling', 'Chimecho', 'Bronzor', 'Bronzong', 'Spoink', 'Grumpig', 'Smoochum', 'Jynx', 'Snorunt', 'Glalie', 'Froslass'],
+        water: ['Magikarp', 'Feebas', 'Milotic', 'Lotad', 'Barboach', 'Poliwag', 'Poliwhirl', 'Politoed'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 25)],
+    undefined,
+    PaldeaSubRegions.Kitakami,
+));
+Routes.add(new RegionRoute(
+    'Wistful Fields', Region.paldea, 27,
+    new RoutePokemon({
+        land: ['Poltchageist', 'Sinistcha', 'Hoothoot', 'Noctowl', 'Ralts', 'Kirlia', 'Gardevoir', 'Gallade', 'Corphish', 'Crawdaunt', 'Seedot', 'Nuzleaf', 'Ekans', 'Arbok', 'Swablu', 'Altaria', 'Vulpix', 'Ninetales', 'Bellsprout', 'Victreebel'],
+        water: ['Magikarp', 'Corphish', 'Feebas', 'Basculin (Red-Striped)'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 26)],
+    undefined,
+    PaldeaSubRegions.Kitakami,
+));
+Routes.add(new RegionRoute(
+    'Mossfell Confluence', Region.paldea, 28,
+    new RoutePokemon({
+        land: ['Poliwag', 'Poliwhirl', 'Poliwrath', 'Politoed', 'Lotad', 'Lombre', 'Ludicolo', 'Yanma', 'Yanmega', 'Corphish', 'Crawdaunt', 'Barboach', 'Whiscash', 'Tentacool', 'Tentacruel', 'Chinchou', 'Lanturn', 'Basculin (Red-Striped)'],
+        water: ['Magikarp', 'Gyarados', 'Feebas', 'Milotic', 'Chinchou', 'Lanturn', 'Tentacool'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 27)],
+    undefined,
+    PaldeaSubRegions.Kitakami,
+));
+Routes.add(new RegionRoute(
+    'Fellhorn Gorge', Region.paldea, 29,
+    new RoutePokemon({
+        land: ['Geodude', 'Graveler', 'Golem', 'Koffing', 'Weezing', 'Timburr', 'Gurdurr', 'Conkeldurr', 'Phanpy', 'Donphan', 'Gligar', 'Gliscor', 'Snorunt', 'Glalie', 'Froslass', 'Duskull', 'Dusclops', 'Dusknoir', 'Vulpix', 'Ninetales'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 28)],
+    undefined,
+    PaldeaSubRegions.Kitakami,
+));
+Routes.add(new RegionRoute(
+    'Paradise Barrens', Region.paldea, 30,
+    new RoutePokemon({
+        land: ['Cleffa', 'Clefairy', 'Clefable', 'Munchlax', 'Snorlax', 'Starly', 'Staravia', 'Staraptor', 'Stunky', 'Skuntank', 'Tandemaus', 'Maushold (Family of Four)', 'Rockruff', 'Lycanroc (Dusk)', 'Morpeko', 'Sandshrew', 'Sandslash', 'Shinx', 'Luxio'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 29)],
+    undefined,
+    PaldeaSubRegions.Kitakami,
+));
+Routes.add(new RegionRoute(
+    'Kitakami Wilds', Region.paldea, 31,
+    new RoutePokemon({
+        land: ['Phanpy', 'Donphan', 'Ursaring', 'Ursaluna', 'Teddiursa', 'Bloodmoon Ursaluna', 'Hoothoot', 'Noctowl', 'Sneasel', 'Weavile', 'Spinarak', 'Ariados', 'Seedot', 'Shiftry', 'Yanmega', 'Mankey', 'Primeape'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 30)],
+    undefined,
+    PaldeaSubRegions.Kitakami,
+));
+Routes.add(new RegionRoute(
+    'Timeless Woods', Region.paldea, 32,
+    new RoutePokemon({
+        land: ['Poltchageist', 'Sinistcha', 'Hoothoot', 'Noctowl', 'Duskull', 'Dusclops', 'Litwick', 'Lampent', 'Shuppet', 'Banette', 'Phantump', 'Trevenant', 'Sneasel', 'Weavile', 'Ursaring', 'Ursaluna'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 31)],
+    undefined,
+    PaldeaSubRegions.Kitakami,
+));
+Routes.add(new RegionRoute(
+    'Infernal Pass', Region.paldea, 33,
+    new RoutePokemon({
+        land: ['Charcadet', 'Armarouge', 'Ceruledge', 'Litwick', 'Chandelure', 'Duskull', 'Dusknoir', 'Golem', 'Glimmora', 'Banette', 'Gligar', 'Gliscor', 'Koffing', 'Weezing'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 32)],
+    undefined,
+    PaldeaSubRegions.Kitakami,
+));
+Routes.add(new RegionRoute(
+    'Chilling Waterhead', Region.paldea, 34,
+    new RoutePokemon({
+        land: ['Smoochum', 'Jynx', 'Snorunt', 'Froslass', 'Glalie', 'Swinub', 'Piloswine', 'Mamoswine', 'Bergmite', 'Avalugg', 'Cubchoo', 'Beartic', 'Corphish', 'Crawdaunt'],
+        water: ['Magikarp', 'Gyarados', 'Feebas', 'Milotic', 'Lapras', 'Basculin (Red-Striped)'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 33)],
+    undefined,
+    PaldeaSubRegions.Kitakami,
+));
+Routes.add(new RegionRoute(
+    'Savanna Biome', Region.paldea, 35,
+    new RoutePokemon({
+        land: ['Bulbasaur', 'Charmander', 'Squirtle', 'Chikorita', 'Cyndaquil', 'Totodile', 'Doduo', 'Dodrio', 'Exeggcute', 'Exeggutor', 'Rhyhorn', 'Rhydon', 'Girafarig', 'Farigiraf', 'Zebstrika', 'Blitzle', 'Scyther', 'Kleavor', 'Tauros', 'Litleo', 'Pyroar', 'Skiddo', 'Gogoat', 'Bouffalant', 'Comfey', 'Minior (Red Core)', 'Oranguru', 'Passimian', 'Torkoal', 'Elekid', 'Electabuzz', 'Magby', 'Magmar', 'Hippopotas', 'Hippowdon'],
+        water: ['Magikarp', 'Gyarados', 'Horsea', 'Seadra', 'Kingdra'],
+    }),
+    [new QuestLineCompletedRequirement('Kitakami: The Teal Mask')],
+    undefined,
+    PaldeaSubRegions.BlueberryAcademy,
+));
+Routes.add(new RegionRoute(
+    'Coastal Biome', Region.paldea, 36,
+    new RoutePokemon({
+        land: ['Treecko', 'Torchic', 'Mudkip', 'Turtwig', 'Chimchar', 'Piplup', 'Venonat', 'Venomoth', 'Bellsprout', 'Weepinbell', 'Victreebel', 'Slowpoke', 'Slowbro', 'Slowking', 'Tropius', 'Lileep', 'Cradily', 'Anorith', 'Armaldo', 'Inkay', 'Malamar', 'Skrelp', 'Dragalge', 'Clauncher', 'Clawitzer', 'Wingull', 'Pelipper', 'Ducklett', 'Swanna', 'Tentacool', 'Tentacruel'],
+        water: ['Magikarp', 'Gyarados', 'Horsea', 'Seadra', 'Kingdra', 'Lapras', 'Alomomola', 'Mantyke', 'Mantine', 'Finneon', 'Lumineon', 'Bruxish'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 35)],
+    undefined,
+    PaldeaSubRegions.BlueberryAcademy,
+));
+Routes.add(new RegionRoute(
+    'Canyon Biome', Region.paldea, 37,
+    new RoutePokemon({
+        land: ['Snivy', 'Tepig', 'Oshawott', 'Chespin', 'Fennekin', 'Froakie', 'Larvitar', 'Pupitar', 'Tyranitar', 'Beldum', 'Metang', 'Metagross', 'Skarmory', 'Rufflet', 'Braviary', 'Vullaby', 'Mandibuzz', 'Golett', 'Golurk', 'Sandile', 'Krokorok', 'Krookodile', 'Druddigon', 'Mienfoo', 'Mienshao', 'Archen', 'Archeops', 'Tirtouga', 'Carracosta', 'Duraludon', 'Archaludon'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 36)],
+    undefined,
+    PaldeaSubRegions.BlueberryAcademy,
+));
+Routes.add(new RegionRoute(
+    'Polar Biome', Region.paldea, 38,
+    new RoutePokemon({
+        land: ['Rowlet', 'Litten', 'Popplio', 'Grookey', 'Scorbunny', 'Sobble', 'Vanillite', 'Vanillish', 'Vanilluxe', 'Cubchoo', 'Beartic', 'Snorunt', 'Glalie', 'Froslass', 'Spheal', 'Sealeo', 'Walrein', 'Amaura', 'Aurorus', 'Bergmite', 'Avalugg', 'Snom', 'Frosmoth', 'Cryogonal', 'Duraludon', 'Sneasel', 'Weavile', 'Seel', 'Dewgong'],
+        water: ['Magikarp', 'Gyarados', 'Lapras', 'Spheal', 'Seel', 'Dewgong', 'Wailmer', 'Wailord'],
+    }),
+    [new RouteKillRequirement(10, Region.paldea, 37)],
+    undefined,
+    PaldeaSubRegions.BlueberryAcademy,
 ));
 
 // Pirate Event

@@ -7283,14 +7283,252 @@ TemporaryBattleList.Arceus = new TemporaryBattle(
 TemporaryBattleList['Paradise Protection Protocol'] = new TemporaryBattle(
     'Paradise Protection Protocol',
     [
-        new GymPokemon('Koraidon', 710987746, 70),
-        new GymPokemon('Miraidon', 710987746, 70),
+        new GymPokemon('Koraidon', 2722406460, 70),
+        new GymPokemon('Miraidon', 2722406460, 70),
     ],
     '<i>The Guardians of Paradise were defeated!</i>',
     [
         new GymBadgeRequirement(BadgeEnums.Scarlet),
         new GymBadgeRequirement(BadgeEnums.Violet),
     ]
+);
+TemporaryBattleList['Nemona 1'] = new TemporaryBattle(
+    'Nemona 1',
+    [
+        new GymPokemon('Pawmi', 390975760, 5),
+        new GymPokemon('Fuecoco', 390975760, 6, new StarterRequirement(GameConstants.Region.paldea, GameConstants.Starter.Grass)),
+        new GymPokemon('Quaxly', 390975760, 6, new StarterRequirement(GameConstants.Region.paldea, GameConstants.Starter.Fire)),
+        new GymPokemon('Sprigatito', 390975760, 6, new StarterRequirement(GameConstants.Region.paldea, GameConstants.Starter.Water)),
+    ],
+    'This is gonna be the best! We\'re rivals now, okay?!',
+    [new GymBadgeRequirement(BadgeEnums.Azure)],
+    undefined,
+    {
+        displayName: 'Pokémon Trainer Nemona',
+        imageName: 'Nemona',
+    }
+);
+TemporaryBattleList['Nemona 2'] = new TemporaryBattle(
+    'Nemona 2',
+    [
+        new GymPokemon('Lechonk', 451446352, 19),
+        new GymPokemon('Rockruff', 451446352, 19),
+        new GymPokemon('Pawmo', 451446352, 20),
+        new GymPokemon('Crocalor', 451446352, 21, new StarterRequirement(GameConstants.Region.paldea, GameConstants.Starter.Grass)),
+        new GymPokemon('Quaxwell', 451446352, 21, new StarterRequirement(GameConstants.Region.paldea, GameConstants.Starter.Fire)),
+        new GymPokemon('Floragato', 451446352, 21, new StarterRequirement(GameConstants.Region.paldea, GameConstants.Starter.Water)),
+    ],
+    'Ahh, I lost again! But that just makes me want to battle you even more!',
+    [new GymBadgeRequirement(BadgeEnums.Grass_Gym)],
+    undefined,
+    {
+        displayName: 'Pokémon Trainer Nemona',
+        imageName: 'Nemona',
+    }
+);
+TemporaryBattleList['Nemona 3'] = new TemporaryBattle(
+    'Nemona 3',
+    [
+        new GymPokemon('Rockruff', 515098753, 26),
+        new GymPokemon('Pawmo', 515098753, 26),
+        new GymPokemon('Goomy', 515098753, 26),
+        new GymPokemon('Crocalor', 515098753, 27, new StarterRequirement(GameConstants.Region.paldea, GameConstants.Starter.Grass)),
+        new GymPokemon('Quaxwell', 515098753, 27, new StarterRequirement(GameConstants.Region.paldea, GameConstants.Starter.Fire)),
+        new GymPokemon('Floragato', 515098753, 27, new StarterRequirement(GameConstants.Region.paldea, GameConstants.Starter.Water)),
+    ],
+    'You\'re getting so strong! I can\'t wait for our next battle!',
+    [new GymBadgeRequirement(BadgeEnums.Electric_Gym)],
+    undefined,
+    {
+        displayName: 'Pokémon Trainer Nemona',
+        imageName: 'Nemona',
+    }
+);
+TemporaryBattleList['Arven 1'] = new TemporaryBattle(
+    'Arven 1',
+    [
+        new GymPokemon('Greavard', 436033616, 17),
+        new GymPokemon('Maschiff', 436033616, 18),
+    ],
+    'Thanks for helping me get that Herba Mystica. Mabosstiff... I mean, Maschiff\'s counting on us.',
+    [new GymBadgeRequirement(BadgeEnums.Rock_Titan)],
+    undefined,
+    {
+        displayName: 'Pokémon Trainer Arven',
+        imageName: 'Arven',
+    }
+);
+TemporaryBattleList['Carmine 1'] = new TemporaryBattle(
+    'Carmine 1',
+    [
+        new GymPokemon('Ninetales', 804357717, 62),
+        new GymPokemon('Shiftry', 804357717, 63),
+    ],
+    'Hmph! Beginner\'s luck, that\'s all it was!',
+    [new QuestLineStepCompletedRequirement('Kitakami: The Teal Mask', 0)],
+    undefined,
+    {
+        displayName: 'Carmine',
+    }
+);
+TemporaryBattleList['Kieran 1'] = new TemporaryBattle(
+    'Kieran 1',
+    [
+        new GymPokemon('Dipplin', 804357717, 62),
+        new GymPokemon('Poliwhirl', 804357717, 62),
+    ],
+    'I... I lost. But I learned a lot. Thank you.',
+    [new TemporaryBattleRequirement('Carmine 1')],
+    undefined,
+    {
+        displayName: 'Kieran',
+    }
+);
+TemporaryBattleList['Okidogi'] = new TemporaryBattle(
+    'Okidogi',
+    [
+        new GymPokemon('Okidogi', 2781831480, 70),
+    ],
+    'Okidogi fled towards Oni Mountain!',
+    [
+        new TemporaryBattleRequirement('Kieran 1'),
+        new RouteKillRequirement(10, GameConstants.Region.paldea, 24),
+    ],
+    undefined,
+    {
+        hideTrainer: true,
+        isTrainerBattle: false,
+        imageName: '../pokemon/1014',
+    }
+);
+TemporaryBattleList['Munkidori'] = new TemporaryBattle(
+    'Munkidori',
+    [
+        new GymPokemon('Munkidori', 2862275280, 70),
+    ],
+    'Munkidori fled towards Oni Mountain!',
+    [
+        new TemporaryBattleRequirement('Kieran 1'),
+        new RouteKillRequirement(10, GameConstants.Region.paldea, 28),
+    ],
+    undefined,
+    {
+        hideTrainer: true,
+        isTrainerBattle: false,
+        imageName: '../pokemon/1015',
+    }
+);
+TemporaryBattleList['Fezandipiti'] = new TemporaryBattle(
+    'Fezandipiti',
+    [
+        new GymPokemon('Fezandipiti', 2903018280, 70),
+    ],
+    'Fezandipiti fled towards Oni Mountain!',
+    [
+        new TemporaryBattleRequirement('Kieran 1'),
+        new RouteKillRequirement(10, GameConstants.Region.paldea, 30),
+    ],
+    undefined,
+    {
+        hideTrainer: true,
+        isTrainerBattle: false,
+        imageName: '../pokemon/1016',
+    }
+);
+TemporaryBattleList['Kieran 2'] = new TemporaryBattle(
+    'Kieran 2',
+    [
+        new GymPokemon('Dipplin', 877481146, 66),
+        new GymPokemon('Poliwrath', 877481146, 66),
+        new GymPokemon('Sinistcha', 877481146, 67),
+    ],
+    'You keep winning... Why can\'t I ever beat you?!',
+    [
+        new TemporaryBattleRequirement('Okidogi'),
+        new TemporaryBattleRequirement('Munkidori'),
+        new TemporaryBattleRequirement('Fezandipiti'),
+    ],
+    undefined,
+    {
+        displayName: 'Kieran',
+    }
+);
+TemporaryBattleList['Ogerpon'] = new TemporaryBattle(
+    'Ogerpon',
+    [
+        new GymPokemon('Ogerpon (Teal Mask)', 3980735440, 70),
+    ],
+    'Ogerpon calmed down and gave you a happy, wordless look.',
+    [new TemporaryBattleRequirement('Kieran 2')],
+    undefined,
+    {
+        hideTrainer: true,
+        isTrainerBattle: false,
+        imageName: '../pokemon/1017',
+    }
+);
+TemporaryBattleList['Carmine 2'] = new TemporaryBattle(
+    'Carmine 2',
+    [
+        new GymPokemon('Ninetales', 962049216, 72),
+        new GymPokemon('Shiftry', 962049216, 72),
+        new GymPokemon('Sinistcha', 962049216, 73),
+        new GymPokemon('Kingambit', 962049216, 74),
+    ],
+    'Gah! Fine, you\'re strong. Happy now?!',
+    [new QuestLineCompletedRequirement('Kitakami: The Teal Mask')],
+    undefined,
+    {
+        displayName: 'Carmine',
+    }
+);
+TemporaryBattleList['Kieran 3'] = new TemporaryBattle(
+    'Kieran 3',
+    [
+        new GymPokemon('Dusknoir', 1064089208, 80),
+        new GymPokemon('Kingambit', 1064089208, 80),
+        new GymPokemon('Incineroar', 1064089208, 80),
+        new GymPokemon('Hydrapple', 1064089208, 81),
+        new GymPokemon('Terapagos (Terastal)', 1064089208, 82),
+    ],
+    'I\'ve been chasing you this whole time... Maybe I don\'t need to anymore.',
+    [
+        new GymBadgeRequirement(BadgeEnums.Elite_BlueberryChampion),
+        new ClearDungeonRequirement(1, GameConstants.getDungeonIndex('Area Zero Underdepths')),
+    ],
+    undefined,
+    {
+        displayName: 'Kieran',
+    }
+);
+TemporaryBattleList['Terapagos'] = new TemporaryBattle(
+    'Terapagos',
+    [
+        new GymPokemon('Terapagos (Stellar)', 6138976200, 85),
+    ],
+    'Terapagos shone with a brilliant, many-coloured light and calmed down!',
+    [new TemporaryBattleRequirement('Kieran 3')],
+    undefined,
+    {
+        hideTrainer: true,
+        isTrainerBattle: false,
+        imageName: '../pokemon/1024.02',
+    }
+);
+TemporaryBattleList['Pecharunt'] = new TemporaryBattle(
+    'Pecharunt',
+    [
+        new GymPokemon('Pecharunt', 5115813500, 88),
+    ],
+    'Pecharunt dropped its Mochi and gave up! It seems to want to join you.',
+    [new QuestLineStepCompletedRequirement('Kitakami: Mochi Mayhem', 1)],
+    undefined,
+    {
+        hideTrainer: true,
+        isTrainerBattle: false,
+        imageName: '../pokemon/1025',
+        rewardFunction: () => App.game.party.gainPokemonByName('Pecharunt', PokemonFactory.generateShiny(GameConstants.SHINY_CHANCE_REWARD)),
+    }
 );
 
 TemporaryBattleList satisfies TmpTemporaryBattleListType;
