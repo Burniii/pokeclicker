@@ -3889,7 +3889,7 @@ Routes.add(new RegionRoute(
         headbutt: ['Burmy (Sand)', 'Geodude', 'Graveler'],
     }),
     [
-        new RouteKillRequirement(10, Region.hisui, 12),
+        new RouteKillRequirement(10, Region.hisui, 11),
         new TemporaryBattleRequirement('Lord of the Woods: Kleavor'),
     ],
 ));

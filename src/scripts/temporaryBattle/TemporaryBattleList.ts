@@ -6725,10 +6725,7 @@ TemporaryBattleList['Lord of the Woods: Kleavor'] = new TemporaryBattle(
     'Lord of the Woods: Kleavor',
     [new GymPokemon('Noble Kleavor', 1193227650, 18)],
     'The golden light was dispelled from Kleavor, calming it.',
-    [
-        new TemporaryBattleRequirement('Irida 1'),
-        new RouteKillRequirement(10, GameConstants.Region.hisui, 12),
-    ],
+    [new TemporaryBattleRequirement('Irida 1')],
     undefined,
     {
         hideTrainer: true,
@@ -6767,10 +6764,7 @@ TemporaryBattleList['Coin 1'] = new TemporaryBattle(
     'Coin 1',
     [new GymPokemon('Toxicroak', 309577115, 23)],
     'I\'m not fond of this outcome, but at least it\'s still better than plowing fields for the Galaxy Team!',
-    [
-        new TemporaryBattleRequirement('Lord of the Woods: Kleavor'),
-        new RouteKillRequirement(10, GameConstants.Region.hisui, 14),
-    ],
+    [new TemporaryBattleRequirement('Lord of the Woods: Kleavor')],
     undefined,
     {
         displayName: 'The Bandit Coin',
