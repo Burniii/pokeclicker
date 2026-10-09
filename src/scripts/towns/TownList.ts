@@ -9349,8 +9349,7 @@ const MaxLairScientist = new NPC ('Scientist', [
 const ProfMagnolia = new ProfNPC('Prof. Magnolia',
     GameConstants.Region.galar,
     'Ahhh, how incredible. Look how far you have come, dear trainer. Congratulations on another complete Pokédex.',
-    'I hear word of an exotic region on the horizon, but there has been no word yet when the blimp will be able to reach such faraway lands.',
-    //*TODO*: Change second line to this text when Paldea is available: 'Now be on your way, the illustrious Paldea region awaits over the horizons.',
+    'Strange tears in space and time have been sighted over the sea. Those who pass through speak of Hisui, the land of old Sinnoh, long before Poké Balls were common. Be on your way, trainer!',
     'assets/images/npcs/Professor Magnolia.png');
 
 const magearnaGiftReq = new MultiRequirement([
@@ -9793,6 +9792,35 @@ const ForcesCogita3 = new NPC('Cogita', [
 ], {
     requirement: new MultiRequirement([new QuestLineStepCompletedRequirement('Incarnate Forces of Hisui', 4), new QuestLineCompletedRequirement('Incarnate Forces of Hisui', GameConstants.AchievementOption.less)]),
 });
+const ProfLaventon = new ProfNPC('Prof. Laventon',
+    GameConstants.Region.hisui,
+    'Splendid! Simply splendid! A complete Pokédex of Hisui... I shall have to write a dozen papers on the back of your research alone!',
+    'I\'ve heard whispers that the rift is opening once more, this time towards a sunny land far in the future called Paldea. It seems your journey isn\'t over yet!',
+    'assets/images/npcs/Laventon.png');
+
+const ArceusCogita1 = new NPC('Cogita', [
+    'So Volo finally showed his hand. He sought the Plates so that he might stand before Arceus and remake the world to his liking. Giratina was merely his tool.',
+    'I knew him long before he called himself a merchant of the Ginkgo Guild. I fear I did little to temper that ambition of his.',
+    'But you... You were brought to Hisui for a reason, and I suspect Arceus wishes to meet the one it summoned.',
+    'Legend says the deity split its power into eighteen Plates and scattered them across the land. Many now lie buried deep beneath the earth.',
+    'Dig them up, all eighteen of them, the Blank Plate included. Then come back to me.',
+], {
+    requirement: new MultiRequirement([new QuestLineStepCompletedRequirement('Arceus: The Deified Pokémon', 0), new QuestLineStepCompletedRequirement('Arceus: The Deified Pokémon', 1, GameConstants.AchievementOption.less)]),
+});
+const ArceusCogita2 = new NPC('Cogita', [
+    'All eighteen Plates... I can feel them humming in your bag. Even the stones of this retreat seem to lean towards you.',
+    'Take them to the Temple of Sinnoh. Climb to where Dialga and Palkia raged, and lay the Plates before the altar.',
+    'If Arceus deems you worthy, it will descend. Whether it means to test you or to thank you, I cannot say.',
+], {
+    requirement: new MultiRequirement([new QuestLineStepCompletedRequirement('Arceus: The Deified Pokémon', 2), new QuestLineStepCompletedRequirement('Arceus: The Deified Pokémon', 3, GameConstants.AchievementOption.less)]),
+});
+const ArceusCogita3 = new NPC('Cogita', [
+    'You met the Original One and it shared a part of itself with you. I have waited a very long time to hear that.',
+    'Hisui will change, as all lands do. The clans, the Galaxy Team, the Pokémon... they will learn to live side by side.',
+    'Whatever world you return to, remember that its foundations were laid here, by people who once feared the Pokémon they now call partners.',
+], {
+    requirement: new QuestLineStepCompletedRequirement('Arceus: The Deified Pokémon', 4),
+});
 
 //Hisui Towns
 TownList['Prelude Beach'] = new Town(
@@ -9801,7 +9829,7 @@ TownList['Prelude Beach'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['The Galaxy Team\'s Kamado']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new GymBadgeRequirement(BadgeEnums.Elite_GalarChampion)],
     }
 );
 TownList['Jubilife Village'] = new Town(
@@ -9810,7 +9838,8 @@ TownList['Jubilife Village'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [JubilifeVillageShop, new ShardTraderShop(GameConstants.ShardTraderLocations['Jubilife Village']), TemporaryBattleList['Volo 1'], TemporaryBattleList['Akari 1'], TemporaryBattleList['Akari 2'], TemporaryBattleList['Adaman 1']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new GymBadgeRequirement(BadgeEnums.Elite_GalarChampion)],
+        npcs: [ProfLaventon],
     }
 );
 TownList['Galaxy Hall'] = new Town(
@@ -9819,7 +9848,7 @@ TownList['Galaxy Hall'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [new BulletinBoard(GameConstants.BulletinBoards.Hisui)],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new TemporaryBattleRequirement('Akari 1')],
         npcs: [ForcesCogita1],
     }
 );
@@ -9829,7 +9858,7 @@ TownList['Fieldlands Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Warden Mai']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 2)],
     }
 );
 TownList['Heights Camp'] = new Town(
@@ -9838,7 +9867,7 @@ TownList['Heights Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Alpha Kricketune']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 5)],
     }
 );
 TownList['Grandtree Arena'] = new Town(
@@ -9847,7 +9876,10 @@ TownList['Grandtree Arena'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Warden Lian'], TemporaryBattleList['Irida 1'], TemporaryBattleList['Lord of the Woods: Kleavor']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [
+            new RouteKillRequirement(10, GameConstants.Region.hisui, 9),
+            new TemporaryBattleRequirement('Warden Mai'),
+        ],
     }
 );
 TownList['Mirelands Camp'] = new Town(
@@ -9856,7 +9888,7 @@ TownList['Mirelands Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Coin 1']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new TemporaryBattleRequirement('Lord of the Woods: Kleavor')],
     }
 );
 TownList['Bogbound Camp'] = new Town(
@@ -9865,7 +9897,7 @@ TownList['Bogbound Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 16)],
     }
 );
 TownList['Sludge Mound'] = new Town(
@@ -9874,7 +9906,7 @@ TownList['Sludge Mound'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList.Ursaluna],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 20)],
     }
 );
 TownList['Diamond Settlement'] = new Town(
@@ -9883,7 +9915,7 @@ TownList['Diamond Settlement'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 17)],
     }
 );
 TownList['Brava Arena'] = new Town(
@@ -9892,7 +9924,7 @@ TownList['Brava Arena'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Lady of the Ridge: Lilligant']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 22)],
     }
 );
 TownList['Beachside Camp'] = new Town(
@@ -9901,7 +9933,7 @@ TownList['Beachside Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Irida 2']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new TemporaryBattleRequirement('Lady of the Ridge: Lilligant')],
     }
 );
 TownList['Coastlands Camp'] = new Town(
@@ -9910,7 +9942,7 @@ TownList['Coastlands Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 26)],
     }
 );
 TownList['Iscan\'s Cabin'] = new Town(
@@ -9919,7 +9951,7 @@ TownList['Iscan\'s Cabin'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 30)],
     }
 );
 TownList['Molten Arena'] = new Town(
@@ -9937,7 +9969,7 @@ TownList['Highlands Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new TemporaryBattleRequirement('Lord of the Isles: Arcanine')],
     }
 );
 TownList['Mountain Camp'] = new Town(
@@ -9946,7 +9978,7 @@ TownList['Mountain Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 41)],
     }
 );
 TownList['Summit Camp'] = new Town(
@@ -9955,7 +9987,7 @@ TownList['Summit Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 44)],
     }
 );
 TownList['Moonview Arena'] = new Town(
@@ -9964,7 +9996,7 @@ TownList['Moonview Arena'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Melli 2'], TemporaryBattleList['Lord of the Hollow: Electrode']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 46)],
     }
 );
 TownList['Snowfields Camp'] = new Town(
@@ -9973,7 +10005,7 @@ TownList['Snowfields Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new TemporaryBattleRequirement('Lord of the Hollow: Electrode')],
     }
 );
 TownList['Icepeak Camp'] = new Town(
@@ -9982,7 +10014,7 @@ TownList['Icepeak Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 50)],
     }
 );
 TownList['Pearl Settlement'] = new Town(
@@ -9991,7 +10023,7 @@ TownList['Pearl Settlement'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Irida 3']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 48)],
     }
 );
 TownList['Icepeak Arena'] = new Town(
@@ -10000,7 +10032,7 @@ TownList['Icepeak Arena'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Lord of the Tundra: Avalugg']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 54)],
     }
 );
 TownList['Ancient Retreat'] = new Town(
@@ -10009,8 +10041,8 @@ TownList['Ancient Retreat'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
-        npcs: [ForcesCogita2, ForcesCogita3],
+        requirements: [new GymBadgeRequirement(BadgeEnums.Azure)],
+        npcs: [ForcesCogita2, ForcesCogita3, ArceusCogita1, ArceusCogita2, ArceusCogita3],
     }
 );
 TownList['Stone Portal'] = new Town(
@@ -10019,7 +10051,7 @@ TownList['Stone Portal'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList.Beni],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new TemporaryBattleRequirement('Lord of the Tundra: Avalugg')],
     }
 );
 
@@ -10028,19 +10060,19 @@ TownList['Floaro Gardens'] = new DungeonTown(
     'Floaro Gardens',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 6)]
 );
 TownList['Oreburrow Tunnel'] = new DungeonTown(
     'Oreburrow Tunnel',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 11)]
 );
 TownList.Heartwood = new DungeonTown(
     'Heartwood',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 10)],
     undefined,
     {
         npcs: [MossRock],
@@ -10050,85 +10082,85 @@ TownList['Ancient Solaceon Ruins'] = new DungeonTown(
     'Ancient Solaceon Ruins',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 13)],
     [TemporaryBattleList['Volo 2']]
 );
 TownList['Shrouded Ruins'] = new DungeonTown(
     'Shrouded Ruins',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 16)]
 );
 TownList['Veilstone Cape'] = new DungeonTown(
     'Veilstone Cape',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 31)]
 );
 TownList['Firespit Island'] = new DungeonTown(
     'Firespit Island',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 36)],
     [new MoveToTown('Molten Arena')]
 );
 TownList['Ancient Wayward Cave'] = new DungeonTown(
     'Ancient Wayward Cave',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 38)],
     [TemporaryBattleList['Melli 1']]
 );
 TownList['Ancient Quarry'] = new DungeonTown(
     'Ancient Quarry',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 39)]
 );
 TownList['Primeval Grotto'] = new DungeonTown(
     'Primeval Grotto',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 42)],
     [TemporaryBattleList['Charm 2']]
 );
 TownList['Clamberclaw Cliffs'] = new DungeonTown(
     'Clamberclaw Cliffs',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 40)],
     [TemporaryBattleList['Warden Ingo']]
 );
 TownList['Celestica Ruins'] = new DungeonTown(
     'Celestica Ruins',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 42)]
 );
 TownList['Sacred Plaza'] = new DungeonTown(
     'Sacred Plaza',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 45)]
 );
 TownList['Avalugg\'s Legacy'] = new DungeonTown(
     'Avalugg\'s Legacy',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 48)],
     [TemporaryBattleList['Warden Gaeric']]
 );
 TownList['Ice Column Chamber'] = new DungeonTown(
     'Ice Column Chamber',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 51)]
 );
 TownList['Icepeak Cavern'] = new DungeonTown(
     'Icepeak Cavern',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 49)],
     undefined,
     {
         npcs: [IceRock],
@@ -10138,7 +10170,7 @@ TownList['Ancient Snowpoint Temple'] = new DungeonTown(
     'Ancient Snowpoint Temple',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 54)],
     [TemporaryBattleList['Warden Sabi'], TemporaryBattleList['Hisuian Braviary']]
 );
 TownList['Seaside Hollow'] = new DungeonTown(
@@ -10146,7 +10178,7 @@ TownList['Seaside Hollow'] = new DungeonTown(
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
     [
-        new DevelopmentRequirement(),
+        new RouteKillRequirement(10, GameConstants.Region.hisui, 36),
         new ObtainedPokemonRequirement('Overqwil'),
     ]
 );
@@ -10154,33 +10186,33 @@ TownList['Ancient Lake Verity'] = new DungeonTown(
     'Ancient Lake Verity',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new TemporaryBattleRequirement('Lord of the Tundra: Avalugg')]
 );
 TownList['Ancient Lake Valor'] = new DungeonTown(
     'Ancient Lake Valor',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('Lord of the Tundra: Avalugg')],
     [TemporaryBattleList['Adaman 2']]
 );
 TownList['Ancient Lake Acuity'] = new DungeonTown(
     'Ancient Lake Acuity',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new TemporaryBattleRequirement('Lord of the Tundra: Avalugg')]
 );
 TownList['Temple of Sinnoh'] = new DungeonTown(
     'Temple of Sinnoh',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('The Galaxy Team\'s Kamado')],
     [TemporaryBattleList['Dialga (Origin)'], TemporaryBattleList['Palkia (Origin)'], TemporaryBattleList['Volo 3'], TemporaryBattleList.Arceus]
 );
 TownList['Turnback Cave'] = new DungeonTown(
     'Turnback Cave',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new GymBadgeRequirement(BadgeEnums.Azure)]
 );
 
 //Paldea Shops

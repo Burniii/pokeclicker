@@ -2216,70 +2216,73 @@ GymList['Elite Trainer Peony'] = new Gym(
 GymList['Grandtree Arena'] = new Gym(
     'Lord of the Woods: Kleavor',
     'Grandtree Arena',
-    [new GymPokemon('Noble Kleavor', 76658268, 70)],
+    [new GymPokemon('Noble Kleavor', 530323400, 70)],
     BadgeEnums.Noble_Kleavor,
-    128000,
+    140000,
     'You defeated Lord Kleavor once again!',
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('Lord of the Woods: Kleavor')],
     undefined, undefined, { displayName: 'Lord Kleavor', imageName: '../pokemon/900.01' }
 );
 GymList['Brava Arena'] = new Gym(
     'Lady of the Ridge: Lilligant',
     'Brava Arena',
-    [new GymPokemon('Noble Lilligant', 76658268, 70)],
+    [new GymPokemon('Noble Lilligant', 578326920, 70)],
     BadgeEnums.Noble_Lilligant,
-    128000,
+    150000,
     'You defeated Lady Lilligant once again!',
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('Lady of the Ridge: Lilligant')],
     undefined, undefined, { displayName: 'Lady Lilligant', imageName: '../pokemon/549.02' }
 );
 GymList['Molten Arena'] = new Gym(
     'Lord of the Isles: Arcanine',
     'Molten Arena',
-    [new GymPokemon('Noble Arcanine', 76658268, 70)],
+    [new GymPokemon('Noble Arcanine', 655104700, 70)],
     BadgeEnums.Noble_Arcanine,
-    128000,
+    160000,
     'You defeated Lord Arcanine once again!',
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('Lord of the Isles: Arcanine')],
     undefined, undefined, { displayName: 'Lord Arcanine', imageName: '../pokemon/59.02' }
 );
 GymList['Moonview Arena'] = new Gym(
     'Lord of the Hollow: Electrode',
     'Moonview Arena',
-    [new GymPokemon('Noble Electrode', 76658268, 70)],
+    [new GymPokemon('Noble Electrode', 703975140, 70)],
     BadgeEnums.Noble_Electrode,
-    128000,
+    170000,
     'You defeated Lord Electrode once again!',
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('Lord of the Hollow: Electrode')],
     undefined, undefined, { displayName: 'Lord Electrode', imageName: '../pokemon/101.02' }
 );
 GymList['Icepeak Arena'] = new Gym(
     'Lord of the Tundra: Avalugg',
     'Icepeak Arena',
-    [new GymPokemon('Noble Avalugg', 76658268, 70)],
+    [new GymPokemon('Noble Avalugg', 749212840, 70)],
     BadgeEnums.Noble_Avalugg,
-    128000,
+    180000,
     'You defeated Lord Avalugg once again!',
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('Lord of the Tundra: Avalugg')],
     undefined, undefined, { displayName: 'Lord Avalugg', imageName: '../pokemon/713.02' }
 );
 GymList['Temple of Sinnoh'] = new Gym(
     'Volo',
     'Temple of Sinnoh',
     [
-        new GymPokemon('Spiritomb', 348526193, 68),
-        new GymPokemon('Roserade', 348526193, 68),
-        new GymPokemon('Togekiss', 348526193, 68),
-        new GymPokemon('Hisuian Arcanine', 348526193, 68),
-        new GymPokemon('Lucario', 348526193, 68),
-        new GymPokemon('Garchomp', 348526193, 68),
-        new GymPokemon('Giratina (Altered)', 348526193, 70, new TemporaryBattleRequirement('Volo 3')),
-        new GymPokemon('Giratina (Origin)', 348526193, 70, new TemporaryBattleRequirement('Volo 3')),
+        new GymPokemon('Spiritomb', 374606420, 68),
+        new GymPokemon('Roserade', 374606420, 68),
+        new GymPokemon('Togekiss', 374606420, 68),
+        new GymPokemon('Hisuian Arcanine', 374606420, 68),
+        new GymPokemon('Lucario', 374606420, 68),
+        new GymPokemon('Garchomp', 374606420, 68),
+        new GymPokemon('Giratina (Altered)', 374606420, 70, new TemporaryBattleRequirement('Volo 3')),
+        new GymPokemon('Giratina (Origin)', 374606420, 70, new TemporaryBattleRequirement('Volo 3')),
     ],
     BadgeEnums.Azure,
-    128000,
+    300000,
     'Why? Why you?! Why do you have the blessing of Arceus?!',
-    [new DevelopmentRequirement()],
+    [
+        new TemporaryBattleRequirement('Dialga (Origin)'),
+        new TemporaryBattleRequirement('Palkia (Origin)'),
+    ],
     () => {},
     { champion: true },
     { displayName: 'Pokémon Wielder Volo' }

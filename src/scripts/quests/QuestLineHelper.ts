@@ -4111,8 +4111,36 @@ class QuestLineHelper {
 
     /* Hisui QuestLines */
 
+    public static createHisuiRiftQuestLine() {
+        const hisuiRiftQuestLine = new QuestLine('The Rift of Hisui', 'Join the Galaxy Expedition Team and calm the frenzied Nobles of Hisui.', new GymBadgeRequirement(BadgeEnums.Elite_GalarChampion), GameConstants.BulletinBoards.Hisui);
+
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Volo 1', 'You have fallen through a rift in the sky and landed on Prelude Beach. Meet Volo of the Ginkgo Guild in Jubilife Village.'));
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Akari 1', 'Prove to Akari of the Survey Corps that you can handle Pokémon.'));
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Warden Mai', 'Head into the Obsidian Fieldlands and meet Warden Mai at Fieldlands Camp.'));
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lord of the Woods: Kleavor', 'The Lord of the Woods has been struck by lightning from the rift. Quell Kleavor at Grandtree Arena.'));
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lady of the Ridge: Lilligant', 'The Diamond Clan needs your help in the Crimson Mirelands. Quell Lady Lilligant at Brava Arena.'));
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lord of the Isles: Arcanine', 'The Pearl Clan asks you to cross to Firespit Island in the Cobalt Coastlands. Quell Lord Arcanine at Molten Arena.'));
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lord of the Hollow: Electrode', 'Climb the Coronet Highlands and quell Lord Electrode at Moonview Arena.'));
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lord of the Tundra: Avalugg', 'Brave the blizzards of the Alabaster Icelands and quell Lord Avalugg at Icepeak Arena.'));
+        hisuiRiftQuestLine.addQuest(new MultipleQuestsQuest(
+            [
+                new DefeatTemporaryBattleQuest('Adaman 2', 'Earn Adaman\'s trust at Ancient Lake Valor.'),
+                new DefeatTemporaryBattleQuest('Irida 3', 'Earn Irida\'s trust at Pearl Settlement.'),
+                new DefeatTemporaryBattleQuest('Beni', 'Defeat the ninja Beni at the Stone Portal.'),
+            ], 'Commander Kamado has banished you from Jubilife Village. Gain the support of the clan leaders and uncover the truth.'));
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('The Galaxy Team\'s Kamado', 'Visit the three ancient lakes, then face Commander Kamado at Prelude Beach.'));
+        hisuiRiftQuestLine.addQuest(new MultipleQuestsQuest(
+            [
+                new DefeatTemporaryBattleQuest('Dialga (Origin)', 'Calm Dialga at the Temple of Sinnoh.'),
+                new DefeatTemporaryBattleQuest('Palkia (Origin)', 'Calm Palkia at the Temple of Sinnoh.'),
+            ], 'The rift is tearing open above Mount Coronet. Calm Dialga and Palkia at the Temple of Sinnoh.'));
+        hisuiRiftQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Temple of Sinnoh').withDescription('Volo is waiting for you at the Temple of Sinnoh. Defeat him to earn the Azure Badge.'));
+
+        App.game.quests.questLines.push(hisuiRiftQuestLine);
+    }
+
     public static createHisuiForcesQuestLine() {
-        const hisuiForcesQuestLine = new QuestLine('Incarnate Forces of Hisui', 'Cogita would like you to catch the Forces of Nature.', new DevelopmentRequirement(), GameConstants.BulletinBoards.Hisui);
+        const hisuiForcesQuestLine = new QuestLine('Incarnate Forces of Hisui', 'Cogita would like you to catch the Forces of Nature.', new GymBadgeRequirement(BadgeEnums.Azure), GameConstants.BulletinBoards.Hisui);
 
         const talktoForcesCogita1 = new TalkToNPCQuest(ForcesCogita1, 'Speak to Cogita in Galaxy Hall.');
         hisuiForcesQuestLine.addQuest(talktoForcesCogita1);
@@ -4165,7 +4193,27 @@ class QuestLineHelper {
     }
 
     public static createHisuiArceusQuestLine() {
-        const hisuiArceusQuestLine = new QuestLine('Arceus: The Deified Pokémon', 'Discover the truth of the Pokémon deity, Arceus.', new DevelopmentRequirement(), GameConstants.BulletinBoards.Hisui);
+        const hisuiArceusQuestLine = new QuestLine('Arceus: The Deified Pokémon', 'Discover the truth of the Pokémon deity, Arceus.', new GymBadgeRequirement(BadgeEnums.Azure), GameConstants.BulletinBoards.Hisui);
+
+        const clearVolo3 = new DefeatTemporaryBattleQuest('Volo 3', 'Volo has revealed his true intentions. Defeat him and Giratina at the Temple of Sinnoh.');
+        hisuiArceusQuestLine.addQuest(clearVolo3);
+
+        const talktoArceusCogita1 = new TalkToNPCQuest(ArceusCogita1, 'Cogita wants to talk to you about Volo. Visit her at Ancient Retreat.');
+        hisuiArceusQuestLine.addQuest(talktoArceusCogita1);
+
+        const plates = ['Draco_plate', 'Dread_plate', 'Earth_plate', 'Fist_plate', 'Flame_plate', 'Icicle_plate', 'Insect_plate', 'Iron_plate', 'Meadow_plate',
+            'Mind_plate', 'Sky_plate', 'Splash_plate', 'Spooky_plate', 'Stone_plate', 'Toxic_plate', 'Zap_plate', 'Pixie_plate', 'Blank_plate'];
+        const gatherPlates = new CustomQuest(plates.length, 0, 'Excavate all 18 Plates in the Underground.', () => plates.filter((plate) => player.itemList[plate]() > 0).length).withInitialValue(0);
+        hisuiArceusQuestLine.addQuest(gatherPlates);
+
+        const talktoArceusCogita2 = new TalkToNPCQuest(ArceusCogita2, 'You have gathered all 18 Plates. Report back to Cogita at Ancient Retreat.');
+        hisuiArceusQuestLine.addQuest(talktoArceusCogita2);
+
+        const clearArceus = new DefeatTemporaryBattleQuest('Arceus', 'Bring the Plates to the Temple of Sinnoh and face Arceus, the Original One.');
+        hisuiArceusQuestLine.addQuest(clearArceus);
+
+        const talktoArceusCogita3 = new TalkToNPCQuest(ArceusCogita3, 'Tell Cogita about your meeting with Arceus at Ancient Retreat.');
+        hisuiArceusQuestLine.addQuest(talktoArceusCogita3);
 
         App.game.quests.questLines.push(hisuiArceusQuestLine);
     }
@@ -4312,6 +4360,7 @@ class QuestLineHelper {
         this.createDynaTreeBirdsQuestLine();
         this.createAncientGolemsQuestLine();
         this.createGigantamaxQuestLine();
+        this.createHisuiRiftQuestLine();
         this.createHisuiForcesQuestLine();
         this.createHisuiArceusQuestLine();
         this.createPaldeaLegendsQuestLine();

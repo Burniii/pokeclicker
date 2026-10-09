@@ -14,7 +14,6 @@ import RouteKillRequirement from '../requirements/RouteKillRequirement';
 import TemporaryBattleRequirement from '../requirements/TemporaryBattleRequirement';
 import WeatherRequirement from '../requirements/WeatherRequirement';
 import DayOfWeekRequirement from '../requirements/DayOfWeekRequirement';
-import DevelopmentRequirement from '../requirements/DevelopmentRequirement';
 import WeatherType from '../weather/WeatherType';
 import RegionRoute from './RegionRoute';
 import RoutePokemon from './RoutePokemon';
@@ -3796,7 +3795,10 @@ Routes.add(new RegionRoute(
     new RoutePokemon({
         land: ['Bidoof', 'Starly', 'Eevee', 'Drifloon', 'Buizel', 'Wurmple', 'Silcoon', 'Cascoon', 'Mime Jr.', 'Ponyta', 'Rapidash'],
     }),
-    [new DevelopmentRequirement()],
+    [
+        new RouteKillRequirement(10, Region.hisui, 1),
+        new TemporaryBattleRequirement('Akari 1'),
+    ],
 ));
 Routes.add(new RegionRoute(
     'Sandgem Flats', Region.hisui, 3,
@@ -3804,7 +3806,7 @@ Routes.add(new RegionRoute(
         land: ['Mime Jr.', 'Mr. Mime', 'Drifblim', 'Abra', 'Kadabra', 'Luxio', 'Luxray', 'Shellos (West)', 'Gastrodon (West)', 'Alakazam', 'Staravia'],
         headbutt: ['Wormadam (Plant)', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 2)],
 ));
 Routes.add(new RegionRoute(
     'Deertrack Path', Region.hisui, 4,
@@ -3812,7 +3814,7 @@ Routes.add(new RegionRoute(
         land: ['Kricketot', 'Zubat', 'Munchlax', 'Starly', 'Drifloon'],
         headbutt: ['Burmy (Plant)', 'Geodude'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 3)],
 ));
 Routes.add(new RegionRoute(
     'Deertrack Heights', Region.hisui, 5,
@@ -3820,7 +3822,7 @@ Routes.add(new RegionRoute(
         land: ['Geodude', 'Zubat', 'Golbat', 'Shinx', 'Stantler', 'Starly', 'Staravia', 'Chimchar', 'Monferno'],
         headbutt: ['Burmy (Plant)', 'Geodude'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 4)],
 ));
 Routes.add(new RegionRoute(
     'Windswept Run', Region.hisui, 6,
@@ -3828,7 +3830,7 @@ Routes.add(new RegionRoute(
         land: ['Abra', 'Drifloon', 'Kricketot', 'Kricketune', 'Zubat', 'Buizel', 'Starly', 'Staravia'],
         headbutt: ['Burmy (Plant)', 'Geodude'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 5)],
 ));
 Routes.add(new RegionRoute(
     'Nature\'s Pantry', Region.hisui, 7,
@@ -3836,7 +3838,7 @@ Routes.add(new RegionRoute(
         land: ['Kricketot', 'Kricketune', 'Pichu', 'Pikachu', 'Zubat', 'Paras', 'Parasect', 'Starly', 'Staravia'],
         headbutt: ['Burmy (Plant)', 'Geodude'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 6)],
 ));
 Routes.add(new RegionRoute(
     'Worn Bridge', Region.hisui, 8,
@@ -3844,7 +3846,7 @@ Routes.add(new RegionRoute(
         land: ['Geodude', 'Zubat'],
         headbutt: ['Burmy (Plant)'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 7)],
 ));
 Routes.add(new RegionRoute(
     'Gruelling Grove', Region.hisui, 9,
@@ -3852,7 +3854,7 @@ Routes.add(new RegionRoute(
         land: ['Combee', 'Heracross', 'Beautifly', 'Dustox', 'Mothim'],
         headbutt: ['Burmy (Plant)', 'Wormadam (Plant)'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 8)],
 ));
 Routes.add(new RegionRoute(
     'Tidewater Dam', Region.hisui, 10,
@@ -3860,7 +3862,7 @@ Routes.add(new RegionRoute(
         land: ['Bidoof', 'Bibarel', 'Zubat', 'Golbat', 'Kricketot', 'Kricketune', 'Starly', 'Staravia'],
         headbutt: ['Burmy (Plant)', 'Geodude'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 9)],
 ));
 Routes.add(new RegionRoute(
     'Obsidian Falls', Region.hisui, 11,
@@ -3869,7 +3871,7 @@ Routes.add(new RegionRoute(
         water: ['Magikarp'],
         headbutt: ['Burmy (Plant)'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 10)],
 ));
 // Basculegion
 Routes.add(new RegionRoute(
@@ -3878,7 +3880,7 @@ Routes.add(new RegionRoute(
         land: ['Shellos (West)', 'Gastrodon (West)', 'Aipom', 'Drifloon', 'Drifblim', 'Chimchar', 'Monferno', 'Infernape', 'Starly', 'Staravia'],
         headbutt: ['Combee', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 11)],
 ));
 Routes.add(new RegionRoute(
     'Golden Lowlands', Region.hisui, 13,
@@ -3886,14 +3888,17 @@ Routes.add(new RegionRoute(
         land: ['Psyduck', 'Gastly', 'Budew', 'Kricketot', 'Kricketune', 'Paras', 'Parasect', 'Carnivine'],
         headbutt: ['Burmy (Sand)', 'Geodude', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [
+        new RouteKillRequirement(10, Region.hisui, 12),
+        new TemporaryBattleRequirement('Lord of the Woods: Kleavor'),
+    ],
 ));
 Routes.add(new RegionRoute(
     'Scarlet Bog', Region.hisui, 14,
     new RoutePokemon({
         land: ['Hippopotas', 'Hippowdon', 'Gastly', 'Haunter', 'Stunky', 'Skuntank', 'Croagunk', 'Geodude', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 13)],
 ));
 Routes.add(new RegionRoute(
     'Cloudpool Ridge', Region.hisui, 15,
@@ -3901,7 +3906,7 @@ Routes.add(new RegionRoute(
         land: ['Combee', 'Zubat', 'Golbat', 'Roselia', 'Kricketot', 'Kricketune', 'Paras', 'Parasect', 'Murkrow', 'Honchkrow', 'Roserade', 'Carnivine'],
         headbutt: ['Burmy (Sand)', 'Geodude', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 14)],
 ));
 Routes.add(new RegionRoute(
     'Diamond Heath', Region.hisui, 16,
@@ -3909,7 +3914,7 @@ Routes.add(new RegionRoute(
         land: ['Paras', 'Parasect', 'Zubat', 'Golbat', 'Rhyhorn'],
         headbutt: ['Geodude', 'Graveler', 'Bonsly'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 15)],
 ));
 Routes.add(new RegionRoute(
     'Cottonsedge Prairie', Region.hisui, 17,
@@ -3917,7 +3922,7 @@ Routes.add(new RegionRoute(
         land: ['Pachirisu', 'Togepi', 'Gastly', 'Haunter', 'Petilil'],
         headbutt: ['Combee', 'Vespiquen', 'Geodude', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 16)],
 ));
 Routes.add(new RegionRoute(
     'Droning Meadow', Region.hisui, 18,
@@ -3925,7 +3930,7 @@ Routes.add(new RegionRoute(
         land: ['Paras', 'Parasect', 'Gastly', 'Haunter', 'Bidoof', 'Bibarel', 'Yanma'],
         headbutt: ['Combee', 'Vespiquen', 'Pachirisu', 'Geodude', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 17)],
 ));
 Routes.add(new RegionRoute(
     'Bolderoll Slope', Region.hisui, 19,
@@ -3933,7 +3938,7 @@ Routes.add(new RegionRoute(
         land: ['Rhyhorn', 'Zubat', 'Zubat', 'Golbat', 'Geodude', 'Graveler'],
         headbutt: ['Burmy (Sand)'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 18)],
 ));
 Routes.add(new RegionRoute(
     'Gapejaw Bog', Region.hisui, 20,
@@ -3942,7 +3947,7 @@ Routes.add(new RegionRoute(
         water: ['Barboach', 'Whiscash'],
         headbutt: ['Burmy (Sand)', 'Pachirisu'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 19)],
 ));
 Routes.add(new RegionRoute(
     'Ursa\'s Ring', Region.hisui, 21,
@@ -3950,7 +3955,7 @@ Routes.add(new RegionRoute(
         land: ['Geodude', 'Graveler', 'Gastly', 'Haunter', 'Teddiursa', 'Ursaring', 'Yanma'],
         headbutt: ['Burmy (Sand)', 'Pachirisu'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 20)],
 ));
 //Basculegion
 Routes.add(new RegionRoute(
@@ -3959,7 +3964,7 @@ Routes.add(new RegionRoute(
         land: ['Psyduck', 'Golduck', 'Gastly', 'Haunter', 'Croagunk', 'Toxicroak', 'Petilil', 'Goomy', 'Hisuian Sliggoo', 'Torterra', 'Carnivine'],
         headbutt: ['Burmy (Sand)', 'Pachirisu', 'Geodude', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 21)],
 ));
 Routes.add(new RegionRoute(
     'Crossing Slope', Region.hisui, 23,
@@ -3967,7 +3972,10 @@ Routes.add(new RegionRoute(
         land: ['Glameow', 'Purugly', 'Murkrow', 'Starly', 'Staravia', 'Drifloon', 'Drifblim'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)', 'Geodude', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [
+        new RouteKillRequirement(10, Region.hisui, 22),
+        new TemporaryBattleRequirement('Lady of the Ridge: Lilligant'),
+    ],
 ));
 Routes.add(new RegionRoute(
     'Ginkgo Landing', Region.hisui, 24,
@@ -3975,7 +3983,7 @@ Routes.add(new RegionRoute(
         land: ['Skorupi', 'Murkrow', 'Spheal', 'Drifloon', 'Buizel', 'Floatzel', 'Walrein', 'Machoke'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)', 'Geodude', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 23)],
 ));
 Routes.add(new RegionRoute(
     'Aipom Hill', Region.hisui, 25,
@@ -3983,7 +3991,7 @@ Routes.add(new RegionRoute(
         land: ['Aipom', 'Ambipom', 'Murkrow', 'Buizel', 'Floatzel', 'Combee', 'Mothim'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)', 'Geodude', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 24)],
 ));
 Routes.add(new RegionRoute(
     'Bathers\' Lagoon', Region.hisui, 26,
@@ -3991,7 +3999,7 @@ Routes.add(new RegionRoute(
         land: ['Starly', 'Staravia', 'Togepi', 'Drifloon', 'Drifblim', 'Buizel', 'Floatzel', 'Psyduck', 'Golduck', 'Murkrow', 'Beautifly', 'Dustox'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)', 'Geodude', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 25)],
 ));
 Routes.add(new RegionRoute(
     'Hideaway Bay', Region.hisui, 27,
@@ -4000,7 +4008,7 @@ Routes.add(new RegionRoute(
         water: ['Remoraid'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 26)],
 ));
 Routes.add(new RegionRoute(
     'Deadwood Haunt', Region.hisui, 28,
@@ -4008,7 +4016,7 @@ Routes.add(new RegionRoute(
         land: ['Duskull', 'Dusclops', 'Dusknoir', 'Chatot', 'Starly', 'Staravia', 'Staraptor', 'Drifloon', 'Drifblim'],
         headbutt: ['Geodude', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 27)],
 ));
 Routes.add(new RegionRoute(
     'Sand\'s Reach', Region.hisui, 29,
@@ -4017,7 +4025,7 @@ Routes.add(new RegionRoute(
         water: ['Remoraid'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)', 'Geodude', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 28)],
 ));
 Routes.add(new RegionRoute(
     'Castaway Shore', Region.hisui, 30,
@@ -4025,7 +4033,7 @@ Routes.add(new RegionRoute(
         land: ['Machop', 'Machoke', 'Murkrow', 'Skorupi', 'Drapion', 'Octillery'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)', 'Geodude', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 29)],
 ));
 Routes.add(new RegionRoute(
     'Windbreak Stand', Region.hisui, 31,
@@ -4033,7 +4041,7 @@ Routes.add(new RegionRoute(
         land: ['Parasect', 'Stantler', 'Hisuian Growlithe'],
         headbutt: ['Wormadam (Trash)', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 30)],
 ));
 Routes.add(new RegionRoute(
     'Spring Path', Region.hisui, 32,
@@ -4041,14 +4049,14 @@ Routes.add(new RegionRoute(
         land: ['Bibarel', 'Toxicroak', 'Mothim'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 31)],
 ));
 Routes.add(new RegionRoute(
     'Islespy Shore', Region.hisui, 33,
     new RoutePokemon({
         land: ['Sealeo', 'Walrein', 'Murkrow', 'Empoleon'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 32)],
 ));
 Routes.add(new RegionRoute(
     'Tranquility Cove', Region.hisui, 34,
@@ -4057,7 +4065,7 @@ Routes.add(new RegionRoute(
         water: ['Mantyke', 'Mantine', 'Basculin (White-Striped)', 'Remoraid', 'Hisuian Qwilfish'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)', 'Geodude', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 33)],
 ));
 Routes.add(new RegionRoute(
     'Lunker\'s Lair', Region.hisui, 35,
@@ -4065,7 +4073,7 @@ Routes.add(new RegionRoute(
         water: ['Tentacool', 'Tentacruel', 'Drifloon', 'Drifblim', 'Hisuian Qwilfish'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 34)],
 ));
 Routes.add(new RegionRoute(
     'Seagrass Haven', Region.hisui, 36,
@@ -4074,7 +4082,7 @@ Routes.add(new RegionRoute(
         water: ['Finneon', 'Lumineon', 'Drifloon', 'Drifblim', 'Tentacool', 'Tentacruel'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 35)],
 ));
 Routes.add(new RegionRoute(
     'Tombolo Walk', Region.hisui, 37,
@@ -4082,7 +4090,7 @@ Routes.add(new RegionRoute(
         land: ['Happiny', 'Chansey'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 36)],
 ));
 Routes.add(new RegionRoute(
     'Heavenward Lookout', Region.hisui, 38,
@@ -4090,7 +4098,10 @@ Routes.add(new RegionRoute(
         land: ['Luxio', 'Luxray', 'Paras', 'Parasect', 'Zubat', 'Golbat', 'Yanma', 'Yanmega'],
         headbutt: ['Burmy (Sand)', 'Wormadam (Sand)', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [
+        new RouteKillRequirement(10, Region.hisui, 37),
+        new TemporaryBattleRequirement('Lord of the Isles: Arcanine'),
+    ],
 ));
 Routes.add(new RegionRoute(
     'Wayward Wood', Region.hisui, 39,
@@ -4099,7 +4110,7 @@ Routes.add(new RegionRoute(
         water: ['Psyduck', 'Golduck'],
         headbutt: ['Bronzor'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 38)],
 ));
 Routes.add(new RegionRoute(
     'Lonely Spring', Region.hisui, 40,
@@ -4108,7 +4119,7 @@ Routes.add(new RegionRoute(
         water: ['Psyduck', 'Golduck'],
         headbutt: ['Cherubi', 'Cherrim (Overcast)', 'Bronzor'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 39)],
 ));
 Routes.add(new RegionRoute(
     'Sonorous Path', Region.hisui, 41,
@@ -4116,7 +4127,7 @@ Routes.add(new RegionRoute(
         land: ['Shinx', 'Luxio', 'Luxray', 'Teddiursa', 'Ursaring'],
         headbutt: ['Heracross', 'Bronzor'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 40)],
 ));
 Routes.add(new RegionRoute(
     'Celestica Trail', Region.hisui, 42,
@@ -4124,7 +4135,7 @@ Routes.add(new RegionRoute(
         land: ['Rhyhorn', 'Rhydon', 'Onix', 'Steelix', 'Hippopotas', 'Hippowdon', 'Chimecho', 'Hisuian Sneasel'],
         headbutt: ['Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 41)],
 ));
 Routes.add(new RegionRoute(
     'Fabled Spring', Region.hisui, 43,
@@ -4133,7 +4144,7 @@ Routes.add(new RegionRoute(
         water: ['Basculin (White-Striped)'],
         headbutt: ['Burmy (Sand)', 'Wormadam (Sand)', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 42)],
 ));
 Routes.add(new RegionRoute(
     'Bolderoll Ravine', Region.hisui, 44,
@@ -4141,7 +4152,7 @@ Routes.add(new RegionRoute(
         land: ['Geodude', 'Graveler', 'Golem', 'Gastly', 'Haunter', 'Machop', 'Machoke'],
         headbutt: ['Cherubi', 'Cherrim (Overcast)', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 43)],
 ));
 Routes.add(new RegionRoute(
     'Stonetooth Rows', Region.hisui, 45,
@@ -4149,7 +4160,7 @@ Routes.add(new RegionRoute(
         land: ['Bronzor', 'Bronzong', 'Rotom', 'Misdreavus', 'Mismagius'],
         headbutt: ['Burmy (Sand)', 'Wormadam (Sand)', 'Graveler'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 44)],
 ));
 Routes.add(new RegionRoute(
     'Cloudcap Pass', Region.hisui, 46,
@@ -4157,7 +4168,7 @@ Routes.add(new RegionRoute(
         land: ['Elekid', 'Electabuzz', 'Electivire', 'Luxio', 'Luxray'],
         headbutt: ['Burmy (Sand)', 'Wormadam (Sand)', 'Nosepass'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 45)],
 ));
 Routes.add(new RegionRoute(
     'Whiteout Valley', Region.hisui, 47,
@@ -4165,7 +4176,10 @@ Routes.add(new RegionRoute(
         land: ['Aipom', 'Snorunt'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)'],
     }),
-    [new DevelopmentRequirement()],
+    [
+        new RouteKillRequirement(10, Region.hisui, 46),
+        new TemporaryBattleRequirement('Lord of the Hollow: Electrode'),
+    ],
 ));
 Routes.add(new RegionRoute(
     'Bonechill Wastes', Region.hisui, 48,
@@ -4173,7 +4187,7 @@ Routes.add(new RegionRoute(
         land: ['Swinub', 'Buneary', 'Lopunny', 'Gastly', 'Haunter', 'Glalie', 'Froslass', 'Bergmite', 'Snover', 'Abomasnow', 'Drifloon', 'Drifblim', 'Snorunt', 'Aipom', 'Piloswine'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 47)],
 ));
 Routes.add(new RegionRoute(
     'Arena\'s Approach', Region.hisui, 49,
@@ -4181,7 +4195,7 @@ Routes.add(new RegionRoute(
         land: ['Machop', 'Machoke', 'Bergmite', 'Gligar', 'Duskull', 'Dusclops', 'Elekid', 'Electabuzz', 'Lickitung', 'Snorlax', 'Lucario', 'Lopunny', 'Aipom', 'Buneary', 'Munchlax', 'Riolu', 'Machamp', 'Piloswine'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)', 'Bergmite', 'Snorunt', 'Glalie'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 48)],
 ));
 Routes.add(new RegionRoute(
     'Avalanche Slopes', Region.hisui, 50,
@@ -4189,7 +4203,7 @@ Routes.add(new RegionRoute(
         land: ['Aipom', 'Ambipom', 'Happiny', 'Chansey', 'Swinub', 'Piloswine', 'Gible', 'Gabite', 'Duskull', 'Dusclops', 'Snorunt', 'Glalie', 'Froslass', 'Lickitung', 'Lickilicky', 'Blissey', 'Garchomp'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 49)],
 ));
 Routes.add(new RegionRoute(
     'Icebound Falls', Region.hisui, 51,
@@ -4197,7 +4211,7 @@ Routes.add(new RegionRoute(
         land: ['Machop', 'Machoke', 'Riolu', 'Lucario', 'Elekid', 'Electabuzz', 'Crobat'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)', 'Snorunt', 'Glalie'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 50)],
 ));
 Routes.add(new RegionRoute(
     'Heart\'s Crag', Region.hisui, 52,
@@ -4206,14 +4220,14 @@ Routes.add(new RegionRoute(
         water: ['Basculin (White-Striped)'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)', 'Snorunt', 'Glalie'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 51)],
 ));
 Routes.add(new RegionRoute(
     'Snowfall Hot Spring', Region.hisui, 53,
     new RoutePokemon({
         land: ['Machoke', 'Lickitung', 'Snorlax', 'Lucario', 'Lopunny', 'Machop', 'Aipom', 'Buneary', 'Munchlax', 'Riolu'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 52)],
 ));
 Routes.add(new RegionRoute(
     'Glacier Terrace', Region.hisui, 54,
@@ -4221,7 +4235,7 @@ Routes.add(new RegionRoute(
         land: ['Gligar', 'Drifloon', 'Drifblim', 'Aipom', 'Snover', 'Hisuian Sneasel', 'Abomasnow'],
         headbutt: ['Burmy (Trash)', 'Wormadam (Trash)', 'Snorunt', 'Glalie'],
     }),
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, Region.hisui, 53)],
 ));
 
 /*

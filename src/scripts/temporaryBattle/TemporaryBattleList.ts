@@ -6652,9 +6652,9 @@ TemporaryBattleList['Eternamax Eternatus'] = new TemporaryBattle(
 // Hisui Temporary Battles
 TemporaryBattleList['Volo 1'] = new TemporaryBattle(
     'Volo 1',
-    [new GymPokemon('Togepi', 348526193, 5)],
+    [new GymPokemon('Togepi', 240198100, 5)],
     'Moves, items... Use them well, and the world will open up to you!',
-    [new DevelopmentRequirement()],
+    [new GymBadgeRequirement(BadgeEnums.Elite_GalarChampion)],
     undefined,
     {
         displayName: 'Ginkgo Guild Member Volo',
@@ -6663,9 +6663,9 @@ TemporaryBattleList['Volo 1'] = new TemporaryBattle(
 );
 TemporaryBattleList['Akari 1'] = new TemporaryBattle(
     'Akari 1',
-    [new GymPokemon('Pikachu', 348526193, 9)],
+    [new GymPokemon('Pikachu', 240198100, 9)],
     'You and your Pokémon seem completely in step with one another.',
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('Volo 1')],
     undefined,
     {
         displayName: 'The Survey Corps\' Akari',
@@ -6674,9 +6674,9 @@ TemporaryBattleList['Akari 1'] = new TemporaryBattle(
 );
 TemporaryBattleList['Warden Mai'] = new TemporaryBattle(
     'Warden Mai',
-    [new GymPokemon('Munchlax', 348526193, 10)],
+    [new GymPokemon('Munchlax', 245150239, 10)],
     'You really aren\'t one of the usual Galaxy buffoons if you could defeat my partner... Well fought, Munchlax.',
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 2)],
     undefined,
     {
         imageName: 'Mai',
@@ -6684,9 +6684,12 @@ TemporaryBattleList['Warden Mai'] = new TemporaryBattle(
 );
 TemporaryBattleList['Alpha Kricketune'] = new TemporaryBattle(
     'Alpha Kricketune',
-    [new GymPokemon('Kricketune', 2031393560, 12)],
+    [new GymPokemon('Kricketune', 747309780, 12)],
     'You defeated Kricketune!',
-    [new DevelopmentRequirement()],
+    [
+        new RouteKillRequirement(10, GameConstants.Region.hisui, 5),
+        new TemporaryBattleRequirement('Warden Mai'),
+    ],
     undefined,
     {
         isTrainerBattle: false,
@@ -6696,9 +6699,12 @@ TemporaryBattleList['Alpha Kricketune'] = new TemporaryBattle(
 );
 TemporaryBattleList['Warden Lian'] = new TemporaryBattle(
     'Warden Lian',
-    [new GymPokemon('Goomy', 348526193, 15)],
+    [new GymPokemon('Goomy', 281589833, 15)],
     'H-how can this be...',
-    [new DevelopmentRequirement()],
+    [
+        new RouteKillRequirement(10, GameConstants.Region.hisui, 9),
+        new TemporaryBattleRequirement('Warden Mai'),
+    ],
     undefined,
     {
         imageName: 'Lian',
@@ -6706,9 +6712,9 @@ TemporaryBattleList['Warden Lian'] = new TemporaryBattle(
 );
 TemporaryBattleList['Irida 1'] = new TemporaryBattle(
     'Irida 1',
-    [new GymPokemon('Glaceon', 348526193, 17)],
+    [new GymPokemon('Glaceon', 281589833, 17)],
     'I see now... Poké Balls are simply your tool of choice, not products of disregard for Pokémon. You still understand the Pokémon and trust them as partners. I feel better putting my trust in you now, I think.',
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('Warden Lian')],
     undefined,
     {
         displayName: 'Clan Leader Irida',
@@ -6717,9 +6723,12 @@ TemporaryBattleList['Irida 1'] = new TemporaryBattle(
 );
 TemporaryBattleList['Lord of the Woods: Kleavor'] = new TemporaryBattle(
     'Lord of the Woods: Kleavor',
-    [new GymPokemon('Noble Kleavor', 2031393560, 18)],
+    [new GymPokemon('Noble Kleavor', 1193227650, 18)],
     'The golden light was dispelled from Kleavor, calming it.',
-    [new DevelopmentRequirement()],
+    [
+        new TemporaryBattleRequirement('Irida 1'),
+        new RouteKillRequirement(10, GameConstants.Region.hisui, 12),
+    ],
     undefined,
     {
         hideTrainer: true,
@@ -6728,9 +6737,9 @@ TemporaryBattleList['Lord of the Woods: Kleavor'] = new TemporaryBattle(
 );
 TemporaryBattleList['Akari 2'] = new TemporaryBattle(
     'Akari 2',
-    [new GymPokemon('Pikachu', 348526193, 9)],
+    [new GymPokemon('Pikachu', 298181836, 9)],
     'Oops! I keep finding myself caught up in observing the way the Pokémon use their moves...',
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('Lord of the Woods: Kleavor')],
     undefined,
     {
         displayName: 'The Survey Corps\' Akari',
@@ -6740,11 +6749,14 @@ TemporaryBattleList['Akari 2'] = new TemporaryBattle(
 TemporaryBattleList['Volo 2'] = new TemporaryBattle(
     'Volo 2',
     [
-        new GymPokemon('Togepi', 348526193, 22),
-        new GymPokemon('Gible', 348526193, 22),
+        new GymPokemon('Togepi', 303845779, 22),
+        new GymPokemon('Gible', 303845779, 22),
     ],
     'Oh, my! You\'re quite adept at instructing your Pokémon in battle! My goodness, that was fun!',
-    [new DevelopmentRequirement()],
+    [
+        new TemporaryBattleRequirement('Akari 2'),
+        new ClearDungeonRequirement(1, GameConstants.getDungeonIndex('Ancient Solaceon Ruins')),
+    ],
     undefined,
     {
         displayName: 'Ginkgo Guild Member Volo',
@@ -6753,9 +6765,12 @@ TemporaryBattleList['Volo 2'] = new TemporaryBattle(
 );
 TemporaryBattleList['Coin 1'] = new TemporaryBattle(
     'Coin 1',
-    [new GymPokemon('Toxicroak', 348526193, 23)],
+    [new GymPokemon('Toxicroak', 309577115, 23)],
     'I\'m not fond of this outcome, but at least it\'s still better than plowing fields for the Galaxy Team!',
-    [new DevelopmentRequirement()],
+    [
+        new TemporaryBattleRequirement('Lord of the Woods: Kleavor'),
+        new RouteKillRequirement(10, GameConstants.Region.hisui, 14),
+    ],
     undefined,
     {
         displayName: 'The Bandit Coin',
@@ -6764,9 +6779,12 @@ TemporaryBattleList['Coin 1'] = new TemporaryBattle(
 );
 TemporaryBattleList.Ursaluna = new TemporaryBattle(
     'Ursaluna',
-    [new GymPokemon('Ursaluna', 2031393560, 26)],
+    [new GymPokemon('Ursaluna', 860119680, 26)],
     'You defeated Ursaluna!',
-    [new DevelopmentRequirement()],
+    [
+        new TemporaryBattleRequirement('Lady of the Ridge: Lilligant'),
+        new RouteKillRequirement(10, GameConstants.Region.hisui, 21),
+    ],
     undefined,
     {
         hideTrainer: true,
@@ -6775,9 +6793,12 @@ TemporaryBattleList.Ursaluna = new TemporaryBattle(
 );
 TemporaryBattleList['Lady of the Ridge: Lilligant'] = new TemporaryBattle(
     'Lady of the Ridge: Lilligant',
-    [new GymPokemon('Noble Lilligant', 2031393560, 30)],
+    [new GymPokemon('Noble Lilligant', 1301235570, 30)],
     'The golden light was dispelled from Lilligant, calming it.',
-    [new DevelopmentRequirement()],
+    [
+        new TemporaryBattleRequirement('Coin 1'),
+        new RouteKillRequirement(10, GameConstants.Region.hisui, 22),
+    ],
     undefined,
     {
         hideTrainer: true,
@@ -6787,11 +6808,11 @@ TemporaryBattleList['Lady of the Ridge: Lilligant'] = new TemporaryBattle(
 TemporaryBattleList['Irida 2'] = new TemporaryBattle(
     'Irida 2',
     [
-        new GymPokemon('Eevee', 348526193, 15),
-        new GymPokemon('Glaceon', 348526193, 30),
+        new GymPokemon('Eevee', 364266187, 15),
+        new GymPokemon('Glaceon', 364266187, 30),
     ],
     'Ah, now I feel better! The world is vast...and I am small within it.',
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('Lady of the Ridge: Lilligant')],
     undefined,
     {
         displayName: 'Clan Leader Irida',
@@ -6800,9 +6821,9 @@ TemporaryBattleList['Irida 2'] = new TemporaryBattle(
 );
 TemporaryBattleList.Clover = new TemporaryBattle(
     'Clover',
-    [new GymPokemon('Abomasnow', 348526193, 35)],
+    [new GymPokemon('Abomasnow', 453637788, 35)],
     'I don\'t get it! How\'d I lose?!',
-    [new DevelopmentRequirement()],
+    [new ClearDungeonRequirement(1, GameConstants.getDungeonIndex('Firespit Island'))],
     undefined,
     {
         displayName: 'The Bandit Clover',
@@ -6810,7 +6831,7 @@ TemporaryBattleList.Clover = new TemporaryBattle(
 );
 TemporaryBattleList['Coin 2'] = new TemporaryBattle(
     'Coin 2',
-    [new GymPokemon('Toxicroak', 348526193, 34)],
+    [new GymPokemon('Toxicroak', 453637788, 34)],
     'What a blithering mooncalf I am. How could I let myself lose...',
     [new TemporaryBattleRequirement('Clover')],
     undefined,
@@ -6822,8 +6843,8 @@ TemporaryBattleList['Coin 2'] = new TemporaryBattle(
 TemporaryBattleList['Charm 1'] = new TemporaryBattle(
     'Charm 1',
     [
-        new GymPokemon('Rhydon', 348526193, 34),
-        new GymPokemon('Gengar', 348526193, 35),
+        new GymPokemon('Rhydon', 453637788, 34),
+        new GymPokemon('Gengar', 453637788, 35),
     ],
     'What a disgrace...',
     [new TemporaryBattleRequirement('Coin 2')],
@@ -6835,9 +6856,9 @@ TemporaryBattleList['Charm 1'] = new TemporaryBattle(
 );
 TemporaryBattleList['Lord of the Isles: Arcanine'] = new TemporaryBattle(
     'Lord of the Isles: Arcanine',
-    [new GymPokemon('Noble Arcanine', 2031393560, 36)],
+    [new GymPokemon('Noble Arcanine', 1473985575, 36)],
     'The golden light was dispelled from Arcanine, calming it.',
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('Charm 1')],
     undefined,
     {
         hideTrainer: true,
@@ -6847,11 +6868,11 @@ TemporaryBattleList['Lord of the Isles: Arcanine'] = new TemporaryBattle(
 TemporaryBattleList['Adaman 1'] = new TemporaryBattle(
     'Adaman 1',
     [
-        new GymPokemon('Eevee', 348526193, 18),
-        new GymPokemon('Leafeon', 348526193, 36),
+        new GymPokemon('Eevee', 461045383, 18),
+        new GymPokemon('Leafeon', 461045383, 36),
     ],
     'You see how good they are now, yes? No more sneering at them!',
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('Lord of the Isles: Arcanine')],
     undefined,
     {
         displayName: 'Clan Leader Adaman',
@@ -6860,9 +6881,12 @@ TemporaryBattleList['Adaman 1'] = new TemporaryBattle(
 );
 TemporaryBattleList['Melli 1'] = new TemporaryBattle(
     'Melli 1',
-    [new GymPokemon('Skuntank', 348526193, 40)],
+    [new GymPokemon('Skuntank', 468531443, 40)],
     'Listen here! Neither I nor Skuntank admit defeat to you just yet-our challenge to you still stands!',
-    [new DevelopmentRequirement()],
+    [
+        new TemporaryBattleRequirement('Lord of the Isles: Arcanine'),
+        new RouteKillRequirement(10, GameConstants.Region.hisui, 38),
+    ],
     undefined,
     {
         displayName: 'Warden Melli',
@@ -6872,12 +6896,15 @@ TemporaryBattleList['Melli 1'] = new TemporaryBattle(
 TemporaryBattleList['Warden Ingo'] = new TemporaryBattle(
     'Warden Ingo',
     [
-        new GymPokemon('Machoke', 348526193, 41),
-        new GymPokemon('Tangela', 348526193, 41),
-        new GymPokemon('Gliscor', 348526193, 42),
+        new GymPokemon('Machoke', 483740871, 41),
+        new GymPokemon('Tangela', 483740871, 41),
+        new GymPokemon('Gliscor', 483740871, 42),
     ],
     'Bravo! Excellent! Your talent has brought you to the destination called Victory! Now, allow me to call Sneasler...',
-    [new DevelopmentRequirement()],
+    [
+        new TemporaryBattleRequirement('Melli 1'),
+        new RouteKillRequirement(10, GameConstants.Region.hisui, 40),
+    ],
     undefined,
     {
         imageName: 'Ingo',
@@ -6886,12 +6913,15 @@ TemporaryBattleList['Warden Ingo'] = new TemporaryBattle(
 TemporaryBattleList['Melli 2'] = new TemporaryBattle(
     'Melli 2',
     [
-        new GymPokemon('Skorupi', 348526193, 22),
-        new GymPokemon('Zubat', 348526193, 22),
-        new GymPokemon('Skuntank', 348526193, 44),
+        new GymPokemon('Skorupi', 515122320, 22),
+        new GymPokemon('Zubat', 515122320, 22),
+        new GymPokemon('Skuntank', 515122320, 44),
     ],
     'Let\'s make one thing clear: I didn\'t lose! You may have won...but there\'s a difference!',
-    [new DevelopmentRequirement()],
+    [
+        new TemporaryBattleRequirement('Warden Ingo'),
+        new RouteKillRequirement(10, GameConstants.Region.hisui, 44),
+    ],
     undefined,
     {
         displayName: 'Warden Melli',
@@ -6900,9 +6930,12 @@ TemporaryBattleList['Melli 2'] = new TemporaryBattle(
 );
 TemporaryBattleList['Lord of the Hollow: Electrode'] = new TemporaryBattle(
     'Lord of the Hollow: Electrode',
-    [new GymPokemon('Noble Electrode', 2031393560, 46)],
+    [new GymPokemon('Noble Electrode', 1583944065, 46)],
     'The golden light was dispelled from Electrode, calming it.',
-    [new DevelopmentRequirement()],
+    [
+        new TemporaryBattleRequirement('Melli 2'),
+        new RouteKillRequirement(10, GameConstants.Region.hisui, 46),
+    ],
     undefined,
     {
         hideTrainer: true,
@@ -6912,11 +6945,14 @@ TemporaryBattleList['Lord of the Hollow: Electrode'] = new TemporaryBattle(
 TemporaryBattleList['Warden Gaeric'] = new TemporaryBattle(
     'Warden Gaeric',
     [
-        new GymPokemon('Froslass', 348526193, 24),
-        new GymPokemon('Glalie', 348526193, 48),
+        new GymPokemon('Froslass', 547812751, 24),
+        new GymPokemon('Glalie', 547812751, 48),
     ],
     'Outstanding! I\'m tough as an iceberg, but you smashed me through and through!',
-    [new DevelopmentRequirement()],
+    [
+        new TemporaryBattleRequirement('Lord of the Hollow: Electrode'),
+        new RouteKillRequirement(10, GameConstants.Region.hisui, 48),
+    ],
     undefined,
     {
         imageName: 'Gaeric',
@@ -6925,12 +6961,15 @@ TemporaryBattleList['Warden Gaeric'] = new TemporaryBattle(
 TemporaryBattleList['Warden Sabi'] = new TemporaryBattle(
     'Warden Sabi',
     [
-        new GymPokemon('Electivire', 348526193, 30),
-        new GymPokemon('Magmortar', 348526193, 30),
-        new GymPokemon('Rhyperior', 348526193, 50),
+        new GymPokemon('Electivire', 599370272, 30),
+        new GymPokemon('Magmortar', 599370272, 30),
+        new GymPokemon('Rhyperior', 599370272, 50),
     ],
     'Wow, you caught us AND you beat us. You\'ve won all our games so far! But Braviary still wants to get to know you even better. Up to the roof we go! All right, Braviary! Why not test out their strength for yourself?',
-    [new DevelopmentRequirement()],
+    [
+        new TemporaryBattleRequirement('Warden Gaeric'),
+        new RouteKillRequirement(10, GameConstants.Region.hisui, 54),
+    ],
     undefined,
     {
         imageName: 'Sabi',
@@ -6938,9 +6977,9 @@ TemporaryBattleList['Warden Sabi'] = new TemporaryBattle(
 );
 TemporaryBattleList['Hisuian Braviary'] = new TemporaryBattle(
     'Hisuian Braviary',
-    [new GymPokemon('Hisuian Braviary', 2031393560, 54)],
+    [new GymPokemon('Hisuian Braviary', 1123819260, 54)],
     'You defeated Braviary!',
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('Warden Sabi')],
     undefined,
     {
         hideTrainer: true,
@@ -6949,9 +6988,9 @@ TemporaryBattleList['Hisuian Braviary'] = new TemporaryBattle(
 );
 TemporaryBattleList['Lord of the Tundra: Avalugg'] = new TemporaryBattle(
     'Lord of the Tundra: Avalugg',
-    [new GymPokemon('Noble Avalugg', 2031393560, 56)],
+    [new GymPokemon('Noble Avalugg', 1685728890, 56)],
     'The golden light was dispelled from Avalugg, calming it.',
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('Hisuian Braviary')],
     undefined,
     {
         hideTrainer: true,
@@ -6961,13 +7000,13 @@ TemporaryBattleList['Lord of the Tundra: Avalugg'] = new TemporaryBattle(
 TemporaryBattleList.Beni = new TemporaryBattle(
     'Beni',
     [
-        new GymPokemon('Mismagius', 348526193, 59),
-        new GymPokemon('Sneasler', 348526193, 59),
-        new GymPokemon('Gardevoir', 348526193, 60),
-        new GymPokemon('Gallade', 348526193, 60),
+        new GymPokemon('Mismagius', 636830914, 59),
+        new GymPokemon('Sneasler', 636830914, 59),
+        new GymPokemon('Gardevoir', 636830914, 60),
+        new GymPokemon('Gallade', 636830914, 60),
     ],
     'It seems my ninja techniques will soon be consigned to history...',
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('Lord of the Tundra: Avalugg')],
     undefined,
     {
         displayName: 'The Galaxy Team\'s Beni',
@@ -6977,11 +7016,14 @@ TemporaryBattleList.Beni = new TemporaryBattle(
 TemporaryBattleList['Charm 2'] = new TemporaryBattle(
     'Charm 2',
     [
-        new GymPokemon('Rhydon', 348526193, 61),
-        new GymPokemon('Gengar', 348526193, 62),
+        new GymPokemon('Rhydon', 636830914, 61),
+        new GymPokemon('Gengar', 636830914, 62),
     ],
     'Well, you are rather formidable...',
-    [new TemporaryBattleRequirement('Coin 2')],
+    [
+        new TemporaryBattleRequirement('Coin 2'),
+        new TemporaryBattleRequirement('Lord of the Tundra: Avalugg'),
+    ],
     undefined,
     {
         displayName: 'The Bandit Charm',
@@ -6990,9 +7032,9 @@ TemporaryBattleList['Charm 2'] = new TemporaryBattle(
 );
 TemporaryBattleList['Dialga (Origin)'] = new TemporaryBattle(
     'Dialga (Origin)',
-    [new GymPokemon('Dialga (Origin)', 2031393560, 65)],
+    [new GymPokemon('Dialga (Origin)', 3746064200, 65)],
     'Dialga was captured in the Origin Ball and returned to its base form!',
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('The Galaxy Team\'s Kamado')],
     undefined,
     {
         hideTrainer: true,
@@ -7001,9 +7043,9 @@ TemporaryBattleList['Dialga (Origin)'] = new TemporaryBattle(
 );
 TemporaryBattleList['Palkia (Origin)'] = new TemporaryBattle(
     'Palkia (Origin)',
-    [new GymPokemon('Palkia (Origin)', 2031393560, 65)],
+    [new GymPokemon('Palkia (Origin)', 3746064200, 65)],
     'Palkia was captured in the Origin Ball and returned to its base form!',
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('The Galaxy Team\'s Kamado')],
     undefined,
     {
         hideTrainer: true,
@@ -7013,24 +7055,32 @@ TemporaryBattleList['Palkia (Origin)'] = new TemporaryBattle(
 TemporaryBattleList['The Galaxy Team\'s Kamado'] = new TemporaryBattle(
     'The Galaxy Team\'s Kamado',
     [
-        new GymPokemon('Golem', 348526193, 65),
-        new GymPokemon('Clefable', 348526193, 65),
-        new GymPokemon('Hisuian Braviary', 348526193, 65),
-        new GymPokemon('Heracross', 348526193, 65),
-        new GymPokemon('Snorlax', 348526193, 66),
+        new GymPokemon('Golem', 749212840, 65),
+        new GymPokemon('Clefable', 749212840, 65),
+        new GymPokemon('Hisuian Braviary', 749212840, 65),
+        new GymPokemon('Heracross', 749212840, 65),
+        new GymPokemon('Snorlax', 749212840, 66),
     ],
     'Even frightful creatures like Pokémon can become powerful allies...',
-    [new DevelopmentRequirement()]
+    [
+        new TemporaryBattleRequirement('Adaman 2'),
+        new TemporaryBattleRequirement('Irida 3'),
+        new TemporaryBattleRequirement('Beni'),
+        new ClearDungeonRequirement(1, GameConstants.getDungeonIndex('Ancient Lake Verity')),
+    ],
 );
 TemporaryBattleList['Adaman 2'] = new TemporaryBattle(
     'Adaman 2',
     [
-        new GymPokemon('Umbreon', 348526193, 32),
-        new GymPokemon('Vaporeon', 348526193, 32),
-        new GymPokemon('Leafeon', 348526193, 64),
+        new GymPokemon('Umbreon', 636830914, 32),
+        new GymPokemon('Vaporeon', 636830914, 32),
+        new GymPokemon('Leafeon', 636830914, 64),
     ],
     'You\'re really something...and I\'m a man of my word. So, here\'s that treasure.',
-    [new DevelopmentRequirement()],
+    [
+        new TemporaryBattleRequirement('Lord of the Tundra: Avalugg'),
+        new ClearDungeonRequirement(1, GameConstants.getDungeonIndex('Ancient Lake Valor')),
+    ],
     undefined,
     {
         displayName: 'Clan Leader Adaman',
@@ -7040,12 +7090,15 @@ TemporaryBattleList['Adaman 2'] = new TemporaryBattle(
 TemporaryBattleList['Irida 3'] = new TemporaryBattle(
     'Irida 3',
     [
-        new GymPokemon('Espeon', 348526193, 32),
-        new GymPokemon('Flareon', 348526193, 32),
-        new GymPokemon('Glaceon', 348526193, 64),
+        new GymPokemon('Espeon', 636830914, 32),
+        new GymPokemon('Flareon', 636830914, 32),
+        new GymPokemon('Glaceon', 636830914, 64),
     ],
     'I wonder... Are there people even stronger than you out in the world, with Pokémon stronger than yours? I\'ll just have to find out for myself I suppose! Here! The treasure I promised you.',
-    [new DevelopmentRequirement()],
+    [
+        new TemporaryBattleRequirement('Lord of the Tundra: Avalugg'),
+        new ClearDungeonRequirement(1, GameConstants.getDungeonIndex('Ancient Lake Acuity')),
+    ],
     undefined,
     {
         displayName: 'Clan Leader Irida',
@@ -7055,11 +7108,11 @@ TemporaryBattleList['Irida 3'] = new TemporaryBattle(
 TemporaryBattleList['Volo 3'] = new TemporaryBattle(
     'Volo 3',
     [
-        new GymPokemon('Giratina (Altered)', 348526193, 70),
-        new GymPokemon('Giratina (Origin)', 348526193, 70),
+        new GymPokemon('Giratina (Altered)', 1685728890, 70),
+        new GymPokemon('Giratina (Origin)', 1685728890, 70),
     ],
     'Turning tail and running? From this puny HUMAN? Pathetic! I was the one to feed you the power you needed so that you could take on Arceus! I was the one who gave you the chance to claw open that space-time rift, driving the deity of space and time mad so that you could drag the creator out from hiding!',
-    [new DevelopmentRequirement()],
+    [new GymBadgeRequirement(BadgeEnums.Azure)],
     undefined,
     {
         displayName: 'Pokémon Wielder Volo',
@@ -7068,7 +7121,7 @@ TemporaryBattleList['Volo 3'] = new TemporaryBattle(
 );
 TemporaryBattleList['Tornadus 1'] = new TemporaryBattle(
     'Tornadus 1',
-    [new GymPokemon('Tornadus', 2031393560, 70)],
+    [new GymPokemon('Tornadus', 4120670620, 70)],
     undefined,
     [new QuestLineStepCompletedRequirement('Incarnate Forces of Hisui', 0)],
     undefined,
@@ -7080,7 +7133,7 @@ TemporaryBattleList['Tornadus 1'] = new TemporaryBattle(
 );
 TemporaryBattleList['Tornadus 2'] = new TemporaryBattle(
     'Tornadus 2',
-    [new GymPokemon('Tornadus', 2031393560, 70)],
+    [new GymPokemon('Tornadus', 4120670620, 70)],
     undefined,
     [new TemporaryBattleRequirement('Tornadus 1')],
     undefined,
@@ -7092,7 +7145,7 @@ TemporaryBattleList['Tornadus 2'] = new TemporaryBattle(
 );
 TemporaryBattleList['Tornadus 3'] = new TemporaryBattle(
     'Tornadus 3',
-    [new GymPokemon('Tornadus', 2031393560, 70)],
+    [new GymPokemon('Tornadus', 4120670620, 70)],
     undefined,
     [new TemporaryBattleRequirement('Tornadus 2')],
     [new QuestLineStepCompletedRequirement('Incarnate Forces of Hisui', 1), new TemporaryBattleRequirement('Tornadus 3')],
@@ -7105,7 +7158,7 @@ TemporaryBattleList['Tornadus 3'] = new TemporaryBattle(
 );
 TemporaryBattleList['Thundurus 1'] = new TemporaryBattle(
     'Thundurus 1',
-    [new GymPokemon('Thundurus', 2031393560, 70)],
+    [new GymPokemon('Thundurus', 4120670620, 70)],
     undefined,
     [new QuestLineStepCompletedRequirement('Incarnate Forces of Hisui', 0)],
     undefined,
@@ -7117,7 +7170,7 @@ TemporaryBattleList['Thundurus 1'] = new TemporaryBattle(
 );
 TemporaryBattleList['Thundurus 2'] = new TemporaryBattle(
     'Thundurus 2',
-    [new GymPokemon('Thundurus', 2031393560, 70)],
+    [new GymPokemon('Thundurus', 4120670620, 70)],
     undefined,
     [new TemporaryBattleRequirement('Thundurus 1')],
     undefined,
@@ -7129,7 +7182,7 @@ TemporaryBattleList['Thundurus 2'] = new TemporaryBattle(
 );
 TemporaryBattleList['Thundurus 3'] = new TemporaryBattle(
     'Thundurus 3',
-    [new GymPokemon('Thundurus', 2031393560, 70)],
+    [new GymPokemon('Thundurus', 4120670620, 70)],
     undefined,
     [new TemporaryBattleRequirement('Thundurus 2')],
     [new QuestLineStepCompletedRequirement('Incarnate Forces of Hisui', 1), new TemporaryBattleRequirement('Thundurus 3')],
@@ -7142,7 +7195,7 @@ TemporaryBattleList['Thundurus 3'] = new TemporaryBattle(
 );
 TemporaryBattleList['Landorus 1'] = new TemporaryBattle(
     'Landorus 1',
-    [new GymPokemon('Landorus', 2031393560, 70)],
+    [new GymPokemon('Landorus', 4120670620, 70)],
     undefined,
     [new QuestLineStepCompletedRequirement('Incarnate Forces of Hisui', 0)],
     undefined,
@@ -7154,7 +7207,7 @@ TemporaryBattleList['Landorus 1'] = new TemporaryBattle(
 );
 TemporaryBattleList['Landorus 2'] = new TemporaryBattle(
     'Landorus 2',
-    [new GymPokemon('Landorus', 2031393560, 70)],
+    [new GymPokemon('Landorus', 4120670620, 70)],
     undefined,
     [new TemporaryBattleRequirement('Landorus 1')],
     undefined,
@@ -7166,7 +7219,7 @@ TemporaryBattleList['Landorus 2'] = new TemporaryBattle(
 );
 TemporaryBattleList['Landorus 3'] = new TemporaryBattle(
     'Landorus 3',
-    [new GymPokemon('Landorus', 2031393560, 70)],
+    [new GymPokemon('Landorus', 4120670620, 70)],
     undefined,
     [new TemporaryBattleRequirement('Landorus 2')],
     [new QuestLineStepCompletedRequirement('Incarnate Forces of Hisui', 1), new TemporaryBattleRequirement('Landorus 3')],
@@ -7179,7 +7232,7 @@ TemporaryBattleList['Landorus 3'] = new TemporaryBattle(
 );
 TemporaryBattleList['Enamorus 1'] = new TemporaryBattle(
     'Enamorus 1',
-    [new GymPokemon('Enamorus', 2031393560, 65)],
+    [new GymPokemon('Enamorus', 4120670620, 65)],
     undefined,
     [new QuestLineStepCompletedRequirement('Incarnate Forces of Hisui', 2)],
     undefined,
@@ -7191,7 +7244,7 @@ TemporaryBattleList['Enamorus 1'] = new TemporaryBattle(
 );
 TemporaryBattleList['Enamorus 2'] = new TemporaryBattle(
     'Enamorus 2',
-    [new GymPokemon('Enamorus', 2031393560, 65)],
+    [new GymPokemon('Enamorus', 4120670620, 65)],
     undefined,
     [new TemporaryBattleRequirement('Enamorus 1')],
     undefined,
@@ -7203,7 +7256,7 @@ TemporaryBattleList['Enamorus 2'] = new TemporaryBattle(
 );
 TemporaryBattleList['Enamorus 3'] = new TemporaryBattle(
     'Enamorus 3',
-    [new GymPokemon('Enamorus', 2031393560, 65)],
+    [new GymPokemon('Enamorus', 4120670620, 65)],
     'Before you could attempt to capture it, Enamorus fled to roam the region!',
     [new TemporaryBattleRequirement('Enamorus 2')],
     undefined,
@@ -7215,13 +7268,14 @@ TemporaryBattleList['Enamorus 3'] = new TemporaryBattle(
 );
 TemporaryBattleList.Arceus = new TemporaryBattle(
     'Arceus',
-    [new GymPokemon('Arceus (Normal)', 2031393560, 75)],
-    'Arceus granted you a part of its self, and the Legend Plate!',//That text needs changed, not sure what to, though,
-    [new DevelopmentRequirement()],
+    [new GymPokemon('Arceus (Normal)', 5057186670, 75)],
+    'Arceus acknowledged your strength and granted you a part of itself!',
+    [new QuestLineStepCompletedRequirement('Arceus: The Deified Pokémon', 3)],
     undefined,
     {
         hideTrainer: true,
         imageName: '../pokemon/493',
+        rewardFunction: () => App.game.party.gainPokemonByName('Arceus (Normal)', PokemonFactory.generateShiny(GameConstants.SHINY_CHANCE_REWARD)),
     }
 );
 
