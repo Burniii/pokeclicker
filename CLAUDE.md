@@ -39,7 +39,7 @@ The codebase is mid-migration from global-namespace scripts to ES modules. Under
 - **Bridging modules → scripts:**
   - `src/modules/temporaryWindowInjection.ts` imports module exports and assigns them onto `window`, so scripts can use them as globals. A module that scripts need must be added here.
   - The `gulp scripts` task emits `.d.ts` files from the modules into `src/declarations/` (gitignored, generated) and rewrites them into global declarations so `src/scripts` type-checks against them. Running `gulp scripts` is therefore required before eslint or tsc on `src/scripts` will work.
-- **Bridging scripts → modules:** modules can't import script code. `src/modules/TemporaryScriptTypes.ts` declares `Tmp*Type` interfaces and global `declare const` for script globals (e.g. `App`, `player`, `Game`) that modules reference; scripts use `satisfies Tmp...Type` / `implements` to stay in sync. When moving something from scripts into modules, update both sides.
+- **Bridging scripts → modules:** modules can't import script code. `src/modules/TemporaryScriptTypes.ts` defines `Tmp*Type` types for script globals, and `src/modules/globals.ts` declares those globals (e.g. `App`, `player`) so modules can reference them; scripts use `satisfies Tmp...Type` / `implements` to stay in sync. When moving something from scripts into modules, update both sides.
 - `modules.min.js` loads before `script.min.js` in `src/index.html`.
 
 ### Game lifecycle
