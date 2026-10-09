@@ -73,7 +73,8 @@ class QuestLine {
     beginQuest(index = 0, initial?: number, notifyStart = false) {
         const quest = this.quests()[index];
         if (initial != undefined) {
-            quest.initial(initial);
+            // Quests with a fixed initial value must never resume above it, otherwise they can become uncompletable
+            quest.initial(quest.initialValue != undefined ? Math.min(initial, quest.initialValue) : initial);
         } else {
             quest.begin();
         }

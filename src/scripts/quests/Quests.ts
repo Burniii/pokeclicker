@@ -351,7 +351,8 @@ class Quests implements Saveable {
                                 if (questLine?.initial[i] === true) {
                                     return q.complete(true);
                                 }
-                                q.initial(questLine?.initial[i] ?? 0);
+                                const savedInitial = questLine?.initial[i] ?? 0;
+                                q.initial(q.initialValue != undefined ? Math.min(savedInitial, q.initialValue) : savedInitial);
                             });
                         } else {
                             ql.resumeAt(questLine.quest, questLine.initial);
