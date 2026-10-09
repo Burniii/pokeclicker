@@ -2365,6 +2365,22 @@ export const TemporaryBattles = [
     'Kieran 3',
     'Terapagos',
     'Pecharunt',
+    'Masters Lance',
+    'Masters Steven',
+    'Masters Cynthia',
+    'Masters Iris',
+    'Masters Diantha',
+    'Masters Alain',
+    'Masters Leon',
+    'Monarch Ash',
+    'Apex Mewtwo',
+    'Apex Ho-Oh',
+    'Apex Rayquaza',
+    'Apex Arceus',
+    'Apex Kyurem',
+    'Apex Zygarde',
+    'Apex Necrozma',
+    'Apex Eternatus',
 ];
 
 export enum ShardTraderLocations {

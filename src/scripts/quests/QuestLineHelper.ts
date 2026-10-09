@@ -4355,6 +4355,23 @@ class QuestLineHelper {
         App.game.quests.questLines.push(mochiMayhemQuestLine);
     }
 
+    // Endgame+ Questline
+
+    public static createMastersEightQuestLine() {
+        const mastersEightQuestLine = new QuestLine('The Masters Eight', 'The strongest Trainers in the world are waiting for you in their home regions. Defeat them all to face the Monarch.', new GymBadgeRequirement(BadgeEnums.Elite_BlueberryChampion), GameConstants.BulletinBoards.All);
+
+        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Lance', 'Lance awaits you at the Indigo Plateau in Kanto.', 2000));
+        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Steven', 'Steven awaits you at the Hoenn Pokémon League.', 2000));
+        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Cynthia', 'Cynthia awaits you at the Sinnoh Pokémon League.', 2000));
+        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Iris', 'Iris awaits you at the Unova Pokémon League.', 2000));
+        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Diantha', 'Diantha awaits you at the Kalos Pokémon League.', 2000));
+        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Alain', 'Alain awaits you in Lumiose City.', 2000));
+        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Leon', 'Leon awaits you in Wyndon.', 2000));
+        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Monarch Ash', 'All of the Masters Eight have fallen. The Monarch awaits you in Pallet Town, where it all began.', 10000));
+
+        App.game.quests.questLines.push(mastersEightQuestLine);
+    }
+
     /* Event QuestLines */
 
     // From any bulletin board on April 1 (Hoopa Day).
@@ -4468,6 +4485,7 @@ class QuestLineHelper {
         this.createKitakamiTealMaskQuestLine();
         this.createBlueberryIndigoDiskQuestLine();
         this.createKitakamiMochiMayhemQuestLine();
+        this.createMastersEightQuestLine();
         this.createEasterQuestLine();
         this.createHoopaDayPikabluQuestLine();
         this.createDrSplashQuestLine();

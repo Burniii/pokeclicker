@@ -7536,4 +7536,328 @@ TemporaryBattleList['Pecharunt'] = new TemporaryBattle(
     }
 );
 
+// Endgame+: The Masters Eight
+TemporaryBattleList['Masters Lance'] = new TemporaryBattle(
+    'Masters Lance',
+    [
+        new GymPokemon('Gyarados', 1125478970, 88),
+        new GymPokemon('Kingdra', 1125478970, 88),
+        new GymPokemon('Aerodactyl', 1125478970, 88),
+        new GymPokemon('Salamence', 1125478970, 89),
+        new GymPokemon('Dragonite', 1125478970, 89),
+        new GymPokemon('Dragonite', 1125478970, 90),
+    ],
+    'Impressive. You are truly a master among Pokémon Trainers.',
+    [new QuestLineStartedRequirement('The Masters Eight')],
+    undefined,
+    {
+        displayName: 'Masters Eight Lance',
+        imageName: 'Lance',
+        returnTown: 'Indigo Plateau Kanto',
+        rewardFunction: () => ItemList.Rare_Candy.gain(1),
+        resetDaily: true,
+    }
+);
+TemporaryBattleList['Masters Steven'] = new TemporaryBattle(
+    'Masters Steven',
+    [
+        new GymPokemon('Skarmory', 1125478970, 89),
+        new GymPokemon('Claydol', 1125478970, 89),
+        new GymPokemon('Aggron', 1125478970, 89),
+        new GymPokemon('Cradily', 1125478970, 89),
+        new GymPokemon('Armaldo', 1125478970, 89),
+        new GymPokemon('Mega Metagross', 1125478970, 90),
+    ],
+    'Like a polished gem, your bond with your Pokémon shines brightly.',
+    [new QuestLineStepCompletedRequirement('The Masters Eight', 0)],
+    undefined,
+    {
+        displayName: 'Masters Eight Steven',
+        imageName: 'Steven',
+        returnTown: 'Pokémon League Hoenn',
+        rewardFunction: () => ItemList.Rare_Candy.gain(1),
+        resetDaily: true,
+    }
+);
+TemporaryBattleList['Masters Cynthia'] = new TemporaryBattle(
+    'Masters Cynthia',
+    [
+        new GymPokemon('Spiritomb', 1125478970, 90),
+        new GymPokemon('Roserade', 1125478970, 90),
+        new GymPokemon('Togekiss', 1125478970, 90),
+        new GymPokemon('Lucario', 1125478970, 90),
+        new GymPokemon('Milotic', 1125478970, 90),
+        new GymPokemon('Mega Garchomp', 1125478970, 91),
+    ],
+    'That was a battle worthy of the Masters Eight. Thank you.',
+    [new QuestLineStepCompletedRequirement('The Masters Eight', 1)],
+    undefined,
+    {
+        displayName: 'Masters Eight Cynthia',
+        imageName: 'Cynthia',
+        returnTown: 'Pokémon League Sinnoh',
+        rewardFunction: () => ItemList.Rare_Candy.gain(1),
+        resetDaily: true,
+    }
+);
+TemporaryBattleList['Masters Iris'] = new TemporaryBattle(
+    'Masters Iris',
+    [
+        new GymPokemon('Excadrill', 1125478970, 90),
+        new GymPokemon('Hydreigon', 1125478970, 90),
+        new GymPokemon('Lapras', 1125478970, 90),
+        new GymPokemon('Garchomp', 1125478970, 90),
+        new GymPokemon('Haxorus', 1125478970, 91),
+        new GymPokemon('Dragonite', 1125478970, 91),
+    ],
+    'Wow! You and your Pokémon are so in sync! Let\'s battle again sometime!',
+    [new QuestLineStepCompletedRequirement('The Masters Eight', 2)],
+    undefined,
+    {
+        displayName: 'Masters Eight Iris',
+        imageName: 'Iris',
+        returnTown: 'Pokémon League Unova',
+        rewardFunction: () => ItemList.Rare_Candy.gain(1),
+        resetDaily: true,
+    }
+);
+TemporaryBattleList['Masters Diantha'] = new TemporaryBattle(
+    'Masters Diantha',
+    [
+        new GymPokemon('Hawlucha', 1125478970, 91),
+        new GymPokemon('Tyrantrum', 1125478970, 91),
+        new GymPokemon('Aurorus', 1125478970, 91),
+        new GymPokemon('Goodra', 1125478970, 91),
+        new GymPokemon('Gourgeist (Average)', 1125478970, 91),
+        new GymPokemon('Mega Gardevoir', 1125478970, 92),
+    ],
+    'Witnessing your noble spirit makes me feel more alive than any stage ever has.',
+    [new QuestLineStepCompletedRequirement('The Masters Eight', 3)],
+    undefined,
+    {
+        displayName: 'Masters Eight Diantha',
+        imageName: 'Diantha',
+        returnTown: 'Pokémon League Kalos',
+        rewardFunction: () => ItemList.Rare_Candy.gain(1),
+        resetDaily: true,
+    }
+);
+TemporaryBattleList['Masters Alain'] = new TemporaryBattle(
+    'Masters Alain',
+    [
+        new GymPokemon('Weavile', 1125478970, 92),
+        new GymPokemon('Metagross', 1125478970, 92),
+        new GymPokemon('Unfezant', 1125478970, 92),
+        new GymPokemon('Bisharp', 1125478970, 92),
+        new GymPokemon('Tyranitar', 1125478970, 92),
+        new GymPokemon('Mega Charizard X', 1125478970, 93),
+    ],
+    'So this is the strength I have been searching for...',
+    [new QuestLineStepCompletedRequirement('The Masters Eight', 4)],
+    undefined,
+    {
+        displayName: 'Masters Eight Alain',
+        imageName: 'Alain',
+        returnTown: 'Lumiose City',
+        rewardFunction: () => ItemList.Rare_Candy.gain(1),
+        resetDaily: true,
+    }
+);
+TemporaryBattleList['Masters Leon'] = new TemporaryBattle(
+    'Masters Leon',
+    [
+        new GymPokemon('Aegislash (Shield)', 1125478970, 93),
+        new GymPokemon('Dragapult', 1125478970, 93),
+        new GymPokemon('Mr. Rime', 1125478970, 93),
+        new GymPokemon('Rhyperior', 1125478970, 93),
+        new GymPokemon('Cinderace', 1125478970, 93),
+        new GymPokemon('Gigantamax Charizard', 1125478970, 94),
+    ],
+    'That was a champion time! You\'ve earned a place among the very best!',
+    [new QuestLineStepCompletedRequirement('The Masters Eight', 5)],
+    undefined,
+    {
+        displayName: 'Masters Eight Leon',
+        imageName: 'Leon',
+        returnTown: 'Wyndon',
+        rewardFunction: () => ItemList.Rare_Candy.gain(1),
+        resetDaily: true,
+    }
+);
+TemporaryBattleList['Monarch Ash'] = new TemporaryBattle(
+    'Monarch Ash',
+    [
+        new GymPokemon('Pikachu (World Cap)', 1330111510, 95),
+        new GymPokemon('Lucario', 1330111510, 95),
+        new GymPokemon('Dracovish', 1330111510, 95),
+        new GymPokemon('Gengar', 1330111510, 95),
+        new GymPokemon('Sirfetch\'d', 1330111510, 95),
+        new GymPokemon('Dragonite', 1330111510, 95),
+    ],
+    'That was awesome! You know what? I still want to be a Pokémon Master... and so do you, right?',
+    [new QuestLineStepCompletedRequirement('The Masters Eight', 6)],
+    undefined,
+    {
+        displayName: 'Monarch Ash Ketchum',
+        imageName: 'Ash Ketchum',
+        returnTown: 'Pallet Town',
+        rewardFunction: () => ItemList.Rare_Candy.gain(3),
+        resetDaily: true,
+    }
+);
+
+// Endgame+: Apex Legendaries
+TemporaryBattleList['Apex Mewtwo'] = new TemporaryBattle(
+    'Apex Mewtwo',
+    [new GymPokemon('Mewtwo', 7162138900, 100)],
+    'The Apex Mewtwo retreated, leaving behind a gift!',
+    [new QuestLineStepCompletedRequirement('The Masters Eight', 0)],
+    undefined,
+    {
+        isTrainerBattle: false,
+        hideTrainer: true,
+        displayName: 'Apex Mewtwo',
+        imageName: '../pokemon/150',
+        returnTown: 'Cerulean Cave',
+        rewardFunction: () => {
+            ItemList.Rare_Candy.gain(2);
+            ItemList.Wishing_Piece.gain(1);
+        },
+        resetDaily: true,
+    }
+);
+TemporaryBattleList['Apex Ho-Oh'] = new TemporaryBattle(
+    'Apex Ho-Oh',
+    [new GymPokemon('Ho-Oh', 7162138900, 100)],
+    'The Apex Ho-Oh retreated, leaving behind a gift!',
+    [new QuestLineStepCompletedRequirement('The Masters Eight', 0)],
+    undefined,
+    {
+        isTrainerBattle: false,
+        hideTrainer: true,
+        displayName: 'Apex Ho-Oh',
+        imageName: '../pokemon/250',
+        returnTown: 'Tin Tower',
+        rewardFunction: () => {
+            ItemList.Rare_Candy.gain(2);
+            ItemList.Wishing_Piece.gain(1);
+        },
+        resetDaily: true,
+    }
+);
+TemporaryBattleList['Apex Rayquaza'] = new TemporaryBattle(
+    'Apex Rayquaza',
+    [new GymPokemon('Mega Rayquaza', 7162138900, 100)],
+    'The Apex Rayquaza retreated, leaving behind a gift!',
+    [new QuestLineStepCompletedRequirement('The Masters Eight', 1)],
+    undefined,
+    {
+        isTrainerBattle: false,
+        hideTrainer: true,
+        displayName: 'Apex Mega Rayquaza',
+        imageName: '../pokemon/384.01',
+        returnTown: 'Sky Pillar',
+        rewardFunction: () => {
+            ItemList.Rare_Candy.gain(2);
+            ItemList.Wishing_Piece.gain(1);
+        },
+        resetDaily: true,
+    }
+);
+TemporaryBattleList['Apex Arceus'] = new TemporaryBattle(
+    'Apex Arceus',
+    [new GymPokemon('Arceus (Normal)', 7162138900, 100)],
+    'The Apex Arceus (Normal) retreated, leaving behind a gift!',
+    [new QuestLineStepCompletedRequirement('The Masters Eight', 2)],
+    undefined,
+    {
+        isTrainerBattle: false,
+        hideTrainer: true,
+        displayName: 'Apex Arceus (Normal)',
+        imageName: '../pokemon/493',
+        returnTown: 'Hall of Origin',
+        rewardFunction: () => {
+            ItemList.Rare_Candy.gain(2);
+            ItemList.Wishing_Piece.gain(1);
+        },
+        resetDaily: true,
+    }
+);
+TemporaryBattleList['Apex Kyurem'] = new TemporaryBattle(
+    'Apex Kyurem',
+    [new GymPokemon('Kyurem', 7162138900, 100)],
+    'The Apex Kyurem retreated, leaving behind a gift!',
+    [new QuestLineStepCompletedRequirement('The Masters Eight', 3)],
+    undefined,
+    {
+        isTrainerBattle: false,
+        hideTrainer: true,
+        displayName: 'Apex Kyurem',
+        imageName: '../pokemon/646',
+        returnTown: 'Giant Chasm',
+        rewardFunction: () => {
+            ItemList.Rare_Candy.gain(2);
+            ItemList.Wishing_Piece.gain(1);
+        },
+        resetDaily: true,
+    }
+);
+TemporaryBattleList['Apex Zygarde'] = new TemporaryBattle(
+    'Apex Zygarde',
+    [new GymPokemon('Zygarde', 7162138900, 100)],
+    'The Apex Zygarde retreated, leaving behind a gift!',
+    [new QuestLineStepCompletedRequirement('The Masters Eight', 4)],
+    undefined,
+    {
+        isTrainerBattle: false,
+        hideTrainer: true,
+        displayName: 'Apex Zygarde',
+        imageName: '../pokemon/718',
+        returnTown: 'Terminus Cave',
+        rewardFunction: () => {
+            ItemList.Rare_Candy.gain(2);
+            ItemList.Wishing_Piece.gain(1);
+        },
+        resetDaily: true,
+    }
+);
+TemporaryBattleList['Apex Necrozma'] = new TemporaryBattle(
+    'Apex Necrozma',
+    [new GymPokemon('Ultra Necrozma', 7162138900, 100)],
+    'The Apex Necrozma retreated, leaving behind a gift!',
+    [new QuestLineStepCompletedRequirement('The Masters Eight', 5)],
+    undefined,
+    {
+        isTrainerBattle: false,
+        hideTrainer: true,
+        displayName: 'Apex Ultra Necrozma',
+        imageName: '../pokemon/800.03',
+        returnTown: 'Altar of the Sunne and Moone',
+        rewardFunction: () => {
+            ItemList.Rare_Candy.gain(2);
+            ItemList.Wishing_Piece.gain(1);
+        },
+        resetDaily: true,
+    }
+);
+TemporaryBattleList['Apex Eternatus'] = new TemporaryBattle(
+    'Apex Eternatus',
+    [new GymPokemon('Eternamax Eternatus', 7162138900, 100)],
+    'The Apex Eternatus retreated, leaving behind a gift!',
+    [new QuestLineStepCompletedRequirement('The Masters Eight', 6)],
+    undefined,
+    {
+        isTrainerBattle: false,
+        hideTrainer: true,
+        displayName: 'Apex Eternamax Eternatus',
+        imageName: '../pokemon/890.01',
+        returnTown: 'Energy Plant',
+        rewardFunction: () => {
+            ItemList.Rare_Candy.gain(2);
+            ItemList.Wishing_Piece.gain(1);
+        },
+        resetDaily: true,
+    }
+);
+
 TemporaryBattleList satisfies TmpTemporaryBattleListType;

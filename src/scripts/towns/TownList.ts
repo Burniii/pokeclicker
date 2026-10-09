@@ -10741,6 +10741,24 @@ TownList['Area Zero Underdepths'] = new DungeonTown(
     [TemporaryBattleList['Kieran 3'], TemporaryBattleList.Terapagos]
 );
 
+// Endgame+: Masters Eight and Apex Legendaries return to the older regions
+TownList['Indigo Plateau Kanto'].content.push(TemporaryBattleList['Masters Lance']);
+TownList['Pokémon League Hoenn'].content.push(TemporaryBattleList['Masters Steven']);
+TownList['Pokémon League Sinnoh'].content.push(TemporaryBattleList['Masters Cynthia']);
+TownList['Pokémon League Unova'].content.push(TemporaryBattleList['Masters Iris']);
+TownList['Pokémon League Kalos'].content.push(TemporaryBattleList['Masters Diantha']);
+TownList['Lumiose City'].content.push(TemporaryBattleList['Masters Alain']);
+TownList['Wyndon'].content.push(TemporaryBattleList['Masters Leon']);
+TownList['Pallet Town'].content.push(TemporaryBattleList['Monarch Ash']);
+TownList['Cerulean Cave'].content.push(TemporaryBattleList['Apex Mewtwo']);
+TownList['Tin Tower'].content.push(TemporaryBattleList['Apex Ho-Oh']);
+TownList['Sky Pillar'].content.push(TemporaryBattleList['Apex Rayquaza']);
+TownList['Hall of Origin'].content.push(TemporaryBattleList['Apex Arceus']);
+TownList['Giant Chasm'].content.push(TemporaryBattleList['Apex Kyurem']);
+TownList['Terminus Cave'].content.push(TemporaryBattleList['Apex Zygarde']);
+TownList['Altar of the Sunne and Moone'].content.push(TemporaryBattleList['Apex Necrozma']);
+TownList['Energy Plant'].content.push(TemporaryBattleList['Apex Eternatus']);
+
 // Used to check if next region can be reached, for example for professor NPC
 TownList['Final Region Town'] = new Town(
     'Final Region Town',

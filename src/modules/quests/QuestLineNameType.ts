@@ -75,6 +75,7 @@ export type QuestLineNameType
     | 'Kitakami: The Teal Mask'
     | 'Blueberry: The Indigo Disk'
     | 'Kitakami: Mochi Mayhem'
+    | 'The Masters Eight'
     | 'Egg Hunt'
     | 'How blu mouse?'
     | 'Dr. Splash\'s Research Project'
