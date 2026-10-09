@@ -62,6 +62,14 @@ The codebase is mid-migration from global-namespace scripts to ES modules. Under
 
 Most content is declared as static data in TypeScript: Pokémon in `src/modules/pokemons/PokemonList.ts`, routes in `src/modules/routes/`, towns/dungeons/gyms/temporary battles in `src/scripts/towns`, `src/scripts/dungeons`, `src/scripts/gym`, `src/scripts/temporaryBattle`, quest lines in `src/scripts/quests`, items in `src/modules/items/`. Unlock conditions use the `Requirement` classes in `src/modules/requirements/`. Shared constants/enums are in `src/modules/GameConstants.ts` and `src/modules/enums/`.
 
+### Save-compatibility pitfalls when adding content
+
+- Gym, dungeon and temporary-battle statistics and badges are stored **by index** (`RegionGyms.flat()`, `RegionDungeons.flat()`, `TemporaryBattles`, `BadgeEnums`). Only ever append new entries at the end of the last list; inserting earlier shifts every later save entry.
+- Route health is derived from the route's position across *all* regions in `RouteData.ts` (`Routes.normalizedNumber`), so inserting routes into an earlier region changes the difficulty of every later route. Routes within a region must be added in ascending `orderNumber` (enforced at load).
+- `resetDaily` temporary battles reset their defeat statistic to 0 every day, so never use `TemporaryBattleRequirement` on them to unlock other content; gate follow-ups on quest-line progress instead.
+- Quest lines with `BulletinBoards.None` never show up on a bulletin board and must be started from code.
+- New towns/dungeons need an entry in the region's `src/components/regionMaps/*SVG.html` and an image in `src/assets/images/towns/`; new quest line names must be added to `src/modules/quests/QuestLineNameType.ts`.
+
 ### Translations
 
 `src/translations` is a git submodule (`pokeclicker/pokeclicker-translations`); update with `npm run tl:update`. PRs adding translatable strings should link a matching PR in the translations repo.

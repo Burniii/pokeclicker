@@ -10748,7 +10748,7 @@ TownList['Pokémon League Sinnoh'].content.push(TemporaryBattleList['Masters Cyn
 TownList['Pokémon League Unova'].content.push(TemporaryBattleList['Masters Iris']);
 TownList['Pokémon League Kalos'].content.push(TemporaryBattleList['Masters Diantha']);
 TownList['Lumiose City'].content.push(TemporaryBattleList['Masters Alain']);
-TownList['Wyndon'].content.push(TemporaryBattleList['Masters Leon']);
+TownList.Wyndon.content.push(TemporaryBattleList['Masters Leon']);
 TownList['Pallet Town'].content.push(TemporaryBattleList['Monarch Ash']);
 TownList['Cerulean Cave'].content.push(TemporaryBattleList['Apex Mewtwo']);
 TownList['Tin Tower'].content.push(TemporaryBattleList['Apex Ho-Oh']);

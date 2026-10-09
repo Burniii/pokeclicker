@@ -7386,7 +7386,7 @@ TemporaryBattleList['Kieran 1'] = new TemporaryBattle(
         imageName: 'Kieran',
     }
 );
-TemporaryBattleList['Okidogi'] = new TemporaryBattle(
+TemporaryBattleList.Okidogi = new TemporaryBattle(
     'Okidogi',
     [
         new GymPokemon('Okidogi', 2781831480, 70),
@@ -7403,7 +7403,7 @@ TemporaryBattleList['Okidogi'] = new TemporaryBattle(
         imageName: '../pokemon/1014',
     }
 );
-TemporaryBattleList['Munkidori'] = new TemporaryBattle(
+TemporaryBattleList.Munkidori = new TemporaryBattle(
     'Munkidori',
     [
         new GymPokemon('Munkidori', 2862275280, 70),
@@ -7420,7 +7420,7 @@ TemporaryBattleList['Munkidori'] = new TemporaryBattle(
         imageName: '../pokemon/1015',
     }
 );
-TemporaryBattleList['Fezandipiti'] = new TemporaryBattle(
+TemporaryBattleList.Fezandipiti = new TemporaryBattle(
     'Fezandipiti',
     [
         new GymPokemon('Fezandipiti', 2903018280, 70),
@@ -7456,7 +7456,7 @@ TemporaryBattleList['Kieran 2'] = new TemporaryBattle(
         imageName: 'Kieran',
     }
 );
-TemporaryBattleList['Ogerpon'] = new TemporaryBattle(
+TemporaryBattleList.Ogerpon = new TemporaryBattle(
     'Ogerpon',
     [
         new GymPokemon('Ogerpon (Teal Mask)', 3980735440, 70),
@@ -7506,7 +7506,7 @@ TemporaryBattleList['Kieran 3'] = new TemporaryBattle(
         imageName: 'Kieran',
     }
 );
-TemporaryBattleList['Terapagos'] = new TemporaryBattle(
+TemporaryBattleList.Terapagos = new TemporaryBattle(
     'Terapagos',
     [
         new GymPokemon('Terapagos (Stellar)', 6138976200, 85),
@@ -7520,7 +7520,7 @@ TemporaryBattleList['Terapagos'] = new TemporaryBattle(
         imageName: '../pokemon/1024.02',
     }
 );
-TemporaryBattleList['Pecharunt'] = new TemporaryBattle(
+TemporaryBattleList.Pecharunt = new TemporaryBattle(
     'Pecharunt',
     [
         new GymPokemon('Pecharunt', 5115813500, 88),
