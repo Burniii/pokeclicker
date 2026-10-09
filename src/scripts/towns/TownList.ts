@@ -10332,6 +10332,7 @@ const KitakamiCarmine1 = new NPC('Carmine', [
     'Folks here tell an old story about the Loyal Three, heroes who protected the village from a terrible ogre. There\'s a festival for them and everything.',
     'My little brother Kieran\'s obsessed with that ogre. Don\'t encourage him. Now, how about you prove you\'re actually any good?',
 ], {
+    image: 'assets/images/npcs/Carmine.png',
     requirement: new MultiRequirement([new QuestLineStartedRequirement('Kitakami: The Teal Mask'), new QuestLineStepCompletedRequirement('Kitakami: The Teal Mask', 0, GameConstants.AchievementOption.less)]),
 });
 const KitakamiKieran1 = new NPC('Kieran', [
@@ -10339,24 +10340,28 @@ const KitakamiKieran1 = new NPC('Kieran', [
     'Everyone has had it backwards for hundreds of years.',
     'With the Loyal Three gone, Ogerpon can finally rest. I... I want to catch it. But maybe it wants to go with you.',
 ], {
+    image: 'assets/images/npcs/Kieran.png',
     requirement: new MultiRequirement([new QuestLineStepCompletedRequirement('Kitakami: The Teal Mask', 5), new QuestLineStepCompletedRequirement('Kitakami: The Teal Mask', 6, GameConstants.AchievementOption.less)]),
 });
 const KitakamiCarmine2 = new NPC('Carmine', [
     'So Ogerpon chose you, huh. Kieran\'s taking it hard... but he\'ll get over it. Probably.',
     'Hey, our school is Blueberry Academy, out in Unova. If you ever visit, I\'ll show you around. Kieran too, once he stops sulking.',
 ], {
+    image: 'assets/images/npcs/Carmine.png',
     requirement: new MultiRequirement([new QuestLineStepCompletedRequirement('Kitakami: The Teal Mask', 7), new QuestLineCompletedRequirement('Kitakami: The Teal Mask', GameConstants.AchievementOption.less)]),
 });
 const MochiCarmine1 = new NPC('Carmine', [
     'Something weird is going on in Kitakami. Everybody\'s eating these strange mochi and acting like puppets!',
     'Even the Loyal Three are back, and they look... possessed. Can you go catch them before they cause real trouble?',
 ], {
+    image: 'assets/images/npcs/Carmine.png',
     requirement: new MultiRequirement([new QuestLineStartedRequirement('Kitakami: Mochi Mayhem'), new QuestLineStepCompletedRequirement('Kitakami: Mochi Mayhem', 0, GameConstants.AchievementOption.less)]),
 });
 const MochiCarmine2 = new NPC('Carmine', [
     'The mochi spell is broken! Everyone\'s back to normal, and that little troublemaker Pecharunt is with you now.',
     'Guess even poison peaches deserve a second chance. Thanks for saving the village... again.',
 ], {
+    image: 'assets/images/npcs/Carmine.png',
     requirement: new QuestLineStepCompletedRequirement('Kitakami: Mochi Mayhem', 2),
 });
 
@@ -10366,6 +10371,7 @@ const BlueberryCarmine1 = new NPC('Carmine', [
     'And this is the League Club. Students battle all day to climb the BB League ranks. Kieran is the Champion now... he\'s changed a lot since Kitakami.',
     'If you want to get to him, you\'ll have to beat the Elite Four first: Crispin, Amarys, Lacey and Drayton.',
 ], {
+    image: 'assets/images/npcs/Carmine.png',
     requirement: new MultiRequirement([new QuestLineStartedRequirement('Blueberry: The Indigo Disk'), new QuestLineStepCompletedRequirement('Blueberry: The Indigo Disk', 0, GameConstants.AchievementOption.less)]),
 });
 const BlueberryBriar1 = new NPC('Briar', [
@@ -10373,6 +10379,7 @@ const BlueberryBriar1 = new NPC('Briar', [
     'I\'m Briar, a descendant of Heath, who wrote the Scarlet and Violet Books. There\'s a place even deeper than the Zero Lab: the Area Zero Underdepths.',
     'Legend says the Terastal phenomenon begins there, with a Pokémon called Terapagos. Will you join my expedition?',
 ], {
+    image: 'assets/images/npcs/Briar.png',
     requirement: new MultiRequirement([new QuestLineStepCompletedRequirement('Blueberry: The Indigo Disk', 5), new QuestLineStepCompletedRequirement('Blueberry: The Indigo Disk', 6, GameConstants.AchievementOption.less)]),
 });
 const BlueberryBriar2 = new NPC('Briar', [
@@ -10380,6 +10387,7 @@ const BlueberryBriar2 = new NPC('Briar', [
     'Heath\'s book was right all along. Thank you for helping me finish what my ancestor started.',
     'And Kieran... I think he finally found something more important than winning.',
 ], {
+    image: 'assets/images/npcs/Briar.png',
     requirement: new QuestLineStepCompletedRequirement('Blueberry: The Indigo Disk', 10),
 });
 

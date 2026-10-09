@@ -7369,6 +7369,7 @@ TemporaryBattleList['Carmine 1'] = new TemporaryBattle(
     undefined,
     {
         displayName: 'Carmine',
+        imageName: 'Carmine',
     }
 );
 TemporaryBattleList['Kieran 1'] = new TemporaryBattle(
@@ -7382,6 +7383,7 @@ TemporaryBattleList['Kieran 1'] = new TemporaryBattle(
     undefined,
     {
         displayName: 'Kieran',
+        imageName: 'Kieran',
     }
 );
 TemporaryBattleList['Okidogi'] = new TemporaryBattle(
@@ -7451,6 +7453,7 @@ TemporaryBattleList['Kieran 2'] = new TemporaryBattle(
     undefined,
     {
         displayName: 'Kieran',
+        imageName: 'Kieran',
     }
 );
 TemporaryBattleList['Ogerpon'] = new TemporaryBattle(
@@ -7480,6 +7483,7 @@ TemporaryBattleList['Carmine 2'] = new TemporaryBattle(
     undefined,
     {
         displayName: 'Carmine',
+        imageName: 'Carmine',
     }
 );
 TemporaryBattleList['Kieran 3'] = new TemporaryBattle(
@@ -7499,6 +7503,7 @@ TemporaryBattleList['Kieran 3'] = new TemporaryBattle(
     undefined,
     {
         displayName: 'Kieran',
+        imageName: 'Kieran',
     }
 );
 TemporaryBattleList['Terapagos'] = new TemporaryBattle(
