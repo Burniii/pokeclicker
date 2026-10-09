@@ -4114,25 +4114,25 @@ class QuestLineHelper {
     public static createHisuiRiftQuestLine() {
         const hisuiRiftQuestLine = new QuestLine('The Rift of Hisui', 'Join the Galaxy Expedition Team and calm the frenzied Nobles of Hisui.', new GymBadgeRequirement(BadgeEnums.Elite_GalarChampion), GameConstants.BulletinBoards.Hisui);
 
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Volo 1', 'You have fallen through a rift in the sky and landed on Prelude Beach. Meet Volo of the Ginkgo Guild in Jubilife Village.'));
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Akari 1', 'Prove to Akari of the Survey Corps that you can handle Pokémon.'));
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Warden Mai', 'Head into the Obsidian Fieldlands and meet Warden Mai at Fieldlands Camp.'));
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lord of the Woods: Kleavor', 'The Lord of the Woods has been struck by lightning from the rift. Quell Kleavor at Grandtree Arena.'));
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lady of the Ridge: Lilligant', 'The Diamond Clan needs your help in the Crimson Mirelands. Quell Lady Lilligant at Brava Arena.'));
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lord of the Isles: Arcanine', 'The Pearl Clan asks you to cross to Firespit Island in the Cobalt Coastlands. Quell Lord Arcanine at Molten Arena.'));
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lord of the Hollow: Electrode', 'Climb the Coronet Highlands and quell Lord Electrode at Moonview Arena.'));
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lord of the Tundra: Avalugg', 'Brave the blizzards of the Alabaster Icelands and quell Lord Avalugg at Icepeak Arena.'));
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Volo 1', 'You have fallen through a rift in the sky and landed on Prelude Beach. Meet Volo of the Ginkgo Guild in Jubilife Village.').withInitialValue(0));
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Akari 1', 'Prove to Akari of the Survey Corps that you can handle Pokémon.').withInitialValue(0));
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Warden Mai', 'Head into the Obsidian Fieldlands and meet Warden Mai at Fieldlands Camp.').withInitialValue(0));
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lord of the Woods: Kleavor', 'The Lord of the Woods has been struck by lightning from the rift. Quell Kleavor at Grandtree Arena.').withInitialValue(0));
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lady of the Ridge: Lilligant', 'The Diamond Clan needs your help in the Crimson Mirelands. Quell Lady Lilligant at Brava Arena.').withInitialValue(0));
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lord of the Isles: Arcanine', 'The Pearl Clan asks you to cross to Firespit Island in the Cobalt Coastlands. Quell Lord Arcanine at Molten Arena.').withInitialValue(0));
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lord of the Hollow: Electrode', 'Climb the Coronet Highlands and quell Lord Electrode at Moonview Arena.').withInitialValue(0));
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lord of the Tundra: Avalugg', 'Brave the blizzards of the Alabaster Icelands and quell Lord Avalugg at Icepeak Arena.').withInitialValue(0));
         hisuiRiftQuestLine.addQuest(new MultipleQuestsQuest(
             [
-                new DefeatTemporaryBattleQuest('Adaman 2', 'Earn Adaman\'s trust at Ancient Lake Valor.'),
-                new DefeatTemporaryBattleQuest('Irida 3', 'Earn Irida\'s trust at Pearl Settlement.'),
-                new DefeatTemporaryBattleQuest('Beni', 'Defeat the ninja Beni at the Stone Portal.'),
+                new DefeatTemporaryBattleQuest('Adaman 2', 'Earn Adaman\'s trust at Ancient Lake Valor.').withInitialValue(0),
+                new DefeatTemporaryBattleQuest('Irida 3', 'Earn Irida\'s trust at Pearl Settlement.').withInitialValue(0),
+                new DefeatTemporaryBattleQuest('Beni', 'Defeat the ninja Beni at the Stone Portal.').withInitialValue(0),
             ], 'Commander Kamado has banished you from Jubilife Village. Gain the support of the clan leaders and uncover the truth.'));
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('The Galaxy Team\'s Kamado', 'Visit the three ancient lakes, then face Commander Kamado at Prelude Beach.'));
+        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('The Galaxy Team\'s Kamado', 'Visit the three ancient lakes, then face Commander Kamado at Prelude Beach.').withInitialValue(0));
         hisuiRiftQuestLine.addQuest(new MultipleQuestsQuest(
             [
-                new DefeatTemporaryBattleQuest('Dialga (Origin)', 'Calm Dialga at the Temple of Sinnoh.'),
-                new DefeatTemporaryBattleQuest('Palkia (Origin)', 'Calm Palkia at the Temple of Sinnoh.'),
+                new DefeatTemporaryBattleQuest('Dialga (Origin)', 'Calm Dialga at the Temple of Sinnoh.').withInitialValue(0),
+                new DefeatTemporaryBattleQuest('Palkia (Origin)', 'Calm Palkia at the Temple of Sinnoh.').withInitialValue(0),
             ], 'The rift is tearing open above Mount Coronet. Calm Dialga and Palkia at the Temple of Sinnoh.'));
         hisuiRiftQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Temple of Sinnoh').withDescription('Volo is waiting for you at the Temple of Sinnoh. Defeat him to earn the Azure Badge.'));
 
@@ -4195,7 +4195,7 @@ class QuestLineHelper {
     public static createHisuiArceusQuestLine() {
         const hisuiArceusQuestLine = new QuestLine('Arceus: The Deified Pokémon', 'Discover the truth of the Pokémon deity, Arceus.', new GymBadgeRequirement(BadgeEnums.Azure), GameConstants.BulletinBoards.Hisui);
 
-        const clearVolo3 = new DefeatTemporaryBattleQuest('Volo 3', 'Volo has revealed his true intentions. Defeat him and Giratina at the Temple of Sinnoh.');
+        const clearVolo3 = new DefeatTemporaryBattleQuest('Volo 3', 'Volo has revealed his true intentions. Defeat him and Giratina at the Temple of Sinnoh.').withInitialValue(0);
         hisuiArceusQuestLine.addQuest(clearVolo3);
 
         const talktoArceusCogita1 = new TalkToNPCQuest(ArceusCogita1, 'Cogita wants to talk to you about Volo. Visit her at Ancient Retreat.');
@@ -4211,7 +4211,7 @@ class QuestLineHelper {
         const talktoArceusCogita2 = new TalkToNPCQuest(ArceusCogita2, 'You have gathered all 18 Plates. Report back to Cogita at Ancient Retreat.');
         hisuiArceusQuestLine.addQuest(talktoArceusCogita2);
 
-        const clearArceus = new DefeatTemporaryBattleQuest('Arceus', 'Bring the Plates to the Temple of Sinnoh and face Arceus, the Original One.');
+        const clearArceus = new DefeatTemporaryBattleQuest('Arceus', 'Bring the Plates to the Temple of Sinnoh and face Arceus, the Original One.').withInitialValue(0);
         hisuiArceusQuestLine.addQuest(clearArceus);
 
         const talktoArceusCogita3 = new TalkToNPCQuest(ArceusCogita3, 'Tell Cogita about your meeting with Arceus at Ancient Retreat.');
@@ -4226,12 +4226,12 @@ class QuestLineHelper {
         const paldeaVictoryQuestLine = new QuestLine('Victory Road', 'Challenge Paldea\'s Gyms to challenge your new rival, Nemona.', new GymBadgeRequirement(BadgeEnums.Azure), GameConstants.BulletinBoards.Paldea);
 
         paldeaVictoryQuestLine.addQuest(new TalkToNPCQuest(PaldeaNemona1, 'Talk to Nemona in Cabo Poco.'));
-        paldeaVictoryQuestLine.addQuest(new DefeatTemporaryBattleQuest('Nemona 1', 'Nemona wants to battle you right away! Defeat her in Cabo Poco.'));
+        paldeaVictoryQuestLine.addQuest(new DefeatTemporaryBattleQuest('Nemona 1', 'Nemona wants to battle you right away! Defeat her in Cabo Poco.').withInitialValue(0));
         paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Cortondo').withDescription('Defeat Katy at the Cortondo Gym.'));
         paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Artazon').withDescription('Defeat Brassius at the Artazon Gym.'));
-        paldeaVictoryQuestLine.addQuest(new DefeatTemporaryBattleQuest('Nemona 2', 'Nemona is waiting for you in Artazon. Show her how much you have grown!'));
+        paldeaVictoryQuestLine.addQuest(new DefeatTemporaryBattleQuest('Nemona 2', 'Nemona is waiting for you in Artazon. Show her how much you have grown!').withInitialValue(0));
         paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Levincia').withDescription('Defeat Iono at the Levincia Gym.'));
-        paldeaVictoryQuestLine.addQuest(new DefeatTemporaryBattleQuest('Nemona 3', 'Nemona caught up with you in Levincia. Battle her again!'));
+        paldeaVictoryQuestLine.addQuest(new DefeatTemporaryBattleQuest('Nemona 3', 'Nemona caught up with you in Levincia. Battle her again!').withInitialValue(0));
         paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Cascarrafa').withDescription('Defeat Kofu at the Cascarrafa Gym.'));
         paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Medali').withDescription('Defeat Larry at the Medali Gym.'));
         paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Alfornada').withDescription('Defeat Tulip at the Alfornada Gym.'));
@@ -4255,7 +4255,7 @@ class QuestLineHelper {
 
         paldeaLegendsQuestLine.addQuest(new TalkToNPCQuest(PaldeaArven1, 'Talk to Arven at Poco Path Lighthouse.'));
         paldeaLegendsQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Stony Cliff Titan').withDescription('Defeat the Stony Cliff Titan, Klawf, near Los Platos.'));
-        paldeaLegendsQuestLine.addQuest(new DefeatTemporaryBattleQuest('Arven 1', 'Arven wants to test your strength in Los Platos.'));
+        paldeaLegendsQuestLine.addQuest(new DefeatTemporaryBattleQuest('Arven 1', 'Arven wants to test your strength in Los Platos.').withInitialValue(0));
         paldeaLegendsQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Open Sky Titan').withDescription('Defeat the Open Sky Titan, Bombirdier, near Cortondo.'));
         paldeaLegendsQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Lurking Steel Titan').withDescription('Defeat the Lurking Steel Titan, Orthworm, near Zapapico.'));
         paldeaLegendsQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Asado Desert').withDescription('Defeat the Quaking Earth Titans in the Asado Desert near Cascarrafa.'));
@@ -4294,7 +4294,7 @@ class QuestLineHelper {
                 new DefeatGymQuest(1, 0, 'AI Sada'),
                 new DefeatGymQuest(1, 0, 'AI Turo'),
             ], 'The Professor was an AI all along. Defeat it in the Zero Lab.'));
-        paldeaWayHomeQuestLine.addQuest(new DefeatTemporaryBattleQuest('Paradise Protection Protocol', 'The AI has activated the Paradise Protection Protocol! Defeat the Guardians of Paradise.'));
+        paldeaWayHomeQuestLine.addQuest(new DefeatTemporaryBattleQuest('Paradise Protection Protocol', 'The AI has activated the Paradise Protection Protocol! Defeat the Guardians of Paradise.').withInitialValue(0));
 
         App.game.quests.questLines.push(paldeaWayHomeQuestLine);
     }
@@ -4305,16 +4305,16 @@ class QuestLineHelper {
         const tealMaskQuestLine = new QuestLine('Kitakami: The Teal Mask', 'Join the school trip to Kitakami and uncover the truth behind the legend of the ogre.', new GymBadgeRequirement(BadgeEnums.Elite_Nemona), GameConstants.BulletinBoards.Kitakami);
 
         tealMaskQuestLine.addQuest(new TalkToNPCQuest(KitakamiCarmine1, 'Meet Carmine in Mossui Town.'));
-        tealMaskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Carmine 1', 'Carmine wants to see what a Paldean Champion can do. Battle her in Mossui Town.'));
-        tealMaskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Kieran 1', 'Carmine\'s little brother Kieran wants to battle too.'));
+        tealMaskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Carmine 1', 'Carmine wants to see what a Paldean Champion can do. Battle her in Mossui Town.').withInitialValue(0));
+        tealMaskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Kieran 1', 'Carmine\'s little brother Kieran wants to battle too.').withInitialValue(0));
         tealMaskQuestLine.addQuest(new MultipleQuestsQuest(
             [
-                new DefeatTemporaryBattleQuest('Okidogi', 'Defeat Okidogi.'),
-                new DefeatTemporaryBattleQuest('Munkidori', 'Defeat Munkidori.'),
-                new DefeatTemporaryBattleQuest('Fezandipiti', 'Defeat Fezandipiti.'),
+                new DefeatTemporaryBattleQuest('Okidogi', 'Defeat Okidogi.').withInitialValue(0),
+                new DefeatTemporaryBattleQuest('Munkidori', 'Defeat Munkidori.').withInitialValue(0),
+                new DefeatTemporaryBattleQuest('Fezandipiti', 'Defeat Fezandipiti.').withInitialValue(0),
             ], 'The Loyal Three have appeared at Loyalty Plaza! Defeat all three of them.'));
-        tealMaskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Kieran 2', 'Kieran is upset that you kept Ogerpon a secret. Battle him at Kitakami Hall.'));
-        tealMaskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Ogerpon', 'Ogerpon wants to test you. Face it at the Dreaded Den.'));
+        tealMaskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Kieran 2', 'Kieran is upset that you kept Ogerpon a secret. Battle him at Kitakami Hall.').withInitialValue(0));
+        tealMaskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Ogerpon', 'Ogerpon wants to test you. Face it at the Dreaded Den.').withInitialValue(0));
         tealMaskQuestLine.addQuest(new TalkToNPCQuest(KitakamiKieran1, 'Talk to Kieran at Kitakami Hall.'));
         tealMaskQuestLine.addQuest(new CaptureSpecificPokemonQuest('Ogerpon (Teal Mask)').withDescription('Catch Ogerpon in the Dreaded Den.'));
         tealMaskQuestLine.addQuest(new TalkToNPCQuest(KitakamiCarmine2, 'Say goodbye to Carmine in Mossui Town.'));
@@ -4333,8 +4333,8 @@ class QuestLineHelper {
         indigoDiskQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Champion Kieran').withDescription('Kieran has become the BB League Champion. Defeat him!'));
         indigoDiskQuestLine.addQuest(new TalkToNPCQuest(BlueberryBriar1, 'Talk to Briar at Blueberry Academy.'));
         indigoDiskQuestLine.addQuest(new DefeatDungeonQuest(1, 0, 'Area Zero Underdepths').withDescription('Join Briar\'s expedition and clear the Area Zero Underdepths.'));
-        indigoDiskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Kieran 3', 'Kieran followed you into the Underdepths. Battle him one last time.'));
-        indigoDiskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Terapagos', 'Terapagos has gone out of control! Calm it down.'));
+        indigoDiskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Kieran 3', 'Kieran followed you into the Underdepths. Battle him one last time.').withInitialValue(0));
+        indigoDiskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Terapagos', 'Terapagos has gone out of control! Calm it down.').withInitialValue(0));
         indigoDiskQuestLine.addQuest(new CaptureSpecificPokemonQuest('Terapagos').withDescription('Catch Terapagos in the Area Zero Underdepths.'));
         indigoDiskQuestLine.addQuest(new TalkToNPCQuest(BlueberryBriar2, 'Tell Briar about Terapagos at Blueberry Academy.'));
 
@@ -4351,7 +4351,7 @@ class QuestLineHelper {
                 new CaptureSpecificPokemonQuest('Munkidori').withDescription('Catch Munkidori.'),
                 new CaptureSpecificPokemonQuest('Fezandipiti').withDescription('Catch Fezandipiti.'),
             ], 'The Loyal Three have returned to Oni\'s Maw. Catch all three of them.'));
-        mochiMayhemQuestLine.addQuest(new DefeatTemporaryBattleQuest('Pecharunt', 'The mastermind behind the mochi has shown itself at Kitakami Hall. Defeat Pecharunt!'));
+        mochiMayhemQuestLine.addQuest(new DefeatTemporaryBattleQuest('Pecharunt', 'The mastermind behind the mochi has shown itself at Kitakami Hall. Defeat Pecharunt!').withInitialValue(0));
         mochiMayhemQuestLine.addQuest(new TalkToNPCQuest(MochiCarmine2, 'Talk to Carmine at Kitakami Hall.'));
 
         App.game.quests.questLines.push(mochiMayhemQuestLine);
@@ -4362,14 +4362,14 @@ class QuestLineHelper {
     public static createMastersEightQuestLine() {
         const mastersEightQuestLine = new QuestLine('The Masters Eight', 'The strongest Trainers in the world are waiting for you in their home regions. Defeat them all to face the Monarch.', new GymBadgeRequirement(BadgeEnums.Elite_BlueberryChampion), GameConstants.BulletinBoards.All);
 
-        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Lance', 'Lance awaits you at the Indigo Plateau in Kanto.', 2000));
-        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Steven', 'Steven awaits you at the Hoenn Pokémon League.', 2000));
-        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Cynthia', 'Cynthia awaits you at the Sinnoh Pokémon League.', 2000));
-        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Iris', 'Iris awaits you at the Unova Pokémon League.', 2000));
-        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Diantha', 'Diantha awaits you at the Kalos Pokémon League.', 2000));
-        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Alain', 'Alain awaits you in Lumiose City.', 2000));
-        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Leon', 'Leon awaits you in Wyndon.', 2000));
-        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Monarch Ash', 'All of the Masters Eight have fallen. The Monarch awaits you in Pallet Town, where it all began.', 10000));
+        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Lance', 'Lance awaits you at the Indigo Plateau in Kanto.', 2000).withInitialValue(0));
+        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Steven', 'Steven awaits you at the Hoenn Pokémon League.', 2000).withInitialValue(0));
+        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Cynthia', 'Cynthia awaits you at the Sinnoh Pokémon League.', 2000).withInitialValue(0));
+        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Iris', 'Iris awaits you at the Unova Pokémon League.', 2000).withInitialValue(0));
+        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Diantha', 'Diantha awaits you at the Kalos Pokémon League.', 2000).withInitialValue(0));
+        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Alain', 'Alain awaits you in Lumiose City.', 2000).withInitialValue(0));
+        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Masters Leon', 'Leon awaits you in Wyndon.', 2000).withInitialValue(0));
+        mastersEightQuestLine.addQuest(new DefeatTemporaryBattleQuest('Monarch Ash', 'All of the Masters Eight have fallen. The Monarch awaits you in Pallet Town, where it all began.', 10000).withInitialValue(0));
 
         App.game.quests.questLines.push(mastersEightQuestLine);
     }

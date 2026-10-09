@@ -9848,7 +9848,7 @@ TownList['Galaxy Hall'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [new BulletinBoard(GameConstants.BulletinBoards.Hisui)],
     {
-        requirements: [new TemporaryBattleRequirement('Akari 1')],
+        requirements: [new GymBadgeRequirement(BadgeEnums.Elite_GalarChampion)],
         npcs: [ForcesCogita1],
     }
 );
