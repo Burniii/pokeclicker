@@ -185,6 +185,7 @@ import {
     beforeEvolve, EvoTrigger, LevelEvolution, StoneEvolution,
 } from './pokemons/evolutions/Base';
 import * as OtherEvos from './pokemons/evolutions/Methods';
+import EvolutionInfo from './pokemons/EvolutionInfo';
 import { pokemonBabyPrevolutionMap, pokemonList, pokemonMap } from './pokemons/PokemonList';
 import * as PokemonHelper from './pokemons/PokemonHelper';
 import { createLogContent } from './logbook/helpers';
@@ -440,6 +441,7 @@ Object.assign(<any>window, {
     LevelEvolution,
     StoneEvolution,
     EvoTrigger,
+    EvolutionInfo,
     beforeEvolve,
     ...OtherEvos,
     pokemonList,
