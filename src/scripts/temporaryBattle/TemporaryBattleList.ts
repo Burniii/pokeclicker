@@ -6775,10 +6775,7 @@ TemporaryBattleList.Ursaluna = new TemporaryBattle(
     'Ursaluna',
     [new GymPokemon('Ursaluna', 860119680, 26)],
     'You defeated Ursaluna!',
-    [
-        new TemporaryBattleRequirement('Lady of the Ridge: Lilligant'),
-        new RouteKillRequirement(10, GameConstants.Region.hisui, 21),
-    ],
+    [new TemporaryBattleRequirement('Lady of the Ridge: Lilligant')],
     undefined,
     {
         hideTrainer: true,
@@ -7384,10 +7381,7 @@ TemporaryBattleList.Okidogi = new TemporaryBattle(
     'Okidogi',
     [new GymPokemon('Okidogi', 2781831480, 70)],
     'Okidogi fled towards Oni Mountain!',
-    [
-        new TemporaryBattleRequirement('Kieran 1'),
-        new RouteKillRequirement(10, GameConstants.Region.paldea, 24),
-    ],
+    [new TemporaryBattleRequirement('Kieran 1')],
     undefined,
     {
         hideTrainer: true,
@@ -7399,10 +7393,7 @@ TemporaryBattleList.Munkidori = new TemporaryBattle(
     'Munkidori',
     [new GymPokemon('Munkidori', 2862275280, 70)],
     'Munkidori fled towards Oni Mountain!',
-    [
-        new TemporaryBattleRequirement('Kieran 1'),
-        new RouteKillRequirement(10, GameConstants.Region.paldea, 28),
-    ],
+    [new TemporaryBattleRequirement('Kieran 1')],
     undefined,
     {
         hideTrainer: true,
@@ -7414,10 +7405,7 @@ TemporaryBattleList.Fezandipiti = new TemporaryBattle(
     'Fezandipiti',
     [new GymPokemon('Fezandipiti', 2903018280, 70)],
     'Fezandipiti fled towards Oni Mountain!',
-    [
-        new TemporaryBattleRequirement('Kieran 1'),
-        new RouteKillRequirement(10, GameConstants.Region.paldea, 30),
-    ],
+    [new TemporaryBattleRequirement('Kieran 1')],
     undefined,
     {
         hideTrainer: true,
