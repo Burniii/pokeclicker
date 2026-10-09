@@ -14535,9 +14535,7 @@ dungeonList['Grasswither Shrine'] = new Dungeon('Grasswither Shrine',
         legendary: [{loot: 'Miracle_Seed'}],
     },
     68060162,
-    [
-        new DungeonBossPokemon('Wo-Chien', 680601615, 60),
-    ],
+    [new DungeonBossPokemon('Wo-Chien', 680601615, 60)],
     4537500, 21);
 
 dungeonList['Icerend Shrine'] = new Dungeon('Icerend Shrine',
@@ -14566,9 +14564,7 @@ dungeonList['Icerend Shrine'] = new Dungeon('Icerend Shrine',
         legendary: [{loot: 'Never_Melt_Ice'}],
     },
     68060162,
-    [
-        new DungeonBossPokemon('Chien-Pao', 680601615, 60),
-    ],
+    [new DungeonBossPokemon('Chien-Pao', 680601615, 60)],
     4537500, 21);
 
 dungeonList['Groundblight Shrine'] = new Dungeon('Groundblight Shrine',
@@ -14597,9 +14593,7 @@ dungeonList['Groundblight Shrine'] = new Dungeon('Groundblight Shrine',
         legendary: [{loot: 'Soft_Sand'}],
     },
     68060162,
-    [
-        new DungeonBossPokemon('Ting-Lu', 680601615, 60),
-    ],
+    [new DungeonBossPokemon('Ting-Lu', 680601615, 60)],
     4537500, 21);
 
 dungeonList['Firescourge Shrine'] = new Dungeon('Firescourge Shrine',
@@ -14628,9 +14622,7 @@ dungeonList['Firescourge Shrine'] = new Dungeon('Firescourge Shrine',
         legendary: [{loot: 'Charcoal'}],
     },
     68060162,
-    [
-        new DungeonBossPokemon('Chi-Yu', 680601615, 60),
-    ],
+    [new DungeonBossPokemon('Chi-Yu', 680601615, 60)],
     4537500, 21);
 
 dungeonList['Area Zero'] = new Dungeon('Area Zero',

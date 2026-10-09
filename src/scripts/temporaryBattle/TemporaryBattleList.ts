@@ -7067,7 +7067,7 @@ TemporaryBattleList['The Galaxy Team\'s Kamado'] = new TemporaryBattle(
         new TemporaryBattleRequirement('Irida 3'),
         new TemporaryBattleRequirement('Beni'),
         new ClearDungeonRequirement(1, GameConstants.getDungeonIndex('Ancient Lake Verity')),
-    ],
+    ]
 );
 TemporaryBattleList['Adaman 2'] = new TemporaryBattle(
     'Adaman 2',
@@ -7388,9 +7388,7 @@ TemporaryBattleList['Kieran 1'] = new TemporaryBattle(
 );
 TemporaryBattleList.Okidogi = new TemporaryBattle(
     'Okidogi',
-    [
-        new GymPokemon('Okidogi', 2781831480, 70),
-    ],
+    [new GymPokemon('Okidogi', 2781831480, 70)],
     'Okidogi fled towards Oni Mountain!',
     [
         new TemporaryBattleRequirement('Kieran 1'),
@@ -7405,9 +7403,7 @@ TemporaryBattleList.Okidogi = new TemporaryBattle(
 );
 TemporaryBattleList.Munkidori = new TemporaryBattle(
     'Munkidori',
-    [
-        new GymPokemon('Munkidori', 2862275280, 70),
-    ],
+    [new GymPokemon('Munkidori', 2862275280, 70)],
     'Munkidori fled towards Oni Mountain!',
     [
         new TemporaryBattleRequirement('Kieran 1'),
@@ -7422,9 +7418,7 @@ TemporaryBattleList.Munkidori = new TemporaryBattle(
 );
 TemporaryBattleList.Fezandipiti = new TemporaryBattle(
     'Fezandipiti',
-    [
-        new GymPokemon('Fezandipiti', 2903018280, 70),
-    ],
+    [new GymPokemon('Fezandipiti', 2903018280, 70)],
     'Fezandipiti fled towards Oni Mountain!',
     [
         new TemporaryBattleRequirement('Kieran 1'),
@@ -7458,9 +7452,7 @@ TemporaryBattleList['Kieran 2'] = new TemporaryBattle(
 );
 TemporaryBattleList.Ogerpon = new TemporaryBattle(
     'Ogerpon',
-    [
-        new GymPokemon('Ogerpon (Teal Mask)', 3980735440, 70),
-    ],
+    [new GymPokemon('Ogerpon (Teal Mask)', 3980735440, 70)],
     'Ogerpon calmed down and gave you a happy, wordless look.',
     [new TemporaryBattleRequirement('Kieran 2')],
     undefined,
@@ -7508,9 +7500,7 @@ TemporaryBattleList['Kieran 3'] = new TemporaryBattle(
 );
 TemporaryBattleList.Terapagos = new TemporaryBattle(
     'Terapagos',
-    [
-        new GymPokemon('Terapagos (Stellar)', 6138976200, 85),
-    ],
+    [new GymPokemon('Terapagos (Stellar)', 6138976200, 85)],
     'Terapagos shone with a brilliant, many-coloured light and calmed down!',
     [new TemporaryBattleRequirement('Kieran 3')],
     undefined,
@@ -7522,9 +7512,7 @@ TemporaryBattleList.Terapagos = new TemporaryBattle(
 );
 TemporaryBattleList.Pecharunt = new TemporaryBattle(
     'Pecharunt',
-    [
-        new GymPokemon('Pecharunt', 5115813500, 88),
-    ],
+    [new GymPokemon('Pecharunt', 5115813500, 88)],
     'Pecharunt dropped its Mochi and gave up! It seems to want to join you.',
     [new QuestLineStepCompletedRequirement('Kitakami: Mochi Mayhem', 1)],
     undefined,

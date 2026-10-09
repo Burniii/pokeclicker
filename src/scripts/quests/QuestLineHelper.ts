@@ -4201,8 +4201,10 @@ class QuestLineHelper {
         const talktoArceusCogita1 = new TalkToNPCQuest(ArceusCogita1, 'Cogita wants to talk to you about Volo. Visit her at Ancient Retreat.');
         hisuiArceusQuestLine.addQuest(talktoArceusCogita1);
 
-        const plates = ['Draco_plate', 'Dread_plate', 'Earth_plate', 'Fist_plate', 'Flame_plate', 'Icicle_plate', 'Insect_plate', 'Iron_plate', 'Meadow_plate',
-            'Mind_plate', 'Sky_plate', 'Splash_plate', 'Spooky_plate', 'Stone_plate', 'Toxic_plate', 'Zap_plate', 'Pixie_plate', 'Blank_plate'];
+        const plates = [
+            'Draco_plate', 'Dread_plate', 'Earth_plate', 'Fist_plate', 'Flame_plate', 'Icicle_plate', 'Insect_plate', 'Iron_plate', 'Meadow_plate',
+            'Mind_plate', 'Sky_plate', 'Splash_plate', 'Spooky_plate', 'Stone_plate', 'Toxic_plate', 'Zap_plate', 'Pixie_plate', 'Blank_plate',
+        ];
         const gatherPlates = new CustomQuest(plates.length, 0, 'Excavate all 18 Plates in the Underground.', () => plates.filter((plate) => player.itemList[plate]() > 0).length).withInitialValue(0);
         hisuiArceusQuestLine.addQuest(gatherPlates);
 

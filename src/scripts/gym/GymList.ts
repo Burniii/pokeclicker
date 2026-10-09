@@ -2300,7 +2300,7 @@ GymList.Cortondo = new Gym(
     BadgeEnums.Bug_Gym,
     160000,
     'Your Pokémon really came out of their shells! You\'ve earned this Bug Badge, sweetie.',
-    [new RouteKillRequirement(10, GameConstants.Region.paldea, 3)],
+    [new RouteKillRequirement(10, GameConstants.Region.paldea, 3)]
 );
 GymList.Artazon = new Gym(
     'Brassius',
@@ -2313,7 +2313,7 @@ GymList.Artazon = new Gym(
     BadgeEnums.Grass_Gym,
     170000,
     'Your artistry has blossomed beyond mine! The Grass Badge is yours.',
-    [new RouteKillRequirement(10, GameConstants.Region.paldea, 5)],
+    [new RouteKillRequirement(10, GameConstants.Region.paldea, 5)]
 );
 GymList.Levincia = new Gym(
     'Iono',
@@ -2327,7 +2327,7 @@ GymList.Levincia = new Gym(
     BadgeEnums.Electric_Gym,
     180000,
     'Your battle was electrifying! Thanks for tuning in, here\'s your Electric Badge!',
-    [new RouteKillRequirement(10, GameConstants.Region.paldea, 9)],
+    [new RouteKillRequirement(10, GameConstants.Region.paldea, 9)]
 );
 GymList.Cascarrafa = new Gym(
     'Kofu',
@@ -2340,7 +2340,7 @@ GymList.Cascarrafa = new Gym(
     BadgeEnums.Water_Gym,
     190000,
     'That battle was a real splash! Take the Water Badge, you earned it fair and square.',
-    [new RouteKillRequirement(10, GameConstants.Region.paldea, 11)],
+    [new RouteKillRequirement(10, GameConstants.Region.paldea, 11)]
 );
 GymList.Medali = new Gym(
     'Larry',
@@ -2353,7 +2353,7 @@ GymList.Medali = new Gym(
     BadgeEnums.Normal_Gym,
     200000,
     'Well, that was a perfectly normal loss. The Normal Badge is all yours.',
-    [new RouteKillRequirement(10, GameConstants.Region.paldea, 12)],
+    [new RouteKillRequirement(10, GameConstants.Region.paldea, 12)]
 );
 GymList.Montenevera = new Gym(
     'Ryme',
@@ -2367,7 +2367,7 @@ GymList.Montenevera = new Gym(
     BadgeEnums.Ghost_Gym,
     210000,
     'You rocked the house! The Ghost Badge goes to you, kid.',
-    [new RouteKillRequirement(10, GameConstants.Region.paldea, 16)],
+    [new RouteKillRequirement(10, GameConstants.Region.paldea, 16)]
 );
 GymList.Alfornada = new Gym(
     'Tulip',
@@ -2381,7 +2381,7 @@ GymList.Alfornada = new Gym(
     BadgeEnums.Psychic_Gym,
     210000,
     'Your mind is beautifully composed. Please accept the Psychic Badge.',
-    [new RouteKillRequirement(10, GameConstants.Region.paldea, 15)],
+    [new RouteKillRequirement(10, GameConstants.Region.paldea, 15)]
 );
 GymList['Glaseado Mountain'] = new Gym(
     'Grusha',
@@ -2395,7 +2395,7 @@ GymList['Glaseado Mountain'] = new Gym(
     BadgeEnums.Ice_Gym,
     220000,
     'That was totally rad... and I\'m frozen solid. Here, the Ice Badge.',
-    [new RouteKillRequirement(10, GameConstants.Region.paldea, 17)],
+    [new RouteKillRequirement(10, GameConstants.Region.paldea, 17)]
 );
 GymList['Elite Rika'] = new Gym(
     'Rika',
@@ -2419,7 +2419,7 @@ GymList['Elite Rika'] = new Gym(
         new GymBadgeRequirement(BadgeEnums.Ghost_Gym),
         new GymBadgeRequirement(BadgeEnums.Psychic_Gym),
         new GymBadgeRequirement(BadgeEnums.Ice_Gym),
-    ],
+    ]
 );
 GymList['Elite Poppy'] = new Gym(
     'Poppy',
@@ -2434,7 +2434,7 @@ GymList['Elite Poppy'] = new Gym(
     BadgeEnums.Elite_Poppy,
     250000,
     'Wow! You beat me fair and square! Poppy is impressed!',
-    [new GymBadgeRequirement(BadgeEnums.Elite_Rika)],
+    [new GymBadgeRequirement(BadgeEnums.Elite_Rika)]
 );
 GymList['Elite Larry'] = new Gym(
     'Larry',
@@ -2449,7 +2449,7 @@ GymList['Elite Larry'] = new Gym(
     BadgeEnums.Elite_Larry,
     250000,
     'Not bad at all. Guess I\'ll put in some overtime later.',
-    [new GymBadgeRequirement(BadgeEnums.Elite_Poppy)],
+    [new GymBadgeRequirement(BadgeEnums.Elite_Poppy)]
 );
 GymList['Elite Hassel'] = new Gym(
     'Hassel',
@@ -2464,7 +2464,7 @@ GymList['Elite Hassel'] = new Gym(
     BadgeEnums.Elite_Hassel,
     250000,
     'What an outstanding display! You may proceed to the Top Champion.',
-    [new GymBadgeRequirement(BadgeEnums.Elite_Larry)],
+    [new GymBadgeRequirement(BadgeEnums.Elite_Larry)]
 );
 GymList['Top Champion Geeta'] = new Gym(
     'Geeta',
@@ -2661,7 +2661,7 @@ GymList['Asado Desert'] = new Gym(
     BadgeEnums.Ground_Titan,
     200000,
     'The Titans of the desert flee, revealing a Herba Mystica!',
-    [new RouteKillRequirement(10, GameConstants.Region.paldea, 11)],
+    [new RouteKillRequirement(10, GameConstants.Region.paldea, 11)]
 );
 GymList['Casseroya Lake'] = new Gym(
     'False Dragon Titan',
@@ -2673,7 +2673,7 @@ GymList['Casseroya Lake'] = new Gym(
     BadgeEnums.Dragon_Titan,
     230000,
     'Dondozo and Tatsugiri swim off, leaving the last Herba Mystica!',
-    [new RouteKillRequirement(10, GameConstants.Region.paldea, 19)],
+    [new RouteKillRequirement(10, GameConstants.Region.paldea, 19)]
 );
 GymList['Pokémon Trainer Arven'] = new Gym(
     'Arven',
