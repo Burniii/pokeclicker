@@ -183,7 +183,11 @@
                     <div id="routeBattleContainer" class="row justify-content-center no-gutters" data-bind="if: App.game.gameState === GameConstants.GameState.fighting">
                         <div class="col no-gutters clickable" data-bind="click: function() {Battle.clickAttack()}" style="height: 280px; display: block;">
                             <div class="pageItemTitle d-flex justify-content-center">
-                                <div class="title-left"></div>
+                                <div class="title-left">
+                                    <!-- ko if: App.game.fishing.canFishHere() -->
+                                    <button class="btn btn-sm btn-info py-0 px-1 ml-1" title="Go fishing" data-bind="click: (_, e) => { e.stopPropagation(); App.game.fishing.open(); }, clickBubble: false">🎣</button>
+                                    <!-- /ko -->
+                                </div>
                                 <div class="d-flex align-items-center px-2">
                                     <knockout data-bind="template: { name: 'pokemonNameTemplate', data: { 'pokemon': Battle.enemyPokemon() } }" style="font-size: 1.6rem;">Pokémon name</knockout>
                                     <knockout class="ml-2" data-bind="template: { name: 'caughtStatusTemplate', data: {'status': PartyController.getCaughtStatus(Battle.enemyPokemon().id)}}"></knockout>
@@ -406,6 +410,9 @@
 
 <!-- Cutscene Modals -->
 @import "cutsceneModal.html"
+
+<!-- Activities Modals -->
+@import "activitiesModal.html"
 
 <!-- Settings Modal-->
 @import "settingsModal.html"

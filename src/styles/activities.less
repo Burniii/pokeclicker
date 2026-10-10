@@ -1,0 +1,19 @@
+// Activities (expeditions, ranch, fishing)
+.fishing-water {
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: linear-gradient(#7ec8f2, #2b6ea8);
+  font-size: 2.5rem;
+
+  &.fishing-bite .fishing-float {
+    animation: fishing-bob 0.25s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes fishing-bob {
+  from { transform: translateY(-6px); }
+  to { transform: translateY(6px); }
+}

@@ -47,6 +47,11 @@ class Game implements TmpGameType {
     public weatherApp: WeatherApp;
     public zMoves: ZMoves;
     public cutscenes: Cutscenes;
+    public pokemonTraits: PokemonTraits;
+    public research: Research;
+    public expeditions: Expeditions;
+    public ranch: Ranch;
+    public fishing: Fishing;
 
     constructor() {
         // Needs to be loaded first so save data can be updated (specifically "player" data)
@@ -59,6 +64,11 @@ class Game implements TmpGameType {
         // Load other Features
         this.profile = new Profile();
         this.cutscenes = new Cutscenes();
+        this.pokemonTraits = new PokemonTraits();
+        this.research = new Research();
+        this.expeditions = new Expeditions();
+        this.ranch = new Ranch();
+        this.fishing = new Fishing();
         this.breeding = new Breeding(this.multiplier);
         this.pokeballs = new Pokeballs();
         this.pokeballFilters = new PokeballFilters();
@@ -318,6 +328,8 @@ class Game implements TmpGameType {
         MusicDirector.initialize();
         BattleEffectsDirector.initialize();
         this.cutscenes.initialize();
+        this.research.initialize();
+        Activities.initialize();
         BundledTranslations.register();
         if (player.regionStarters[GameConstants.Region.kanto]() === GameConstants.Starter.None) {
             StartSequenceRunner.start();

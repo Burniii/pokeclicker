@@ -140,6 +140,30 @@
                 </tr>
                 <!-- ko if: App.game.party.alreadyCaughtPokemon($data) -->
                 <tr>
+                  <td class="text-left align-middle">Nature</td>
+                  <td class="text-left tight text-wrap"><code data-bind="text: `${App.game.pokemonTraits.nature($data).name}`, attr: { title: PokemonTraits.natureDescriptions[App.game.pokemonTraits.nature($data).effect] }"></code></td>
+                </tr>
+                <tr>
+                  <td class="text-left align-middle">Bond</td>
+                  <td class="text-left tight text-danger" data-bind="text: ActivitiesUI.hearts($data)"></td>
+                </tr>
+                <tr data-bind="tooltip: { title: ActivitiesUI.researchProgress($data), html: true, trigger: 'hover', placement: 'top' }">
+                  <td class="text-left align-middle">Research</td>
+                  <td class="text-left tight text-warning" data-bind="text: (Research.version(), '★'.repeat(Research.stars($data)) + '☆'.repeat(5 - Research.stars($data)))"></td>
+                </tr>
+                <!-- ko if: PokemonTraits.teraUnlocked() && App.game.pokemonTraits.teraType($data) !== undefined -->
+                <tr>
+                  <td class="text-left align-middle">Tera Type</td>
+                  <td class="text-left tight"><code data-bind="text: PokemonType[App.game.pokemonTraits.teraType($data)]"></code></td>
+                </tr>
+                <!-- /ko -->
+                <!-- ko if: Activities.isAway($data) -->
+                <tr>
+                  <td class="text-left align-middle">Status</td>
+                  <td class="text-left tight text-info small" data-bind="text: Activities.awayReason($data)"></td>
+                </tr>
+                <!-- /ko -->
+                <tr>
                   <td class="text-left align-middle">Held Item</td>
                   <td class="text-left tight text-wrap"><code
                       data-bind="text: App.game.party.getPokemon($data).heldItem()?.displayName || '-'"></code></td>

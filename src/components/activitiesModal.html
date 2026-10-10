@@ -1,0 +1,193 @@
+<div class="modal noselect fade" id="activitiesModal" tabindex="-1" role="dialog" aria-labelledby="activitiesModalLabel">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="activitiesModalLabel">Activities</h5>
+        <span class="small text-muted ml-3 mt-1" data-bind="text: `Research Rank ${Research.rank()} · ${Research.totalStars().toLocaleString('en-US')} ★ · ${App.game.pokemonTraits.mints()} Mints`"></span>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <!-- ko if: DisplayObservables.modalState.activitiesModal !== 'hidden' -->
+      <div class="modal-body p-0 text-left">
+        <ul class="nav nav-tabs nav-fill">
+          <li class="nav-item"><a class="nav-link active" href="#activities-research" data-toggle="tab">Research</a></li>
+          <li class="nav-item"><a class="nav-link" href="#activities-expeditions" data-toggle="tab">Expeditions</a></li>
+          <li class="nav-item"><a class="nav-link" href="#activities-ranch" data-toggle="tab">Ranch</a></li>
+          <li class="nav-item"><a class="nav-link" href="#activities-care" data-toggle="tab">Care</a></li>
+        </ul>
+        <div class="p-2">
+          <input class="form-control form-control-sm mb-2" placeholder="Search Pokémon (name or number)" data-bind="textInput: ActivitiesUI.search">
+        </div>
+        <div class="tab-content px-2 pb-2">
+
+          <!-- Research -->
+          <div class="tab-pane active" id="activities-research">
+            <p class="small mb-1">Every species has 5 research tasks. Each finished task gives a ★ (+1% attack for that Pokémon). Your ★ raise your Research Rank, which unlocks rewards, expedition and ranch slots.</p>
+            <div class="progress mb-1 position-relative" style="height: 18px;">
+              <div class="progress-bar bg-warning" data-bind="style: { width: `${Research.progressToNextRank().current / Research.progressToNextRank().needed * 100}%` }"></div>
+              <small class="position-absolute w-100 text-center" data-bind="text: `${Research.progressToNextRank().current} / ${Research.progressToNextRank().needed} ★ to rank ${Research.rank() + 1} (${Research.reward(Research.rank() + 1).description})`"></small>
+            </div>
+            <!-- ko if: App.game.research.claimedRank() < Research.rank() -->
+            <button class="btn btn-sm btn-success mb-2" data-bind="click: () => App.game.research.claimRewards(), text: `Claim ${Research.rank() - App.game.research.claimedRank()} rank reward(s)`"></button>
+            <!-- /ko -->
+            <p class="small text-muted mb-1">Pokémon with the fewest ★ first. Hover for the tasks.</p>
+            <div class="d-flex flex-wrap" data-bind="foreach: ActivitiesUI.researchList()">
+              <div class="text-center m-1 p-1 border rounded" style="width: 74px;" data-bind="tooltip: { title: ActivitiesUI.researchProgress($data.pokemon.id), html: true, trigger: 'hover' }">
+                <img width="40" src="" data-bind="attr: { src: PokemonHelper.getImage($data.pokemon.id) }">
+                <div class="small text-truncate" data-bind="text: $data.pokemon.displayName"></div>
+                <div class="small text-warning" data-bind="text: '★'.repeat($data.stars) + '☆'.repeat(5 - $data.stars)"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Expeditions -->
+          <div class="tab-pane" id="activities-expeditions">
+            <!-- ko ifnot: Activities.expeditionsUnlocked() -->
+            <p>Expeditions unlock after you defeat the Champion of Kanto.</p>
+            <!-- /ko -->
+            <!-- ko if: Activities.expeditionsUnlocked() -->
+            <p class="small mb-1">Send up to 3 Pokémon on a mission. They don't battle while away. Matching types (+25%) and strong Pokémon raise the success chance. Rewards scale with the duration; a failed mission still gives bond.</p>
+            <h6 data-bind="text: `Active expeditions (${App.game.expeditions.active().length}/${App.game.expeditions.slots()})`"></h6>
+            <div data-bind="foreach: App.game.expeditions.active()">
+              <div class="d-flex align-items-center border rounded p-1 mb-1">
+                <!-- ko foreach: $data.members --><img width="32" src="" data-bind="attr: { src: PokemonHelper.getImage($data) }"><!-- /ko -->
+                <span class="ml-2 flex-grow-1 small" data-bind="text: `${App.game.expeditions.destination($data.destination).name} · ${Math.round($data.chance * 100)}% · ${Activities.formatDuration(App.game.expeditions.remaining($data))}`"></span>
+                <button class="btn btn-sm btn-success" data-bind="enable: App.game.expeditions.remaining($data) <= 0, click: () => App.game.expeditions.claim($data)">Collect</button>
+              </div>
+            </div>
+            <!-- ko if: App.game.expeditions.lastReport().length -->
+            <div class="small text-muted border rounded p-1 mb-2" data-bind="html: App.game.expeditions.lastReport().join('<br/>')"></div>
+            <!-- /ko -->
+            <h6 class="mt-2">New expedition</h6>
+            <div class="form-row mb-1">
+              <div class="col-12 col-md-7 mb-1">
+                <select class="form-control form-control-sm" data-bind="options: App.game.expeditions.availableDestinations(), optionsText: (d) => `${d.name} (${d.types.map((t) => PokemonType[t]).join('/')})`, optionsValue: 'id', value: App.game.expeditions.destinationId"></select>
+              </div>
+              <div class="col-auto mb-1" data-bind="foreach: Expeditions.durations">
+                <button class="btn btn-sm" data-bind="text: `${$data}h`, css: App.game.expeditions.hours() === $data ? 'btn-primary' : 'btn-outline-primary', click: () => App.game.expeditions.hours($data)"></button>
+              </div>
+            </div>
+            <div class="d-flex align-items-center mb-1">
+              <span class="small mr-2" data-bind="text: `Team (${App.game.expeditions.selected().length}/3) · success chance ${Math.round(App.game.expeditions.previewChance() * 100)}%`"></span>
+              <button class="btn btn-sm btn-outline-secondary mr-1" data-bind="click: () => App.game.expeditions.autoSelect()">Auto-pick</button>
+              <button class="btn btn-sm btn-success" data-bind="enable: App.game.expeditions.canStart(), click: () => App.game.expeditions.start()">Start</button>
+            </div>
+            <div class="d-flex flex-wrap" data-bind="foreach: ActivitiesUI.expeditionCandidates()">
+              <div class="text-center m-1 p-1 border rounded clickable" style="width: 74px;" data-bind="css: { 'border-success bg-success text-light': App.game.expeditions.selected().includes($data.pokemon.id) }, click: () => App.game.expeditions.toggleMember($data.pokemon.id)">
+                <img width="40" src="" data-bind="attr: { src: PokemonHelper.getImage($data.pokemon.id) }">
+                <div class="small text-truncate" data-bind="text: $data.pokemon.displayName"></div>
+                <div class="small" data-bind="text: $data.match ? '✓ type' : ''"></div>
+              </div>
+            </div>
+            <!-- /ko -->
+          </div>
+
+          <!-- Ranch -->
+          <div class="tab-pane" id="activities-ranch">
+            <!-- ko ifnot: Activities.ranchUnlocked() -->
+            <p>The ranch opens once you reach Johto.</p>
+            <!-- /ko -->
+            <!-- ko if: Activities.ranchUnlocked() -->
+            <p class="small mb-1">Ranch residents don't battle but produce resources by type every hour (up to <span data-bind="text: Ranch.MAX_HOURS"></span> hours stored) and grow their bond. More hearts mean more production.</p>
+            <div class="d-flex align-items-center mb-1">
+              <h6 class="mb-0 flex-grow-1" data-bind="text: `Residents (${App.game.ranch.residents().length}/${App.game.ranch.slots()})`"></h6>
+              <button class="btn btn-sm btn-success" data-bind="click: () => App.game.ranch.collect()">Collect all</button>
+            </div>
+            <div class="d-flex flex-wrap" data-bind="foreach: App.game.ranch.residents()">
+              <div class="text-center m-1 p-1 border rounded" style="width: 110px;">
+                <img width="40" src="" data-bind="attr: { src: PokemonHelper.getImage($data.id) }">
+                <div class="small text-truncate" data-bind="text: PokemonHelper.displayName(pokemonMap[$data.id].name)"></div>
+                <div class="small text-danger" data-bind="text: ActivitiesUI.hearts($data.id)"></div>
+                <div class="small text-muted" data-bind="text: ActivitiesUI.productText($data.id)"></div>
+                <div class="small" data-bind="text: `${App.game.ranch.hours($data).toFixed(1)}h stored`"></div>
+                <button class="btn btn-sm btn-outline-danger py-0" data-bind="click: () => App.game.ranch.remove($data)">Leave</button>
+              </div>
+            </div>
+            <!-- ko if: App.game.ranch.lastReport().length -->
+            <div class="small text-muted border rounded p-1 my-2" data-bind="html: App.game.ranch.lastReport().join('<br/>')"></div>
+            <!-- /ko -->
+            <h6 class="mt-2">Move a Pokémon to the ranch</h6>
+            <div class="d-flex flex-wrap" data-bind="foreach: ActivitiesUI.ranchCandidates()">
+              <div class="text-center m-1 p-1 border rounded clickable" style="width: 90px;" data-bind="click: () => App.game.ranch.add($data.id)">
+                <img width="40" src="" data-bind="attr: { src: PokemonHelper.getImage($data.id) }">
+                <div class="small text-truncate" data-bind="text: $data.displayName"></div>
+                <div class="small text-muted text-truncate" data-bind="text: ActivitiesUI.productText($data.id)"></div>
+              </div>
+            </div>
+            <!-- /ko -->
+          </div>
+
+          <!-- Care -->
+          <div class="tab-pane" id="activities-care">
+            <p class="small mb-1">Every Pokémon has a nature with a small bonus. Mints change the nature. From Paldea on, Tera Shards give a Pokémon a Tera type that is used in battle when it is more effective.</p>
+            <!-- ko if: ActivitiesUI.careId() !== undefined -->
+            <div class="border rounded p-2 mb-2" data-bind="with: ActivitiesUI.careId()">
+              <div class="d-flex align-items-center">
+                <img width="56" src="" data-bind="attr: { src: PokemonHelper.getImage($data) }">
+                <div class="ml-2">
+                  <strong data-bind="text: PokemonHelper.displayName(pokemonMap[$data].name)"></strong>
+                  <div class="small" data-bind="text: `Nature: ${App.game.pokemonTraits.nature($data).name} (${PokemonTraits.natureDescriptions[App.game.pokemonTraits.nature($data).effect]})`"></div>
+                  <div class="small text-danger" data-bind="text: `Bond: ${ActivitiesUI.hearts($data)} (${Math.floor(App.game.pokemonTraits.bondPoints($data))} pts)`"></div>
+                  <!-- ko if: PokemonTraits.teraUnlocked() -->
+                  <div class="small" data-bind="text: `Tera type: ${App.game.pokemonTraits.teraType($data) !== undefined ? PokemonType[App.game.pokemonTraits.teraType($data)] : 'none'}`"></div>
+                  <!-- /ko -->
+                </div>
+              </div>
+              <div class="form-row mt-2">
+                <div class="col">
+                  <select class="form-control form-control-sm" data-bind="options: PokemonTraits.natures.map((n, i) => ({ i, text: `${n.name} – ${PokemonTraits.natureDescriptions[n.effect]}` })), optionsText: 'text', optionsValue: 'i', value: ActivitiesUI.careNature"></select>
+                </div>
+                <div class="col-auto">
+                  <button class="btn btn-sm btn-primary" data-bind="enable: App.game.pokemonTraits.mints() > 0, click: () => ActivitiesUI.applyMint(), text: `Use Mint (${App.game.pokemonTraits.mints()})`"></button>
+                </div>
+              </div>
+              <!-- ko if: PokemonTraits.teraUnlocked() -->
+              <div class="form-row mt-1">
+                <div class="col">
+                  <select class="form-control form-control-sm" data-bind="options: ActivitiesUI.types.map((t) => ({ t, text: `${PokemonType[t]} (${App.game.pokemonTraits.teraShards()[t] ?? 0} shards)` })), optionsText: 'text', optionsValue: 't', value: ActivitiesUI.careTera"></select>
+                </div>
+                <div class="col-auto">
+                  <button class="btn btn-sm btn-info" data-bind="enable: (App.game.pokemonTraits.teraShards()[ActivitiesUI.careTera()] ?? 0) >= PokemonTraits.TERA_COST, click: () => ActivitiesUI.applyTera(), text: `Set Tera type (${PokemonTraits.TERA_COST} shards)`"></button>
+                </div>
+              </div>
+              <!-- /ko -->
+            </div>
+            <!-- /ko -->
+            <div class="d-flex flex-wrap" data-bind="foreach: ActivitiesUI.carePokemon()">
+              <div class="text-center m-1 p-1 border rounded clickable" style="width: 80px;" data-bind="css: { 'border-primary': ActivitiesUI.careId() === $data.id }, click: () => ActivitiesUI.selectCare($data.id)">
+                <img width="40" src="" data-bind="attr: { src: PokemonHelper.getImage($data.id) }">
+                <div class="small text-truncate" data-bind="text: $data.displayName"></div>
+                <div class="small text-muted text-truncate" data-bind="text: App.game.pokemonTraits.nature($data.id).name"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+  </div>
+</div>
+
+<div class="modal noselect fade" id="fishingModal" tabindex="-1" role="dialog" aria-labelledby="fishingModalLabel">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="fishingModalLabel" data-bind="text: `Fishing – ${Activities.rodNames[Activities.rod()]}`">Fishing</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body text-center">
+        <div class="fishing-water mb-2" data-bind="css: { 'fishing-bite': App.game.fishing.state() === 'bite' }">
+          <!-- ko if: App.game.fishing.resultImage() -->
+          <img width="96" src="" data-bind="attr: { src: App.game.fishing.resultImage() }">
+          <!-- /ko -->
+          <!-- ko ifnot: App.game.fishing.resultImage() -->
+          <span class="fishing-float" data-bind="text: App.game.fishing.state() === 'bite' ? '❗' : '🎣'"></span>
+          <!-- /ko -->
+        </div>
+        <p data-bind="text: App.game.fishing.message"></p>
+        <button class="btn btn-primary mr-1" data-bind="visible: ['idle', 'result'].includes(App.game.fishing.state()), click: () => App.game.fishing.cast()">Cast</button>
+        <button class="btn btn-danger" data-bind="visible: ['waiting', 'bite'].includes(App.game.fishing.state()), click: () => App.game.fishing.reel()">Reel in!</button>
+        <p class="small text-muted mt-2 mb-0" data-bind="text: `Caught by fishing: ${App.game.fishing.caught().toLocaleString('en-US')} · Shiny chance 1/${Fishing.shinyChance(Activities.rod())}${Activities.rod() < 3 ? ' · Better rods come with Johto and Hoenn' : ''}`"></p>
+      </div>
+    </div>
+  </div>
+</div>

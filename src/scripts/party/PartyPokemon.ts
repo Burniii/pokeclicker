@@ -421,8 +421,10 @@ class PartyPokemon implements Saveable, TmpPartyPokemonType {
     getEggSteps = ko.pureComputed((): number => {
         const div = 300;
         const extraCycles = (this.vitaminsUsed[GameConstants.VitaminType.Calcium]() + this.vitaminsUsed[GameConstants.VitaminType.Protein]()) / 2;
-        const steps = App.game.breeding.getSteps(this.eggCycles + extraCycles);
-        return steps <= div ? steps : Math.round(((steps / div) ** (1 - this.vitaminsUsed[GameConstants.VitaminType.Carbos]() / 70)) * div);
+        // Breeding natures hatch 10% faster
+        const natureFactor = App.game.pokemonTraits?.hasNatureEffect(this.id, 'breeding') ? 0.9 : 1;
+        const steps = App.game.breeding.getSteps(this.eggCycles + extraCycles) * natureFactor;
+        return steps <= div ? Math.round(steps) : Math.round(((steps / div) ** (1 - this.vitaminsUsed[GameConstants.VitaminType.Carbos]() / 70)) * div);
     });
 
     getBreedingAttackBonus = ko.pureComputed((): number => {
