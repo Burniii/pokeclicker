@@ -496,6 +496,19 @@ Settings.add(new Setting('saveFilename', 'Save file name', [], '[v{version}] Pok
 
 // Mute toggle
 Settings.add(new BooleanSetting('sound.muted', 'Mute All Sounds', false));
+Settings.add(new RangeSetting('audio.sfxVolume', 'Battle sound effects volume', 0, 100, 1, 60));
+Settings.add(new RangeSetting('audio.musicVolume', 'Music volume', 0, 100, 1, 40));
+Settings.add(new BooleanSetting('battleSound.quietWhenIdle', 'Battle sounds only while you are active (1 min without input = quiet)', true));
+[
+    ['hit', 'Click attack hit'],
+    ['defeat', 'Pokémon defeated'],
+    ['throw', 'Poké Ball thrown'],
+    ['shake', 'Poké Ball shakes'],
+    ['caught', 'Pokémon caught'],
+    ['escape', 'Pokémon broke free'],
+    ['victory', 'Gym or battle won'],
+    ['badge', 'New badge earned'],
+].forEach(([key, name]) => Settings.add(new BooleanSetting(`battleSound.${key}`, name, true)));
 
 // Hotkeys
 Settings.add(new HotkeySetting('hotkey.farm', 'Farm', 'F'));

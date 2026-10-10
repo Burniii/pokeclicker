@@ -105,6 +105,7 @@ class GymRunner {
                 type: NotificationConstants.NotificationOption.success,
                 setting: NotificationConstants.NotificationSetting.General.gym_won,
             });
+            BattleSounds.play(App.game.badgeCase.hasBadge(gym.badgeReward) ? 'victory' : 'badge');
             // If this is the first time defeating this gym
             if (!App.game.badgeCase.hasBadge(gym.badgeReward)) {
                 gym.firstWinReward();

@@ -7,6 +7,7 @@ import Notifier from '../notifications/Notifier';
 import NotificationConstants from '../notifications/NotificationConstants';
 import PokemonType from '../enums/PokemonType';
 import Amount from '../wallet/Amount';
+import BattleSounds from '../audio/BattleSounds';
 import type { PokemonNameType } from '../pokemons/PokemonNameType';
 import type EnemyPokemonInterface from '../pokemons/EnemyPokemonInterface';
 import type EncounterType from '../enums/EncounterType';
@@ -80,6 +81,7 @@ export default class BattlePokemon implements EnemyPokemonInterface {
     }
 
     public defeat(trainer = false): void {
+        BattleSounds.play('defeat');
         if (this.incrementDefeatedStatistic) {
             PokemonHelper.incrementPokemonStatistics(this.id, GameConstants.PokemonStatisticsType.Defeated, this.shiny, this.gender, this.shadow);
         }

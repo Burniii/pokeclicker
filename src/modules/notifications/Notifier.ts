@@ -25,6 +25,12 @@ export default class Notifier {
     private static lastInput = Date.now();
     private static inputListening = false;
 
+    // Time of the last mouse/keyboard/touch input, used to detect idle play
+    public static lastInputTime(): number {
+        Notifier.listenForInput();
+        return Notifier.lastInput;
+    }
+
     private static listenForInput() {
         if (Notifier.inputListening) {
             return;

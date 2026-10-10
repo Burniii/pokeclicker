@@ -187,6 +187,8 @@ import {
 import * as OtherEvos from './pokemons/evolutions/Methods';
 import EvolutionInfo from './pokemons/EvolutionInfo';
 import './pokemons/ExtraEvolutions';
+import AudioEngine from './audio/AudioEngine';
+import BattleSounds from './audio/BattleSounds';
 import { bundledQuestlinesDe, bundledSettingsDe } from './translation/bundled/de';
 import { pokemonBabyPrevolutionMap, pokemonList, pokemonMap } from './pokemons/PokemonList';
 import * as PokemonHelper from './pokemons/PokemonHelper';
@@ -444,6 +446,8 @@ Object.assign(<any>window, {
     StoneEvolution,
     EvoTrigger,
     EvolutionInfo,
+    AudioEngine,
+    BattleSounds,
     bundledQuestlinesDe,
     bundledSettingsDe,
     beforeEvolve,
