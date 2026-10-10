@@ -1,0 +1,59 @@
+<div class="modal noselect fade" id="missingPokemonModal" tabindex="-1" role="dialog" aria-labelledby="missingPokemonModalLabel">
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="missingPokemonModalLabel" data-bind="text: `What am I missing? (${MissingPokemon.list().length.toLocaleString('en-US')} Pokémon, ${MissingPokemon.availableCount().toLocaleString('en-US')} obtainable now)`">What am I missing?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-2">
+        <div class="form-row align-items-center mb-2 text-left">
+          <div class="col-12 col-md-4 mb-1">
+            <select class="form-control form-control-sm" data-bind="
+              options: MissingPokemon.regionOptions(),
+              optionsText: 'name',
+              optionsValue: 'id',
+              value: MissingPokemon.region"></select>
+          </div>
+          <div class="col-auto">
+            <label class="mb-0 mr-3"><input type="checkbox" data-bind="checked: MissingPokemon.onlyAvailable"> Obtainable now</label>
+            <label class="mb-0 mr-3"><input type="checkbox" data-bind="checked: MissingPokemon.includeForms"> Alternate forms</label>
+            <label class="mb-0"><input type="checkbox" data-bind="checked: MissingPokemon.shiny"> Shiny</label>
+          </div>
+        </div>
+        <div class="small text-muted text-left mb-2">
+          <span class="badge badge-success">reachable</span>
+          <span class="badge badge-secondary">🔒 locked</span>
+          <span class="badge badge-light border">other source</span>
+          · Hover 🔒 for the reason, click a Pokémon for evolution details.
+        </div>
+        <!-- ko if: MissingPokemon.visibleList().length === 0 -->
+        <h5 class="my-4">Nothing missing here, well done!</h5>
+        <!-- /ko -->
+        <table class="table table-sm table-striped table-hover mb-0">
+          <tbody data-bind="foreach: MissingPokemon.visibleList">
+            <tr class="clickable" data-bind="click: () => { App.game.statistics.selectedPokemonID($data.id); $('#pokemonStatisticsModal').modal('show'); }">
+              <td class="align-middle text-nowrap text-left" style="width: 1%;">
+                <img width="40px" src="" data-bind="attr: { src: PokemonHelper.getImage($data.id, MissingPokemon.shiny()) }" />
+                <small class="text-muted" data-bind="text: `#${Math.floor($data.id).toString().padStart(3, '0')}`"></small>
+                <span data-bind="text: PokemonHelper.displayName($data.name)"></span>
+              </td>
+              <td class="align-middle text-left">
+                <!-- ko foreach: $data.sources -->
+                <span class="badge mb-1" data-bind="
+                  text: ($data.available === false ? '🔒 ' : '') + $data.text,
+                  attr: { title: $data.hint || '' },
+                  css: $data.available === true ? 'badge-success' : ($data.available === false ? 'badge-secondary' : 'badge-light border')"></span>
+                <!-- /ko -->
+                <!-- ko if: $data.sources.length === 0 -->
+                <span class="small text-muted">No known source (event or not obtainable yet)</span>
+                <!-- /ko -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

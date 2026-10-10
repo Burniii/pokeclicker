@@ -114,6 +114,7 @@ class Game implements TmpGameType {
         ItemHandler.initializeItems();
         BreedingController.initialize();
         PokedexHelper.initialize();
+        MissingPokemon.initialize();
         this.profile.initialize();
         this.breeding.initialize();
         this.pokeballs.initialize();
