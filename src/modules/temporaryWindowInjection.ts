@@ -191,6 +191,7 @@ import AudioEngine from './audio/AudioEngine';
 import BattleSounds from './audio/BattleSounds';
 import Music from './audio/Music';
 import BattleEffects from './battles/BattleEffects';
+import MapEffects from './worldmap/MapEffects';
 import { bundledQuestlinesDe, bundledSettingsDe } from './translation/bundled/de';
 import { pokemonBabyPrevolutionMap, pokemonList, pokemonMap } from './pokemons/PokemonList';
 import * as PokemonHelper from './pokemons/PokemonHelper';
@@ -452,6 +453,7 @@ Object.assign(<any>window, {
     BattleSounds,
     Music,
     BattleEffects,
+    MapEffects,
     bundledQuestlinesDe,
     bundledSettingsDe,
     beforeEvolve,

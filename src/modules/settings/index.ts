@@ -503,6 +503,10 @@ Settings.add(new BooleanSetting('battleEffects.particles', 'Battle effects: type
 Settings.add(new BooleanSetting('battleEffects.shiny', 'Battle effects: shiny sparkle', true));
 Settings.add(new BooleanSetting('battleEffects.banner', 'Battle effects: banner when a gym, boss or special battle starts', true));
 Settings.add(new BooleanSetting('battleEffects.respectReducedMotion', 'Battle effects: turn off when the system prefers reduced motion', true));
+Settings.add(new BooleanSetting('mapEffects.dayNight', 'Map: day and night tint', true));
+Settings.add(new BooleanSetting('mapEffects.weather', 'Map: weather animation', true));
+Settings.add(new BooleanSetting('mapEffects.water', 'Map: shimmering water routes', true));
+Settings.add(new BooleanSetting('mapEffects.questPulse', 'Map: pulsing quest targets', true));
 Settings.add(new BooleanSetting('music.enabled', 'Play music', true));
 Settings.add(new BooleanSetting('music.region', 'Region music (towns and routes)', true));
 Settings.add(new BooleanSetting('music.battle', 'Battle music (gyms, dungeons, bosses, special battles)', true));
