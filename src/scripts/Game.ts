@@ -310,6 +310,7 @@ class Game implements TmpGameType {
 
     start() {
         console.log(`[${GameConstants.formatDate(new Date())}] %cGame started`, 'color:#2ecc71;font-weight:900;');
+        Dashboard.initialize();
         if (player.regionStarters[GameConstants.Region.kanto]() === GameConstants.Starter.None) {
             StartSequenceRunner.start();
         }
