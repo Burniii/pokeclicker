@@ -185,6 +185,15 @@ import {
     beforeEvolve, EvoTrigger, LevelEvolution, StoneEvolution,
 } from './pokemons/evolutions/Base';
 import * as OtherEvos from './pokemons/evolutions/Methods';
+import EvolutionInfo from './pokemons/EvolutionInfo';
+import './pokemons/ExtraEvolutions';
+import AudioEngine from './audio/AudioEngine';
+import BattleSounds from './audio/BattleSounds';
+import Music from './audio/Music';
+import BattleEffects from './battles/BattleEffects';
+import MapEffects from './worldmap/MapEffects';
+import TrainerCardFrames from './profile/TrainerCardFrames';
+import { bundledCutscenesDe, bundledQuestlinesDe, bundledSettingsDe } from './translation/bundled/de';
 import { pokemonBabyPrevolutionMap, pokemonList, pokemonMap } from './pokemons/PokemonList';
 import * as PokemonHelper from './pokemons/PokemonHelper';
 import { createLogContent } from './logbook/helpers';
@@ -440,6 +449,16 @@ Object.assign(<any>window, {
     LevelEvolution,
     StoneEvolution,
     EvoTrigger,
+    EvolutionInfo,
+    AudioEngine,
+    BattleSounds,
+    Music,
+    BattleEffects,
+    MapEffects,
+    TrainerCardFrames,
+    bundledQuestlinesDe,
+    bundledSettingsDe,
+    bundledCutscenesDe,
     beforeEvolve,
     ...OtherEvos,
     pokemonList,

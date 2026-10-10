@@ -152,6 +152,15 @@ class MapHelper {
         return GameConstants.BattleBackgroundImage[this.getBattleBackground()];
     }
 
+    // Quest targets can be configured to win over everything except locked areas
+    private static areaStatusPriority(states: Set<areaStatus>): areaStatus[] {
+        const order: areaStatus[] = Settings.getSetting('mapAreaStateOrder').observableValue();
+        if (!Settings.getSetting('mapQuestTargetsFirst').observableValue() || !states.has(areaStatus.questAtLocation) || states.has(areaStatus.locked)) {
+            return order;
+        }
+        return [areaStatus.questAtLocation, ...order.filter(s => s !== areaStatus.questAtLocation)];
+    }
+
     public static calculateRouteCssClass(route: number, region: GameConstants.Region): string {
         const states = new Set([areaStatus.completed]);
         const possiblePokemon = RouteHelper.getAvailablePokemonList(route, region);
@@ -170,7 +179,7 @@ class MapHelper {
             states.add(areaStatus.missingAchievement);
         }
 
-        const statusPriority = Settings.getSetting('mapAreaStateOrder').observableValue();
+        const statusPriority = MapHelper.areaStatusPriority(states);
         const mostImportant = statusPriority.find(state => states.has(state));
         let cls = areaStatus[mostImportant];
 
@@ -232,11 +241,14 @@ class MapHelper {
                 });
             }
         });
+        if (QuestNavigation.isNPCTarget(town)) {
+            states.add(areaStatus.questAtLocation);
+        }
         town.npcs?.filter(npc => npc instanceof PokemonGiftNPC && npc.isVisible()).forEach((npc: PokemonGiftNPC) => {
             npc.areaStatus().forEach(s => states.add(s));
         });
 
-        const statusPriority = Settings.getSetting('mapAreaStateOrder').observableValue();
+        const statusPriority = MapHelper.areaStatusPriority(states);
         const importantState = statusPriority.find(state => states.has(state));
         return areaStatus[importantState];
     }

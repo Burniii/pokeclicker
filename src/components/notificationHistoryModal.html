@@ -1,0 +1,48 @@
+<div class="modal noselect fade" id="notificationHistoryModal" tabindex="-1" role="dialog" aria-labelledby="notificationHistoryModalLabel">
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="notificationHistoryModalLabel">Notification History</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-2">
+        <div class="form-row align-items-center mb-2 text-left">
+          <div class="col-auto">
+            <label class="mb-0 mr-1" for="notificationHistoryDnd">Do not disturb:</label>
+          </div>
+          <div class="col-auto">
+            <select id="notificationHistoryDnd" class="form-control form-control-sm" data-bind="
+              options: Settings.getSetting('notificationDoNotDisturb').options,
+              optionsText: 'text',
+              optionsValue: 'value',
+              value: Settings.getSetting('notificationDoNotDisturb').observableValue(),
+              event: { change: (_, e) => Settings.setSettingByName('notificationDoNotDisturb', e.target.value) }"></select>
+          </div>
+          <div class="col text-right">
+            <button class="btn btn-sm btn-danger" data-bind="click: () => Notifier.clearHistory()">Clear</button>
+          </div>
+        </div>
+        <!-- ko if: Notifier.history().length === 0 -->
+        <h6 class="my-4 text-muted">No notifications yet.</h6>
+        <!-- /ko -->
+        <table class="table table-sm table-striped mb-0">
+          <tbody data-bind="foreach: Notifier.history">
+            <tr class="text-left">
+              <td class="align-middle text-nowrap small text-muted" style="width: 1%;" data-bind="text: $data.time.toLocaleTimeString()"></td>
+              <td class="align-middle" style="width: 1%;">
+                <span class="badge" data-bind="css: `badge-${NotificationConstants.NotificationOption[$data.type]}`, text: $data.suppressed ? '🔕' : '●'"></span>
+              </td>
+              <td class="align-middle small">
+                <!-- ko if: $data.title --><strong data-bind="text: $data.title"></strong><br/><!-- /ko -->
+                <span data-bind="html: $data.message.replace(/\n/g, '<br/>')"></span>
+                <span class="badge badge-pill badge-secondary" data-bind="visible: $data.count > 1, text: `×${$data.count}`"></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

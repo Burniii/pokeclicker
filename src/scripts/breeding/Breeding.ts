@@ -259,6 +259,13 @@ class Breeding implements Feature {
     }
 
     public addPokemonToHatchery(pokemon: PartyPokemon): boolean {
+        if (Activities.isAway(pokemon.id)) {
+            Notifier.notify({
+                message: `${pokemon.displayName} is ${Activities.awayReason(pokemon.id)} and can't be bred right now.`,
+                type: NotificationConstants.NotificationOption.warning,
+            });
+            return false;
+        }
         if (pokemon.breeding) {
             // Prevent putting multiple copies of a pokemon in the hatchery
             console.error(`Tried to add ${pokemon.name} to the hatchery while already being bred!`);

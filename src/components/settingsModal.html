@@ -79,9 +79,22 @@
                             <tbody>
                                 <tr data-bind="visible: Object.values(App.game.challenges.list).filter(c => c.active()).length > 0, template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('hideChallengeRelatedModules')}"></tr>
                                 <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('showGymGoAnimation')}"></tr>
+                                <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('battleEffects.damageNumbers')}"></tr>
+                                <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('battleEffects.particles')}"></tr>
+                                <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('battleEffects.shiny')}"></tr>
+                                <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('battleEffects.banner')}"></tr>
+                                <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('battleEffects.respectReducedMotion')}"></tr>
+                                <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('cutscenes.enabled')}"></tr>
+                                <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('mapEffects.dayNight')}"></tr>
+                                <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('mapEffects.weather')}"></tr>
+                                <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('mapEffects.water')}"></tr>
+                                <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('mapEffects.questPulse')}"></tr>
                                 <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('showMuteButton')}"></tr>
                                 <tr data-bind="template: { name: 'MultipleChoiceSettingTemplate', data: Settings.getSetting('playerSafariSprite')}"></tr>
                                 <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('hideCompletedQuestLineTasks')}"></tr>
+                                <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('mapHighlightQuestLineTargets')}"></tr>
+                                <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('mapQuestTargetsFirst')}"></tr>
+                                <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('showQuestBlockers')}"></tr>
                                 <tr>
                                     <td colspan="2">
                                         <button type="button" class="btn btn-primary" data-bind="click: () => {
@@ -211,6 +224,39 @@
 
                     <div class="tab-pane" id="settings-sound">
                         <div data-bind="template: {name: 'RangeSettingTemplate', data: Settings.getSetting('sound.volume')}"></div>
+                        <div data-bind="template: {name: 'RangeSettingTemplate', data: Settings.getSetting('audio.sfxVolume')}"></div>
+                        <div data-bind="template: {name: 'RangeSettingTemplate', data: Settings.getSetting('audio.musicVolume')}"></div>
+                        <span class="btn btn-block btn-dark clickable mt-1" data-toggle="collapse" href="#settingsSoundMusic">Music</span>
+                        <div class="collapse show" id="settingsSoundMusic">
+                            <table class="table table-striped table-hover m-0">
+                                <tbody>
+                                    <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('music.enabled')}"></tr>
+                                    <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('music.region')}"></tr>
+                                    <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('music.battle')}"></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <span class="btn btn-block btn-dark clickable mt-1" data-toggle="collapse" href="#settingsSoundBattle">Battle sounds</span>
+                        <div class="collapse show" id="settingsSoundBattle">
+                            <table class="table table-striped table-hover m-0">
+                                <tbody>
+                                    <tr data-bind="template: { name: 'MultipleChoiceSettingTemplate', data: Settings.getSetting('battleSound.style')}"></tr>
+                                    <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('battleSound.quietWhenIdle')}"></tr>
+                                    <!-- ko foreach: BattleSounds.list -->
+                                    <tr>
+                                        <td class="p-2 text-left align-middle">
+                                            <button class="btn btn-sm btn-outline-secondary py-0 mr-1" title="Preview" data-bind="click: () => BattleSounds.preview($data.key)">▶</button>
+                                            <span data-bind="text: Settings.getSetting(`battleSound.${$data.key}`).displayName"></span>
+                                        </td>
+                                        <td class="p-2 tight">
+                                            <input type="checkbox" data-bind="checked: Settings.getSetting(`battleSound.${$data.key}`).observableValue(),
+                                                event: { change: (_, e) => Settings.setSettingByName(`battleSound.${$data.key}`, e.target.checked) }">
+                                        </td>
+                                    </tr>
+                                    <!-- /ko -->
+                                </tbody>
+                            </table>
+                        </div>
                         <!-- ko foreach: Object.keys(NotificationConstants.NotificationSound) -->
                         <span class="btn btn-block btn-dark clickable mt-1" data-toggle="collapse" data-bind="text: $data, attr: { href: '#settingsSound' + $data }"></span>
                         <div class="collapse show" data-bind="attr: { id: 'settingsSound' + $data }">
@@ -226,6 +272,13 @@
                     </div>
 
                     <div class="tab-pane" id="settings-notifications">
+                        <table class="table table-striped table-hover m-0">
+                            <tbody>
+                                <tr data-bind="template: { name: 'MultipleChoiceSettingTemplate', data: Settings.getSetting('notificationDoNotDisturb')}"></tr>
+                                <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('notificationGrouping')}"></tr>
+                                <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('notificationHistory')}"></tr>
+                            </tbody>
+                        </table>
                         <!-- ko foreach: Object.keys(NotificationConstants.NotificationSetting) -->
                         <span class="btn btn-block btn-dark clickable mt-1" data-toggle="collapse" data-bind="text: $data, attr: { href: '#settingsNotification' + $data }"></span>
                         <div class="collapse show" data-bind="attr: { id: 'settingsNotification' + $data }">

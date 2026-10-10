@@ -16,6 +16,7 @@ import GymBadgeRequirement from '../requirements/GymBadgeRequirement';
 import TemporaryBattleRequirement from '../requirements/TemporaryBattleRequirement';
 import RouteKillRequirement from '../requirements/RouteKillRequirement';
 import QuestLineStepCompletedRequirement from '../requirements/QuestLineStepCompletedRequirement';
+import QuestLineCompletedRequirement from '../requirements/QuestLineCompletedRequirement';
 import * as GameConstants from '../GameConstants';
 import SubRegion from './SubRegion';
 import QuestLineStartedRequirement from '../requirements/QuestLineStartedRequirement';
@@ -80,4 +81,6 @@ SubRegions.addSubRegion(Region.galar, new SubRegion('Crown Tundra', GalarSubRegi
 
 SubRegions.addSubRegion(Region.hisui, new SubRegion('Hisui', HisuiSubRegions.Hisui, undefined, 'Prelude Beach'));
 
-SubRegions.addSubRegion(Region.paldea, new SubRegion('Paldea', PaldeaSubRegions.Paldea));
+SubRegions.addSubRegion(Region.paldea, new SubRegion('Paldea', PaldeaSubRegions.Paldea, undefined, 'Porto Marinada'));
+SubRegions.addSubRegion(Region.paldea, new SubRegion('Kitakami', PaldeaSubRegions.Kitakami, new GymBadgeRequirement(BadgeEnums.Elite_Nemona), 'Mossui Town'));
+SubRegions.addSubRegion(Region.paldea, new SubRegion('Blueberry Academy', PaldeaSubRegions.BlueberryAcademy, new QuestLineCompletedRequirement('Kitakami: The Teal Mask'), 'Blueberry Academy'));

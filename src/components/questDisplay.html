@@ -15,7 +15,13 @@
                 <div class="pt-2 pb-2 text-center">Click "List" to start a new quest.</div>
             <!-- /ko -->
             <div data-bind="foreach: App.game.quests.currentQuests()">
-                <div class="mb-1" data-bind="text: $data.description"></div>
+                <div class="mb-1">
+                    <!-- ko if: QuestNavigation.canNavigate($data) -->
+                    <button class="btn btn-outline-info btn-sm py-0 px-1 float-right ml-1" title="Go to the quest target"
+                        data-bind="click: () => QuestNavigation.navigate($data)">📍</button>
+                    <!-- /ko -->
+                    <span data-bind="text: $data.description"></span>
+                </div>
                 <div class="row no-gutters mb-1">
                     <div class="col-10">
                         <div class="progress p-0">
@@ -60,7 +66,18 @@
     			</div>
     			<div class="card-body p-0 show" data-bind="attr : {id : 'qlcard_' + $index()}">
                     <div class="mx-2 my-2">
-                        <div class="mb-1" data-bind="text: $data.curQuestObject().description"></div>
+                        <div class="mb-1">
+                            <!-- ko if: QuestNavigation.canNavigate($data.curQuestObject()) -->
+                            <button class="btn btn-outline-info btn-sm py-0 px-1 float-right ml-1" title="Go to the quest target"
+                                data-bind="click: () => QuestNavigation.navigate($data.curQuestObject())">📍</button>
+                            <!-- /ko -->
+                            <span data-bind="text: $data.curQuestObject().description"></span>
+                        </div>
+                        <!-- ko if: Settings.getSetting('showQuestBlockers').observableValue() -->
+                        <!-- ko let: { blocker: QuestNavigation.getBlocker($data.curQuestObject()) } -->
+                        <div class="mb-1 small text-warning" data-bind="visible: blocker, text: `🔒 First: ${blocker}`"></div>
+                        <!-- /ko -->
+                        <!-- /ko -->
                         <div class="d-flex flex-column task-list" data-bind="css: { 'multi': $data.curQuestObject().quests }">
                             <!-- ko ifnot: $data.curQuestObject().quests -->
                             <div class="progress p-0">

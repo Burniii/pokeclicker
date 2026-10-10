@@ -1,0 +1,79 @@
+// Trainer card frames (TrainerCardFrames.ts)
+.trainer-card.trainer-frame {
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    z-index: 1;
+    padding: 5px;
+    border-radius: 9px;
+    pointer-events: none;
+    background-size: 300% 300%;
+    // only the 5px ring around the card is visible
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+}
+
+.trainer-card.trainer-frame-1::before {
+  background: linear-gradient(135deg, #8c5a2b, #d79a5c, #8c5a2b);
+}
+
+.trainer-card.trainer-frame-2::before {
+  background: linear-gradient(135deg, #8d939b, #f1f3f5, #8d939b);
+}
+
+.trainer-card.trainer-frame-3::before {
+  background: linear-gradient(135deg, #b8860b, #ffe680, #b8860b);
+}
+
+.trainer-card.trainer-frame-4::before {
+  background: linear-gradient(135deg, #1d3d8f, #ffd700 30%, #c0392b 70%, #1d3d8f);
+}
+
+.trainer-card.trainer-frame-5::before {
+  background: linear-gradient(120deg, #ffd700, #fff, #ff9de2, #fff, #7fdcff, #ffd700);
+  background-size: 300% 300%;
+  animation: trainer-frame-shift 3s linear infinite, trainer-frame-glow 2s ease-in-out infinite;
+}
+
+.trainer-card.trainer-frame-6::before {
+  background: linear-gradient(120deg, #3b2a1a, #e8a33d, #5a3d1e, #f5c86a, #3b2a1a);
+  background-size: 300% 300%;
+  animation: trainer-frame-shift 6s linear infinite;
+}
+
+.trainer-card.trainer-frame-7::before {
+  background: linear-gradient(120deg, #6ee7ff, #b38cff, #ff8ce0, #8cffb4, #6ee7ff);
+  background-size: 300% 300%;
+  animation: trainer-frame-shift 4s linear infinite;
+}
+
+.trainer-card.trainer-frame-8::before {
+  background: linear-gradient(120deg, #7a0000, #ff4500, #ffd700, #ff4500, #7a0000);
+  background-size: 300% 300%;
+  animation: trainer-frame-shift 2.5s linear infinite, trainer-frame-glow 1.5s ease-in-out infinite;
+}
+
+.trainer-card.trainer-frame-9::before {
+  background: linear-gradient(90deg, #f00, #f80, #ff0, #0f0, #0cf, #00f, #a0f, #f00);
+  background-size: 400% 100%;
+  animation: trainer-frame-shift 5s linear infinite, trainer-frame-glow 2s ease-in-out infinite;
+}
+
+@keyframes trainer-frame-shift {
+  from { background-position: 0% 50%; }
+  to { background-position: 300% 50%; }
+}
+
+@keyframes trainer-frame-glow {
+  0%,
+  100% { filter: brightness(1); }
+  50% { filter: brightness(1.35); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trainer-card.trainer-frame::before {
+    animation: none !important;
+  }
+}

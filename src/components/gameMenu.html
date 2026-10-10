@@ -57,6 +57,17 @@
             <a class="dropdown-item" href="#logBookModal" data-toggle="modal">Log Book</a>
         </li>
         <li>
+            <a class="dropdown-item" href="#activitiesModal" data-toggle="modal">Activities (Research, Expeditions, Ranch)</a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="#cutsceneGalleryModal" data-toggle="modal">Cutscenes</a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="#notificationHistoryModal" data-toggle="modal" data-bind="click: () => { Notifier.unseenSuppressed(0); return true; }">Notification History
+                <span class="badge badge-pill badge-warning" data-bind="visible: Notifier.unseenSuppressed() > 0, text: Notifier.unseenSuppressed"></span>
+            </a>
+        </li>
+        <li>
             <a class="dropdown-item" href="#damageCalculatorModal" data-toggle="modal">Damage Calculator</a>
         </li>
         <li>

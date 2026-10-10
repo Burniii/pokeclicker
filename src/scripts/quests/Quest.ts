@@ -49,19 +49,32 @@ abstract class Quest {
 
     get description(): string {
         const description = this.customDescription ?? this.defaultDescription;
-        if (!this.inQuestLine) {
+        const key = this.translationKey();
+        if (!key) {
             // Quest translations currently only supported for questlines
             return description;
         }
         if (!this.cachedTranslatedDescription) {
-            this.cachedTranslatedDescription = App.translation.getHashed(
-                // Pre-hash keys are formatted like "Example Quest.step 1"
-                `${this.parentQuestLine.name}.step ${this.parentQuestLine.quests().indexOf(this) + 1}`,
-                'questlines',
-                description
-            );
+            this.cachedTranslatedDescription = App.translation.getHashed(key, 'questlines', description);
         }
         return this.cachedTranslatedDescription();
+    }
+
+    // Untranslated description, used to look up translations
+    get englishDescription(): string {
+        return this.customDescription ?? this.defaultDescription;
+    }
+
+    // Pre-hash keys are formatted like "Example Quest.step 1", tasks of a step like "Example Quest.step 1.task 2"
+    public translationKey(): string | undefined {
+        if (this.inQuestLine && this.parentQuestLine) {
+            return `${this.parentQuestLine.name}.step ${this.parentQuestLine.quests().indexOf(this) + 1}`;
+        }
+        const main = this.mainQuest as MultipleQuestsQuest;
+        if (main?.inQuestLine && main.parentQuestLine && main.quests) {
+            return `${main.translationKey()}.task ${main.quests.indexOf(this) + 1}`;
+        }
+        return undefined;
     }
 
     get defaultDescription() {

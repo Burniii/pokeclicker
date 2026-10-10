@@ -1,0 +1,91 @@
+// Cutscenes (Cutscenes.ts)
+.cutscene {
+  overflow: hidden;
+  border: 0;
+
+  .cutscene-stage {
+    position: relative;
+    height: 320px;
+    overflow: hidden;
+  }
+
+  .cutscene-sprite {
+    position: absolute;
+    bottom: 30px;
+    image-rendering: pixelated;
+    opacity: 0;
+    animation-duration: 0.9s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+  }
+
+  .cutscene-left { left: 12%; }
+  .cutscene-right { right: 12%; }
+
+  .cutscene-center {
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
+
+  .cutscene-enter-fade { animation-name: cutscene-fade; }
+  .cutscene-enter-rise { animation-name: cutscene-rise; }
+  .cutscene-enter-slide-left { animation-name: cutscene-slide-left; }
+  .cutscene-enter-slide-right { animation-name: cutscene-slide-right; }
+
+  .cutscene-skip {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    opacity: 0.8;
+  }
+
+  .cutscene-text {
+    min-height: 90px;
+    padding: 12px 16px;
+    font-size: 1.05rem;
+    color: #fff;
+    background: #1d1d2b;
+  }
+}
+
+@keyframes cutscene-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes cutscene-rise {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cutscene-slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(-120px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes cutscene-slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(120px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

@@ -332,6 +332,7 @@ class DungeonRunner {
     public static dungeonWon() {
         if (!DungeonRunner.dungeonFinished()) {
             DungeonRunner.dungeonFinished(true);
+            BattleSounds.play('victory');
             if (!App.game.statistics.dungeonsCleared[GameConstants.getDungeonIndex(DungeonRunner.dungeon.name)]()) {
                 DungeonRunner.dungeon.rewardFunction();
             }
