@@ -115,7 +115,7 @@ class Gym extends TownContent implements TmpGymType {
     }
 
     private isThereQuestAtLocation() {
-        return App.game.quests.currentQuests().some(q => {
+        return QuestNavigation.activeQuests().some(q => {
             return q instanceof DefeatGymQuest && q.gymTown == this.town;
         });
     }

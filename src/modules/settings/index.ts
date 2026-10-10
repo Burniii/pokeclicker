@@ -199,6 +199,9 @@ Settings.add(new Setting<string>('playerSafariSprite', 'Player safari sprite',
     ],
     'male'));
 Settings.add(new BooleanSetting('hideCompletedQuestLineTasks', 'Hide completed quest line step tasks', false));
+Settings.add(new BooleanSetting('mapHighlightQuestLineTargets', 'Highlight quest line targets on the map', true));
+Settings.add(new BooleanSetting('mapQuestTargetsFirst', 'Quest targets override other map colors (except locked)', true));
+Settings.add(new BooleanSetting('showQuestBlockers', 'Show missing requirements for locked quest targets', true));
 
 // CSS variable settings
 Settings.add(new CssVariableSetting('locked', 'Locked Location', [], '#000000'));

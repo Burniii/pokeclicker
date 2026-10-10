@@ -553,7 +553,8 @@ class Dungeon {
     }
 
     public isThereQuestAtLocation = ko.pureComputed(() => {
-        return App.game.quests.currentQuests().some(q => q instanceof DefeatDungeonQuest && q.dungeon == this.name);
+        return QuestNavigation.activeQuests().some(q => (q instanceof DefeatDungeonQuest || q instanceof DefeatDungeonBossQuest) && q.dungeon == this.name)
+            || QuestNavigation.isCaptureTarget([...this.allAvailablePokemon(), ...this.availableBosses(false, true).map(b => b.name as PokemonNameType)]);
     });
 
     public getMimicData(pokemonName: PokemonNameType): {tier: LootTier, lockedMessage: string} {
