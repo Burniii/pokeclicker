@@ -136,17 +136,18 @@ class MissingPokemon {
         PokemonLocations.getShadowPokemonDungeons(name, maxRegion).forEach((dungeon) => add(`Shadow: ${dungeon}`, !!MissingPokemon.townUnlocked(dungeon)));
 
         PokemonLocations.getPokemonPrevolution(name, maxRegion).forEach((evo) => {
-            if (!EvolutionInfo.isRelevant(evo)) {
+            if (evo.trigger === EvoTrigger.NONE) {
                 return;
             }
+            const isMega = !EvolutionInfo.isRelevant(evo);
             const level = EvolutionInfo.requiredLevel(evo);
             const stone = (evo as StoneEvoData).stone;
-            const method = evo.trigger === EvoTrigger.STONE
+            const method = isMega ? 'Key Stone + Mega Stone' : evo.trigger === EvoTrigger.STONE
                 ? ItemList[GameConstants.StoneType[stone]]?.displayName ?? GameConstants.humanifyString(GameConstants.StoneType[stone])
                 : (level ? `Lv. ${level}` : 'level up');
             const owned = App.game.party.alreadyCaughtPokemonByName(evo.basePokemon);
             const unmet = EvolutionInfo.conditions(evo).filter((r) => !r.isCompleted());
-            add(`Evolve ${PokemonHelper.displayName(evo.basePokemon)} (${method})`, owned && !unmet.length, () => [
+            add(`${isMega ? 'Mega Evolve' : 'Evolve'} ${PokemonHelper.displayName(evo.basePokemon)} (${method})`, owned && !unmet.length, () => [
                 ...(owned ? [] : [`${PokemonHelper.displayName(evo.basePokemon)} needs to be owned.`]),
                 ...unmet.map((r) => r.hint()),
             ].join(' '));

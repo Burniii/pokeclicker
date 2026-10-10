@@ -186,6 +186,7 @@ import {
 } from './pokemons/evolutions/Base';
 import * as OtherEvos from './pokemons/evolutions/Methods';
 import EvolutionInfo from './pokemons/EvolutionInfo';
+import './pokemons/ExtraEvolutions';
 import { pokemonBabyPrevolutionMap, pokemonList, pokemonMap } from './pokemons/PokemonList';
 import * as PokemonHelper from './pokemons/PokemonHelper';
 import { createLogContent } from './logbook/helpers';

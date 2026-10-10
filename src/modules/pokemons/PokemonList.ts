@@ -29473,7 +29473,7 @@ export const pokemonList = createPokemonArray(
         'levelType': LevelType.mediumfast,
         'exp': 123,
         'catchRate': 80,
-        'evolutions': [DummyEvolution('Pawmo', 'Pawmot')],
+        'evolutions': [LevelEvolution('Pawmo', 'Pawmot', 32)],
     },
     {
         'id': 923,

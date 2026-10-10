@@ -502,6 +502,7 @@ ItemList.Sigilyph  = new PokemonItem('Sigilyph');
 ItemList['Tornadus (Therian)']  = new PokemonItem('Tornadus (Therian)');
 ItemList['Thundurus (Therian)']  = new PokemonItem('Thundurus (Therian)');
 ItemList['Landorus (Therian)']  = new PokemonItem('Landorus (Therian)');
+ItemList['Enamorus (Therian)']  = new PokemonItem('Enamorus (Therian)');
 // Contest
 ItemList['Dugtrio (Punk)'] = new PokemonItem('Dugtrio (Punk)', 1500, Currency.contestToken);
 ItemList['Gengar (Punk)'] = new PokemonItem('Gengar (Punk)', 3000, Currency.contestToken);

@@ -356,6 +356,7 @@ export type ItemNameType
     | 'Tornadus (Therian)'
     | 'Thundurus (Therian)'
     | 'Landorus (Therian)'
+    | 'Enamorus (Therian)'
     | 'Dugtrio (Punk)'
     | 'Gengar (Punk)'
     | 'Goldeen (Diva)'

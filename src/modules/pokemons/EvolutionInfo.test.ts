@@ -1,5 +1,6 @@
 // PokemonList has to be loaded first to avoid an import cycle with the evolution helpers
-import { pokemonList } from './PokemonList';
+import { pokemonList, pokemonMap } from './PokemonList';
+import arceusPlates from './ExtraEvolutions';
 import { MegaStoneType, StoneType } from '../GameConstants';
 import { DummyEvolution, LevelEvolution, StoneEvolution } from './evolutions/Base';
 import { MegaEvolution, DayTimedLevelEvolution } from './evolutions/Methods';
@@ -31,5 +32,15 @@ describe('EvolutionInfo', () => {
         const prevos = EvolutionInfo.prevolutionsOf('Ivysaur', pokemonList);
         expect(prevos.map((e) => e.basePokemon)).toContain('Bulbasaur');
         expect(EvolutionInfo.prevolutionsOf('Bulbasaur', pokemonList)).toHaveLength(0);
+    });
+});
+
+describe('Extra evolutions', () => {
+    it('makes every Arceus form, Palafin (Hero) and Pawmot obtainable', () => {
+        const arceusForms = pokemonMap['Arceus (Normal)'].evolutions.map((e) => e.evolvedPokemon);
+        Object.keys(arceusPlates).forEach((type) => expect(arceusForms).toContain(`Arceus (${type})`));
+        expect(arceusForms).toHaveLength(17);
+        expect(pokemonMap['Palafin (Zero)'].evolutions.map((e) => e.evolvedPokemon)).toContain('Palafin (Hero)');
+        expect(EvolutionInfo.requiredLevel(pokemonMap.Pawmo.evolutions[0])).toBe(32);
     });
 });
