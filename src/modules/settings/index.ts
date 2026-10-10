@@ -202,6 +202,15 @@ Settings.add(new BooleanSetting('hideCompletedQuestLineTasks', 'Hide completed q
 Settings.add(new BooleanSetting('mapHighlightQuestLineTargets', 'Highlight quest line targets on the map', true));
 Settings.add(new BooleanSetting('mapQuestTargetsFirst', 'Quest targets override other map colors (except locked)', true));
 Settings.add(new BooleanSetting('showQuestBlockers', 'Show missing requirements for locked quest targets', true));
+Settings.add(new Setting<string>('notificationDoNotDisturb', 'Do not disturb (game event notifications)',
+    [
+        new SettingOption('Off', 'off'),
+        new SettingOption('While idle (2 min without input)', 'idle'),
+        new SettingOption('Always', 'always'),
+    ],
+    'off'));
+Settings.add(new BooleanSetting('notificationGrouping', 'Group identical notifications (×N) instead of stacking them', true));
+Settings.add(new BooleanSetting('notificationHistory', 'Keep a notification history (current session)', true));
 
 // CSS variable settings
 Settings.add(new CssVariableSetting('locked', 'Locked Location', [], '#000000'));

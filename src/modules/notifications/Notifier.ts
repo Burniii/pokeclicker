@@ -2,8 +2,71 @@ import NotificationOption from './NotificationOption';
 import Sound from '../utilities/Sound';
 import Rand from '../utilities/Rand';
 import type NotificationSetting from '../settings/NotificationSetting';
+import Settings from '../settings/Settings';
+
+export type NotificationHistoryEntry = {
+    key: string;
+    time: Date;
+    title: string;
+    message: string;
+    type: NotificationOption;
+    count: number;
+    suppressed: boolean;
+};
+
+const HISTORY_SIZE = 200;
+const IDLE_TIME = 2 * 60 * 1000;
 
 export default class Notifier {
+    public static history: KnockoutObservableArray<NotificationHistoryEntry> = ko.observableArray([]);
+    // Notifications hidden by "do not disturb" since the history was last opened
+    public static unseenSuppressed: KnockoutObservable<number> = ko.observable(0);
+    private static activeToasts = new Map<string, { id: string, count: number, timer?: ReturnType<typeof setTimeout> }>();
+    private static lastInput = Date.now();
+    private static inputListening = false;
+
+    private static listenForInput() {
+        if (Notifier.inputListening) {
+            return;
+        }
+        Notifier.inputListening = true;
+        ['mousemove', 'mousedown', 'keydown', 'touchstart', 'wheel'].forEach((event) => {
+            document.addEventListener(event, () => { Notifier.lastInput = Date.now(); }, { passive: true });
+        });
+    }
+
+    // Only game event notifications (the ones with a notification setting) are held back, direct feedback is always shown
+    public static isDoNotDisturb(setting?: NotificationSetting): boolean {
+        if (!setting) {
+            return false;
+        }
+        const mode = Settings.getSetting('notificationDoNotDisturb')?.value ?? 'off';
+        if (mode === 'always') {
+            return true;
+        }
+        return mode === 'idle' && Date.now() - Notifier.lastInput > IDLE_TIME;
+    }
+
+    private static addToHistory(key: string, title: string, message: string, type: NotificationOption, suppressed: boolean) {
+        const last = Notifier.history()[0];
+        if (last && last.key === key) {
+            Notifier.history.splice(0, 1, { ...last, time: new Date(), count: last.count + 1, suppressed: last.suppressed && suppressed });
+        } else {
+            Notifier.history.unshift({ key, time: new Date(), title, message, type, count: 1, suppressed });
+            if (Notifier.history().length > HISTORY_SIZE) {
+                Notifier.history.pop();
+            }
+        }
+        if (suppressed) {
+            Notifier.unseenSuppressed(Notifier.unseenSuppressed() + 1);
+        }
+    }
+
+    public static clearHistory() {
+        Notifier.history([]);
+        Notifier.unseenSuppressed(0);
+    }
+
     public static notify({
         message,
         type = NotificationOption.primary,
@@ -28,12 +91,21 @@ export default class Notifier {
         strippedMessage?: string;
     }): void {
         $(document).ready(() => {
+            Notifier.listenForInput();
+            const key = `${type}|${title}|${message}`;
+            const doNotDisturb = Notifier.isDoNotDisturb(setting);
+            const inGameDisabled = setting && setting.inGameNotification && !setting.inGameNotification.value;
+            if (Settings.getSetting('notificationHistory')?.value ?? true) {
+                Notifier.addToHistory(key, title, message ?? '', type, doNotDisturb && !inGameDisabled);
+            }
             // If we have sounds enabled for this, play it now
-            if (sound) {
+            if (sound && !doNotDisturb) {
                 sound.play();
             }
 
-            if (setting && setting.desktopNotification.value && Notification.permission === 'granted') {
+            // Desktop notifications are still sent while idle, only "always" silences them
+            const desktopAllowed = !doNotDisturb || Settings.getSetting('notificationDoNotDisturb')?.value !== 'always';
+            if (desktopAllowed && setting && setting.desktopNotification.value && Notification.permission === 'granted') {
                 const tempEl = document.createElement('div');
                 tempEl.innerHTML = strippedMessage ?? message.replace(/<br\s*[/]?>/gi, '\n');
                 const msg = tempEl.innerText.replace(/  +/g, ' ');
@@ -47,8 +119,20 @@ export default class Notifier {
                 }, timeout);
             }
 
-            // Check if this type of notification is disabled
-            if (setting && setting.inGameNotification && !setting.inGameNotification.value) {
+            // Check if this type of notification is disabled or held back
+            if (inGameDisabled || doNotDisturb) {
+                return;
+            }
+
+            // Identical notification still on screen: count it up instead of stacking another one
+            const existing = Notifier.activeToasts.get(key);
+            if (existing && (Settings.getSetting('notificationGrouping')?.value ?? true) && document.getElementById(existing.id)) {
+                existing.count++;
+                $(`#${existing.id} .notification-count`).text(`×${existing.count}`).removeClass('d-none');
+                if (existing.timer) {
+                    clearTimeout(existing.timer);
+                    existing.timer = setTimeout(() => $(`#${existing.id}`).toast('hide'), timeout);
+                }
                 return;
             }
 
@@ -59,6 +143,7 @@ export default class Notifier {
                     ${image ? `<img src="${image}" class="icon" />` : ''}
                     ${pokemonImage ? `<img src="${pokemonImage}" class="pokemonIcon" />` : ''}
                     <strong class="mr-auto text-primary">${title || ''}</strong>
+                    <span class="badge badge-pill badge-dark notification-count d-none mr-1"></span>
                     <small class="text-muted">${time}</small>
                     <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">×</button>
                 </div>` : ''}
@@ -66,24 +151,29 @@ export default class Notifier {
                     ${!title && image ? `<img src="${image}" class="icon" />` : ''}
                     ${!title && pokemonImage ? `<img src="${pokemonImage}" class="pokemonIcon" />` : ''}
                     <span class="flex-grow-1">${message.replace(/\n/g, '<br/>')}</span>
-                    ${title ? '' : '<button type="button" class="close align-self-start" data-dismiss="toast">×</button>'}
+                    ${title ? '' : '<span class="badge badge-pill badge-dark notification-count d-none ml-1"></span><button type="button" class="close align-self-start" data-dismiss="toast">×</button>'}
                 </div>
                 </div>`;
 
             $('#toaster').prepend(toastHTML);
+            const entry: { id: string, count: number, timer?: ReturnType<typeof setTimeout> } = { id: toastID, count: 1 };
+            Notifier.activeToasts.set(key, entry);
 
             // Show the notification
             $(`#${toastID}`)?.toast('show');
 
             // Once the notification is shown, hide it after specified timeout
             $(`#${toastID}`).on('shown.bs.toast', () => {
-                setTimeout(() => {
+                entry.timer = setTimeout(() => {
                     $(`#${toastID}`).toast('hide');
                 }, timeout);
             });
 
             // Once hidden remove the element
             $(`#${toastID}`).on('hidden.bs.toast', () => {
+                if (Notifier.activeToasts.get(key)?.id === toastID) {
+                    Notifier.activeToasts.delete(key);
+                }
                 document.getElementById(toastID).remove();
             });
         });
