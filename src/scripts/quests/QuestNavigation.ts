@@ -139,7 +139,7 @@ class QuestNavigation {
     }
 
     private static describe(req: Requirement, depth: number): string {
-        if (depth > 25) {
+        if (depth > 300) {
             return req.hint();
         }
         try {

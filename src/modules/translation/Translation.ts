@@ -27,6 +27,8 @@ const getTranslatedMemoResolver = (
 };
 export default class Translate {
     private languageUpdated: Observable<number>;
+    // Translations shipped with the game itself, used when the translation files have no entry
+    private bundledResources: Array<{ lng: string, ns: string, resources: Record<string, string> }> = [];
     // For easy exporting of translation keys/values from dev builds
     public cachedTranslationDefaults?: Record<string, TranslationVars>; // { namespace: { key: defaultValue }}
 
@@ -98,6 +100,8 @@ export default class Translate {
             }
         });
 
+        i18next.on('loaded', () => this.applyBundledResources());
+
         i18next.services.formatter.add('pokemon', (val, lng, opts) => this.get(val, 'pokemon', opts)());
 
         languageSetting.observableValue.subscribe((val) => {
@@ -105,6 +109,19 @@ export default class Translate {
                 GameHelper.incrementObservable(this.languageUpdated);
             });
         });
+    }
+
+    public addBundledResources(lng: string, ns: string, resources: Record<string, string>) {
+        this.bundledResources.push({ lng, ns, resources });
+        this.applyBundledResources();
+    }
+
+    private applyBundledResources() {
+        this.bundledResources.forEach(({ lng, ns, resources }) => {
+            // Never overwrite entries from the translation files
+            i18next.addResourceBundle(lng, ns, resources, true, false);
+        });
+        GameHelper.incrementObservable(this.languageUpdated);
     }
 
     public translationHashKey(key: string, defaultValue: string) {

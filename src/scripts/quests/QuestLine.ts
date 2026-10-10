@@ -172,6 +172,10 @@ class QuestLine {
         return this.cachedTranslatedName();
     }
 
+    get defaultDescription(): string {
+        return this._description;
+    }
+
     get description(): string {
         if (!this.cachedTranslatedDescription) {
             this.cachedTranslatedDescription = App.translation.getHashed(

@@ -187,6 +187,7 @@ import {
 import * as OtherEvos from './pokemons/evolutions/Methods';
 import EvolutionInfo from './pokemons/EvolutionInfo';
 import './pokemons/ExtraEvolutions';
+import { bundledQuestlinesDe, bundledSettingsDe } from './translation/bundled/de';
 import { pokemonBabyPrevolutionMap, pokemonList, pokemonMap } from './pokemons/PokemonList';
 import * as PokemonHelper from './pokemons/PokemonHelper';
 import { createLogContent } from './logbook/helpers';
@@ -443,6 +444,8 @@ Object.assign(<any>window, {
     StoneEvolution,
     EvoTrigger,
     EvolutionInfo,
+    bundledQuestlinesDe,
+    bundledSettingsDe,
     beforeEvolve,
     ...OtherEvos,
     pokemonList,
