@@ -1,5 +1,5 @@
 import Settings from '../settings/Settings';
-import AudioEngine, { Note } from './AudioEngine';
+import AudioEngine, { Instrument, Note } from './AudioEngine';
 
 export type MusicStyle = 'calm' | 'route' | 'battle' | 'dungeon' | 'boss' | 'champion' | 'legendary';
 export type MusicSituation = { kind: 'town' | 'route' | Exclude<MusicStyle, 'calm' | 'route'>, region: number };
@@ -11,7 +11,8 @@ type TrackConfig = {
     tempo: number; // beats per minute
     progression: number[]; // scale degrees (0-based), 2 bars each
     style: MusicStyle;
-    lead?: OscillatorType;
+    lead: Instrument;
+    accompaniment: Instrument;
 };
 
 const MAJOR = [0, 2, 4, 5, 7, 9, 11];
@@ -22,24 +23,24 @@ const HARMONIC_MINOR = [0, 2, 3, 5, 7, 8, 11];
 
 // One theme per region (index = Region), plus a fallback
 const REGION_THEMES: Array<Omit<TrackConfig, 'style'>> = [
-    { seed: 101, root: 60, mode: MAJOR, tempo: 116, progression: [0, 3, 4, 0] }, // Kanto
-    { seed: 202, root: 62, mode: MAJOR, tempo: 108, progression: [0, 5, 3, 4] }, // Johto
-    { seed: 303, root: 65, mode: MIXOLYDIAN, tempo: 120, progression: [0, 6, 3, 0] }, // Hoenn
-    { seed: 404, root: 57, mode: DORIAN, tempo: 100, progression: [0, 3, 6, 4] }, // Sinnoh
-    { seed: 505, root: 63, mode: MAJOR, tempo: 124, progression: [5, 3, 0, 4] }, // Unova
-    { seed: 606, root: 64, mode: MAJOR, tempo: 104, progression: [0, 4, 5, 3] }, // Kalos
-    { seed: 707, root: 67, mode: MIXOLYDIAN, tempo: 112, progression: [0, 3, 0, 6] }, // Alola
-    { seed: 808, root: 58, mode: MAJOR, tempo: 118, progression: [0, 5, 1, 4] }, // Galar
-    { seed: 909, root: 55, mode: DORIAN, tempo: 96, progression: [0, 6, 3, 4] }, // Hisui
-    { seed: 1010, root: 61, mode: MAJOR, tempo: 122, progression: [3, 4, 2, 5] }, // Paldea
+    { seed: 101, root: 60, mode: MAJOR, tempo: 104, progression: [0, 3, 4, 0], lead: 'flute', accompaniment: 'pluck' }, // Kanto
+    { seed: 202, root: 62, mode: MAJOR, tempo: 96, progression: [0, 5, 3, 4], lead: 'flute', accompaniment: 'piano' }, // Johto
+    { seed: 303, root: 65, mode: MIXOLYDIAN, tempo: 108, progression: [0, 6, 3, 0], lead: 'strings', accompaniment: 'pluck' }, // Hoenn
+    { seed: 404, root: 57, mode: DORIAN, tempo: 90, progression: [0, 3, 6, 4], lead: 'piano', accompaniment: 'bell' }, // Sinnoh
+    { seed: 505, root: 63, mode: MAJOR, tempo: 110, progression: [5, 3, 0, 4], lead: 'brass', accompaniment: 'piano' }, // Unova
+    { seed: 606, root: 64, mode: MAJOR, tempo: 94, progression: [0, 4, 5, 3], lead: 'strings', accompaniment: 'piano' }, // Kalos
+    { seed: 707, root: 67, mode: MIXOLYDIAN, tempo: 100, progression: [0, 3, 0, 6], lead: 'flute', accompaniment: 'pluck' }, // Alola
+    { seed: 808, root: 58, mode: MAJOR, tempo: 106, progression: [0, 5, 1, 4], lead: 'brass', accompaniment: 'strings' }, // Galar
+    { seed: 909, root: 55, mode: DORIAN, tempo: 86, progression: [0, 6, 3, 4], lead: 'flute', accompaniment: 'bell' }, // Hisui
+    { seed: 1010, root: 61, mode: MAJOR, tempo: 112, progression: [3, 4, 2, 5], lead: 'strings', accompaniment: 'pluck' }, // Paldea
 ];
 
 const BATTLE_THEMES: Record<Exclude<MusicStyle, 'calm' | 'route'>, Omit<TrackConfig, 'style'>> = {
-    battle: { seed: 11, root: 57, mode: MINOR, tempo: 150, progression: [0, 5, 6, 4], lead: 'square' },
-    dungeon: { seed: 12, root: 52, mode: DORIAN, tempo: 96, progression: [0, 0, 6, 4], lead: 'triangle' },
-    boss: { seed: 13, root: 50, mode: HARMONIC_MINOR, tempo: 160, progression: [0, 5, 3, 4], lead: 'sawtooth' },
-    champion: { seed: 14, root: 55, mode: MINOR, tempo: 166, progression: [0, 6, 5, 4], lead: 'square' },
-    legendary: { seed: 15, root: 49, mode: HARMONIC_MINOR, tempo: 138, progression: [0, 1, 5, 4], lead: 'sawtooth' },
+    battle: { seed: 11, root: 57, mode: MINOR, tempo: 140, progression: [0, 5, 6, 4], lead: 'strings', accompaniment: 'pluck' },
+    dungeon: { seed: 12, root: 52, mode: DORIAN, tempo: 84, progression: [0, 0, 6, 4], lead: 'flute', accompaniment: 'bell' },
+    boss: { seed: 13, root: 50, mode: HARMONIC_MINOR, tempo: 148, progression: [0, 5, 3, 4], lead: 'brass', accompaniment: 'strings' },
+    champion: { seed: 14, root: 55, mode: MINOR, tempo: 152, progression: [0, 6, 5, 4], lead: 'brass', accompaniment: 'strings' },
+    legendary: { seed: 15, root: 49, mode: HARMONIC_MINOR, tempo: 120, progression: [0, 1, 5, 4], lead: 'strings', accompaniment: 'bell' },
 };
 
 const STEPS_PER_BAR = 16;
@@ -101,45 +102,55 @@ export const composeLoop = (config: TrackConfig): { notes: Note[], duration: num
             notes.push({
                 freq: f(scaleNote(isLast ? 7 : n.degree, 1)),
                 start: (bar * STEPS_PER_BAR + n.step) * step,
-                duration: n.length * step * (calm ? 0.95 : 0.8),
-                wave: config.lead ?? (calm ? 'triangle' : 'square'),
-                volume: calm ? 0.45 : 0.32,
+                duration: n.length * step * 0.92,
+                instrument: config.lead,
+                volume: calm ? 0.4 : 0.45,
             });
         });
     }
 
-    // Harmony: bass and arpeggio following the progression (each chord lasts 2 bars, the progression repeats)
+    // Harmony: pad chords, accompaniment, a soft bass and light drums (each chord lasts 2 bars)
     for (let bar = 0; bar < BARS; bar++) {
         const chord = config.progression[Math.floor(bar / 2) % config.progression.length];
         const barStart = bar * STEPS_PER_BAR * step;
-        const bassSteps = intense ? [0, 2, 4, 6, 8, 10, 12, 14] : [0, 8];
-        bassSteps.forEach((s, i) => notes.push({
-            freq: f(scaleNote(chord + (intense && i % 2 ? 4 : 0), -2)),
-            start: barStart + s * step,
-            duration: (intense ? 2 : 8) * step * 0.9,
-            wave: 'triangle',
-            volume: 0.55,
-        }));
-        if (!calm || bar % 2 === 0) {
-            const arpeggio = [0, 2, 4, 7];
-            for (let s = 0; s < STEPS_PER_BAR; s += intense ? 1 : 2) {
-                notes.push({
-                    freq: f(scaleNote(chord + arpeggio[(s / (intense ? 1 : 2)) % 4], 0)),
-                    start: barStart + s * step,
-                    duration: step * 0.7,
-                    wave: 'square',
-                    volume: intense ? 0.08 : 0.06,
-                });
-            }
+        if (bar % 2 === 0) {
+            [0, 2, 4].forEach((tone) => notes.push({
+                freq: f(scaleNote(chord + tone, 0)),
+                start: barStart,
+                duration: 2 * STEPS_PER_BAR * step,
+                instrument: 'pad',
+                volume: calm ? 0.45 : 0.4,
+            }));
         }
-        // Drums
-        if (!calm) {
-            for (let s = 0; s < STEPS_PER_BAR; s += 2) {
-                notes.push({ freq: 0, start: barStart + s * step, duration: 0.03, wave: 'noise', volume: s % 4 === 0 ? 0.08 : 0.05 });
+        // accompaniment: broken chords
+        const pattern = [0, 2, 4, 7, 4, 2];
+        const every = calm ? 4 : 2;
+        for (let s = 0, i = 0; s < STEPS_PER_BAR; s += every, i++) {
+            notes.push({
+                freq: f(scaleNote(chord + pattern[(i + bar) % pattern.length], 0)),
+                start: barStart + s * step,
+                duration: every * step * 0.9,
+                instrument: config.accompaniment,
+                volume: intense ? 0.3 : 0.26,
+            });
+        }
+        // bass: soft and sparse
+        const bassSteps = intense ? [0, 4, 8, 12] : (calm ? [0] : [0, 8]);
+        bassSteps.forEach((s, i) => notes.push({
+            freq: f(scaleNote(chord + (intense && i % 2 ? 4 : 0), -1)),
+            start: barStart + s * step,
+            duration: (STEPS_PER_BAR / bassSteps.length) * step * 0.85,
+            instrument: 'bass',
+            volume: 0.35,
+        }));
+        // drums
+        if (!calm && config.style !== 'dungeon') {
+            [0, 8].forEach((s) => notes.push({ freq: 110, start: barStart + s * step, duration: 0.1, instrument: 'kick', volume: intense ? 0.5 : 0.3 }));
+            for (let s = 2; s < STEPS_PER_BAR; s += 4) {
+                notes.push({ freq: 0, start: barStart + s * step, duration: 0.04, instrument: 'hat', volume: intense ? 0.35 : 0.25 });
             }
-            [0, 8].forEach((s) => notes.push({ freq: 150, slideTo: 45, start: barStart + s * step, duration: 0.12, wave: 'triangle', volume: intense ? 0.9 : 0.6 }));
             if (intense) {
-                [4, 12].forEach((s) => notes.push({ freq: 0, start: barStart + s * step, duration: 0.09, wave: 'noise', volume: 0.22 }));
+                [4, 12].forEach((s) => notes.push({ freq: 0, start: barStart + s * step, duration: 0.1, instrument: 'snare', volume: 0.4 }));
             }
         }
     }
