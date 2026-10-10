@@ -192,6 +192,7 @@ import BattleSounds from './audio/BattleSounds';
 import Music from './audio/Music';
 import BattleEffects from './battles/BattleEffects';
 import MapEffects from './worldmap/MapEffects';
+import TrainerCardFrames from './profile/TrainerCardFrames';
 import { bundledQuestlinesDe, bundledSettingsDe } from './translation/bundled/de';
 import { pokemonBabyPrevolutionMap, pokemonList, pokemonMap } from './pokemons/PokemonList';
 import * as PokemonHelper from './pokemons/PokemonHelper';
@@ -454,6 +455,7 @@ Object.assign(<any>window, {
     Music,
     BattleEffects,
     MapEffects,
+    TrainerCardFrames,
     bundledQuestlinesDe,
     bundledSettingsDe,
     beforeEvolve,

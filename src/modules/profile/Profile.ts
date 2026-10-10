@@ -8,6 +8,7 @@ import Notifier from '../notifications/Notifier';
 import Rand from '../utilities/Rand';
 import GameHelper from '../GameHelper';
 import * as PokemonHelper from '../pokemons/PokemonHelper';
+import TrainerCardFrames from './TrainerCardFrames';
 
 export default class Profile implements Saveable {
     public static MAX_TRAINER = 163;
@@ -25,6 +26,7 @@ export default class Profile implements Saveable {
     public pokemonFemale: KnockoutObservable<boolean>;
     public background: KnockoutObservable<number>;
     public textColor: KnockoutObservable<string>;
+    public frame: KnockoutObservable<number>;
 
     public pokemonSearch = ko.observable('');
     public getCaughtPokemonList = ko.pureComputed(() => {
@@ -57,6 +59,13 @@ export default class Profile implements Saveable {
         this.pokemonFemale = ko.observable(false).extend({ boolean: null });
         this.background = ko.observable(background).extend({ numeric: 0 });
         this.textColor = ko.observable(textColor);
+        this.frame = ko.observable(0).extend({ numeric: 0 });
+    }
+
+    public selectFrame(id: number) {
+        if (TrainerCardFrames.isUnlocked(id)) {
+            this.frame(id);
+        }
     }
 
     static getTrainerCard(
@@ -75,6 +84,7 @@ export default class Profile implements Saveable {
         challenges = {},
         id = '',
         key?: string,
+        frame = 0,
     ): Element {
         const template: HTMLTemplateElement = document.querySelector('#trainerCardTemplate');
         const node: DocumentFragment = template.content.cloneNode(true) as DocumentFragment;
@@ -86,6 +96,9 @@ export default class Profile implements Saveable {
         // Our trainer card
         const card: HTMLElement = node.querySelector('.trainer-card');
         card.classList.add(`trainer-bg-${background}`);
+        if (frame) {
+            card.classList.add('trainer-frame', `trainer-frame-${frame}`);
+        }
         card.style.color = textColor;
         card.dataset.key = key;
         card.addEventListener('click', (e) => {
@@ -157,6 +170,8 @@ export default class Profile implements Saveable {
             App.game.update.version,
             App.game.challenges.toJSON().list,
             player.trainerId,
+            undefined,
+            this.frame(),
         ));
 
         preview.subscribe((previewElement) => {
@@ -178,6 +193,7 @@ export default class Profile implements Saveable {
         if (json.pokemonFemale !== undefined) this.pokemonFemale(json.pokemonFemale);
         if (json.background !== undefined) this.background(json.background);
         if (json.textColor) this.textColor(json.textColor);
+        if (json.frame !== undefined) this.frame(json.frame);
     }
 
     toJSON(): Record<string, any> {
@@ -190,6 +206,7 @@ export default class Profile implements Saveable {
             pokemonFemale: this.pokemonFemale(),
             background: this.background(),
             textColor: this.textColor(),
+            frame: this.frame(),
         };
     }
 }

@@ -116,6 +116,7 @@ export default class SaveSelector {
                 saveData.challenges?.list ?? {},
                 playerData.trainerId,
                 key,
+                saveData.profile?.frame ?? 0,
             );
         } catch (e) {
             // eslint-disable-next-line no-console
