@@ -59,6 +59,7 @@ export default class AudioEngine {
     private static groups: Partial<Record<AudioGroup, GainNode>> = {};
     private static noiseBuffer: AudioBuffer;
     private static initialized = false;
+    private static samples = new Map<string, AudioBuffer | Promise<AudioBuffer | undefined>>();
 
     // Volume settings: overall volume (sound.volume) × group volume, muted by sound.muted
     private static groupVolume(group: AudioGroup): number {
@@ -248,6 +249,51 @@ export default class AudioEngine {
             last.onended = () => amp.disconnect();
         }
         return sources;
+    }
+
+    // Loads (and caches) an audio file from assets/sounds
+    public static loadSample(file: string): Promise<AudioBuffer | undefined> {
+        if (!AudioEngine.initialized) {
+            return Promise.resolve(undefined);
+        }
+        const cached = AudioEngine.samples.get(file);
+        if (cached) {
+            return Promise.resolve(cached);
+        }
+        const loading = fetch(`assets/sounds/${file}`)
+            .then((response) => (response.ok ? response.arrayBuffer() : Promise.reject(response.status)))
+            .then((data) => AudioEngine.context.decodeAudioData(data))
+            .then((buffer) => {
+                AudioEngine.samples.set(file, buffer);
+                return buffer;
+            })
+            .catch(() => {
+                AudioEngine.samples.delete(file);
+                return undefined;
+            });
+        AudioEngine.samples.set(file, loading);
+        return loading;
+    }
+
+    // Plays a loaded sample, returns false if it isn't loaded (yet)
+    public static playSample(group: AudioGroup, file: string, volume = 1, delay = 0): boolean {
+        const buffer = AudioEngine.samples.get(file);
+        if (!(buffer instanceof AudioBuffer)) {
+            AudioEngine.loadSample(file);
+            return false;
+        }
+        if (!AudioEngine.isAudible(group)) {
+            return true;
+        }
+        const ctx = AudioEngine.context;
+        const source = ctx.createBufferSource();
+        const gain = ctx.createGain();
+        source.buffer = buffer;
+        gain.gain.value = volume;
+        source.connect(gain).connect(AudioEngine.groups[group]);
+        source.onended = () => gain.disconnect();
+        source.start(ctx.currentTime + delay);
+        return true;
     }
 
     public static createGroupChannel(group: AudioGroup): GainNode | undefined {

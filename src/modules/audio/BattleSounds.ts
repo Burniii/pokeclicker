@@ -6,6 +6,21 @@ export type BattleSoundName = 'hit' | 'defeat' | 'throw' | 'shake' | 'caught' | 
 
 const f = AudioEngine.freq;
 
+type SampleLayer = { files: string[], volume: number, delay?: number };
+
+// Recorded sounds (Kenney, CC0) used by default; the synthesized notes are the fallback
+const SAMPLES: Record<BattleSoundName, SampleLayer[]> = {
+    hit: [{ files: ['impactPunch_medium_000', 'impactPunch_medium_001', 'impactPunch_medium_002'], volume: 0.35 }],
+    defeat: [{ files: ['impactSoft_heavy_000', 'impactSoft_heavy_001', 'impactSoft_heavy_002'], volume: 0.5 }],
+    throw: [{ files: ['cloth1'], volume: 0.8 }],
+    shake: [{ files: ['impactWood_light_000', 'impactWood_light_001', 'impactWood_light_002', 'impactWood_light_003'], volume: 0.6 }],
+    caught: [{ files: ['confirmation_002'], volume: 0.7 }],
+    escape: [{ files: ['back_003'], volume: 0.7 }],
+    victory: [{ files: ['jingles_PIZZI01'], volume: 0.6 }],
+    badge: [{ files: ['jingles_STEEL07'], volume: 0.6 }, { files: ['impactBell_heavy_000'], volume: 0.35, delay: 0.1 }],
+};
+const sampleFile = (name: string) => `kenney/${name}.mp3`;
+
 const SOUNDS: Record<BattleSoundName, { name: string, minGap: number, idleQuiet: boolean, notes: () => Note[] }> = {
     hit: {
         name: 'Click attack hit',
@@ -116,12 +131,35 @@ export default class BattleSounds {
             return;
         }
         BattleSounds.lastPlayed[sound] = now;
-        AudioEngine.play('sfx', definition.notes(), AudioEngine.currentTime + delaySeconds);
+        BattleSounds.output(sound, delaySeconds);
+    }
+
+    private static useSamples(): boolean {
+        return (Settings.getSetting('battleSound.style')?.value ?? 'samples') === 'samples';
+    }
+
+    public static preloadSamples() {
+        Object.values(SAMPLES).flat().forEach((layer) => layer.files.forEach((file) => AudioEngine.loadSample(sampleFile(file))));
+    }
+
+    private static output(sound: BattleSoundName, delaySeconds = 0) {
+        if (BattleSounds.useSamples()) {
+            const played = SAMPLES[sound].map((layer) => AudioEngine.playSample(
+                'sfx',
+                sampleFile(layer.files[Math.floor(Math.random() * layer.files.length)]),
+                layer.volume,
+                delaySeconds + (layer.delay ?? 0),
+            ));
+            if (played.every((p) => p)) {
+                return;
+            }
+        }
+        AudioEngine.play('sfx', SOUNDS[sound].notes(), AudioEngine.currentTime + delaySeconds);
     }
 
     // Plays a sound from the settings, ignoring whether it is enabled
     public static preview(sound: BattleSoundName) {
-        AudioEngine.resume().then(() => AudioEngine.play('sfx', SOUNDS[sound].notes()));
+        AudioEngine.resume().then(() => BattleSounds.output(sound));
     }
 
     // Ball thrown, then up to three shakes spread over the catch time

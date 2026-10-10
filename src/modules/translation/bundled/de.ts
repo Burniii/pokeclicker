@@ -239,6 +239,7 @@ export const bundledSettingsDe: Record<string, string> = {
     'music.enabled': 'Musik abspielen',
     'music.region': 'Regionsmusik (Orte und Routen)',
     'music.battle': 'Kampfmusik (Arenen, Dungeons, Bosse, Sonderkämpfe)',
+    'battleSound.style': 'Art der Kampfsounds',
     'battleSound.quietWhenIdle': 'Kampfsounds nur, während du aktiv bist (1 Min. ohne Eingabe = still)',
     'battleSound.hit': 'Treffer per Klick',
     'battleSound.defeat': 'Pokémon besiegt',

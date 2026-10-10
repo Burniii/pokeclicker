@@ -239,6 +239,7 @@
                         <div class="collapse show" id="settingsSoundBattle">
                             <table class="table table-striped table-hover m-0">
                                 <tbody>
+                                    <tr data-bind="template: { name: 'MultipleChoiceSettingTemplate', data: Settings.getSetting('battleSound.style')}"></tr>
                                     <tr data-bind="template: { name: 'BooleanSettingTemplate', data: Settings.getSetting('battleSound.quietWhenIdle')}"></tr>
                                     <!-- ko foreach: BattleSounds.list -->
                                     <tr>

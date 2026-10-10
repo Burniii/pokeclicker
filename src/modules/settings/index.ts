@@ -510,6 +510,12 @@ Settings.add(new BooleanSetting('mapEffects.questPulse', 'Map: pulsing quest tar
 Settings.add(new BooleanSetting('music.enabled', 'Play music', true));
 Settings.add(new BooleanSetting('music.region', 'Region music (towns and routes)', true));
 Settings.add(new BooleanSetting('music.battle', 'Battle music (gyms, dungeons, bosses, special battles)', true));
+Settings.add(new Setting<string>('battleSound.style', 'Battle sound style',
+    [
+        new SettingOption('Recorded sounds (Kenney, CC0)', 'samples'),
+        new SettingOption('Synthesized sounds', 'synth'),
+    ],
+    'samples'));
 Settings.add(new BooleanSetting('battleSound.quietWhenIdle', 'Battle sounds only while you are active (1 min without input = quiet)', true));
 [
     ['hit', 'Click attack hit'],
