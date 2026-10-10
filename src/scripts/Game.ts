@@ -313,6 +313,7 @@ class Game implements TmpGameType {
         Dashboard.initialize();
         AudioEngine.initialize();
         MusicDirector.initialize();
+        BattleEffectsDirector.initialize();
         BundledTranslations.register();
         if (player.regionStarters[GameConstants.Region.kanto]() === GameConstants.Starter.None) {
             StartSequenceRunner.start();
