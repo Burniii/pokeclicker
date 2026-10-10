@@ -236,6 +236,7 @@ export const bundledSettingsDe: Record<string, string> = {
     'mapEffects.weather': 'Karte: Wetteranimation',
     'mapEffects.water': 'Karte: schimmernde Wasserrouten',
     'mapEffects.questPulse': 'Karte: pulsierende Questziele',
+    'cutscenes.enabled': 'Zwischensequenzen bei großen Story-Momenten abspielen',
     'music.enabled': 'Musik abspielen',
     'music.region': 'Regionsmusik (Orte und Routen)',
     'music.battle': 'Kampfmusik (Arenen, Dungeons, Bosse, Sonderkämpfe)',
@@ -250,3 +251,37 @@ export const bundledSettingsDe: Record<string, string> = {
     'battleSound.victory': 'Arena oder Kampf gewonnen',
     'battleSound.badge': 'Neuer Orden erhalten',
 };
+
+// Cutscene texts, keys are "cutscene.<id>.<frame>"
+export const bundledCutscenesDe: Record<string, string> = {
+    'cutscene.region-1.0': 'Willkommen in Johto! Der Legende nach wachen Ho-Oh und Lugia über dieses Land alter Traditionen.',
+    'cutscene.region-1.1': 'Professor Elm: In Johto gibt es viele Pokémon, die du noch nie gesehen hast. Bring sie mir, wenn du sie findest!',
+    'cutscene.region-2.0': 'Willkommen in Hoenn, dem Land von Meer und Vulkanen, wo Groudon und Kyogre einst um Land und Ozean kämpften.',
+    'cutscene.region-2.1': 'Professor Birch: Echte Forschung passiert draußen im Feld. Los geht\'s!',
+    'cutscene.region-3.0': 'Willkommen in Sinnoh. Der Kraterberg teilt die Region, und sein Gipfel soll die Geheimnisse von Zeit und Raum bergen.',
+    'cutscene.region-3.1': 'Professor Rowan: Auch wer so weit gekommen ist, hat noch viel zu lernen. Beweise mir das Gegenteil.',
+    'cutscene.region-4.0': 'Willkommen in Unova, fern der Regionen, die du kennst. In den Legenden dieses Landes prallen Wahrheit und Ideale aufeinander.',
+    'cutscene.region-4.1': 'Professorin Juniper: Fast jedes Pokémon hier ist neu. Ist das nicht aufregend?',
+    'cutscene.region-5.0': 'Willkommen in Kalos, der Region der Schönheit, in der Leben und Zerstörung zwei Seiten einer Geschichte sind.',
+    'cutscene.region-5.1': 'Professor Sycamore: Hast du schon von der Mega-Entwicklung gehört? Kalos hütet ihre Geheimnisse.',
+    'cutscene.region-6.0': 'Alola! Vier Inseln unter Sonne und Mond warten auf deine Inselwanderschaft.',
+    'cutscene.region-6.1': 'Professor Kukui: Woo! Die Prüfungen hier werden dich und deine Pokémon fordern, yeah!',
+    'cutscene.region-7.0': 'Willkommen in Galar, wo Arenakämpfe ganze Stadien füllen und Dynamax-Pokémon über der Menge thronen.',
+    'cutscene.region-7.1': 'Professorin Magnolia: Der Tag der Finsternis ist nur eine Legende. Oder etwa nicht?',
+    'cutscene.region-8.0': 'Ein Riss öffnet sich am Himmel. Du stürzt durch die Zeit und erwachst an einem Strand im alten Hisui.',
+    'cutscene.region-8.1': 'Professor Laventon: Ein Trainer, der vom Himmel fällt? Nun, das Galaktik-Expeditionsteam kann Hilfe wie deine gebrauchen!',
+    'cutscene.region-9.0': 'Willkommen in Paldea! Deine Schatzsuche beginnt an der Akademie, und irgendwo im Großen Krater liegt Area Zero.',
+    'cutscene.region-9.1': 'Der Professor: Jeder Schüler muss seinen eigenen Schatz finden. Was wird deiner sein?',
+    'cutscene.tb:Arceus.0': 'Licht strömt vom Gipfel des Kraterbergs herab. Arceus, der Ursprüngliche, erkennt deine Stärke an.',
+    'cutscene.tb:Arceus.1': 'Die Tafeln beginnen zu leuchten. Sobald Arceus stark genug ist, kann es ihre Kräfte annehmen.',
+    'cutscene.tb:Paradise Protection Protocol.0': 'Im Zero Lab wird es still. Die Maschine des Professors ist endlich abgeschaltet.',
+    'cutscene.tb:Paradise Protection Protocol.1': 'Koraidon und Miraidon blicken über den Großen Krater. Sie haben ihren Weg nach Hause gefunden – und du auch.',
+    'cutscene.tb:Terapagos.0': 'Tief in den Area Zero Underdepths leuchtet Terapagos in allen Farben des Terakristall-Phänomens.',
+    'cutscene.tb:Terapagos.1': 'Briar: Das Buch meiner Ururur-Großmutter hatte die ganze Zeit recht. Danke!',
+    'cutscene.tb:Monarch Ash.0': 'In Pallet Town, wo alles begann, senkt der Monarch endlich seine Mütze.',
+    'cutscene.tb:Monarch Ash.1': 'Du bist der stärkste Trainer der Welt. Aber es gibt immer neue Pokémon zu entdecken.',
+};
+for (let region = 0; region < 10; region++) {
+    bundledCutscenesDe[`cutscene.champion-${region}.0`] = 'Du hast den Champ von {region} besiegt! Dein Name wird in die Ruhmeshalle eingetragen.';
+    bundledCutscenesDe[`cutscene.champion-${region}.1`] = 'Deine Partner standen dir die ganze Zeit zur Seite.';
+}

@@ -507,6 +507,7 @@ Settings.add(new BooleanSetting('mapEffects.dayNight', 'Map: day and night tint'
 Settings.add(new BooleanSetting('mapEffects.weather', 'Map: weather animation', true));
 Settings.add(new BooleanSetting('mapEffects.water', 'Map: shimmering water routes', true));
 Settings.add(new BooleanSetting('mapEffects.questPulse', 'Map: pulsing quest targets', true));
+Settings.add(new BooleanSetting('cutscenes.enabled', 'Play cutscenes at big story moments', true));
 Settings.add(new BooleanSetting('music.enabled', 'Play music', true));
 Settings.add(new BooleanSetting('music.region', 'Region music (towns and routes)', true));
 Settings.add(new BooleanSetting('music.battle', 'Battle music (gyms, dungeons, bosses, special battles)', true));

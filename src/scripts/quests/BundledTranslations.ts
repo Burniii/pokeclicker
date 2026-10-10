@@ -1,7 +1,7 @@
 // Registers the translations shipped with this fork for quest lines and settings
 class BundledTranslations {
     private static readonly languages = {
-        de: { questlines: bundledQuestlinesDe, settings: bundledSettingsDe },
+        de: { questlines: bundledQuestlinesDe, settings: bundledSettingsDe, cutscenes: bundledCutscenesDe },
     };
 
     public static register() {
@@ -23,7 +23,7 @@ class BundledTranslations {
                     }
                 });
             });
-            App.translation.addBundledResources(language, 'questlines', questlines);
+            App.translation.addBundledResources(language, 'questlines', { ...questlines, ...texts.cutscenes });
             App.translation.addBundledResources(language, 'settings', texts.settings);
         });
     }

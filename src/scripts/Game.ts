@@ -46,6 +46,7 @@ class Game implements TmpGameType {
     public purifyChamber: PurifyChamber;
     public weatherApp: WeatherApp;
     public zMoves: ZMoves;
+    public cutscenes: Cutscenes;
 
     constructor() {
         // Needs to be loaded first so save data can be updated (specifically "player" data)
@@ -57,6 +58,7 @@ class Game implements TmpGameType {
 
         // Load other Features
         this.profile = new Profile();
+        this.cutscenes = new Cutscenes();
         this.breeding = new Breeding(this.multiplier);
         this.pokeballs = new Pokeballs();
         this.pokeballFilters = new PokeballFilters();
@@ -315,6 +317,7 @@ class Game implements TmpGameType {
         BattleSounds.preloadSamples();
         MusicDirector.initialize();
         BattleEffectsDirector.initialize();
+        this.cutscenes.initialize();
         BundledTranslations.register();
         if (player.regionStarters[GameConstants.Region.kanto]() === GameConstants.Starter.None) {
             StartSequenceRunner.start();
