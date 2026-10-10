@@ -312,6 +312,7 @@ class Game implements TmpGameType {
         console.log(`[${GameConstants.formatDate(new Date())}] %cGame started`, 'color:#2ecc71;font-weight:900;');
         Dashboard.initialize();
         AudioEngine.initialize();
+        MusicDirector.initialize();
         BundledTranslations.register();
         if (player.regionStarters[GameConstants.Region.kanto]() === GameConstants.Starter.None) {
             StartSequenceRunner.start();

@@ -498,6 +498,9 @@ Settings.add(new Setting('saveFilename', 'Save file name', [], '[v{version}] Pok
 Settings.add(new BooleanSetting('sound.muted', 'Mute All Sounds', false));
 Settings.add(new RangeSetting('audio.sfxVolume', 'Battle sound effects volume', 0, 100, 1, 60));
 Settings.add(new RangeSetting('audio.musicVolume', 'Music volume', 0, 100, 1, 40));
+Settings.add(new BooleanSetting('music.enabled', 'Play music', true));
+Settings.add(new BooleanSetting('music.region', 'Region music (towns and routes)', true));
+Settings.add(new BooleanSetting('music.battle', 'Battle music (gyms, dungeons, bosses, special battles)', true));
 Settings.add(new BooleanSetting('battleSound.quietWhenIdle', 'Battle sounds only while you are active (1 min without input = quiet)', true));
 [
     ['hit', 'Click attack hit'],
