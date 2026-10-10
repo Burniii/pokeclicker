@@ -59,6 +59,8 @@ describe('Content references', () => {
         const valid = new Set(TemporaryBattles);
         expect(unknown(`TemporaryBattleRequirement\\(${STR}`, valid)).toEqual([]);
         expect(unknown(`DefeatTemporaryBattleQuest\\(${STR}`, valid)).toEqual([]);
+        // story step helpers in QuestLineHelper (and their local aliases)
+        expect(unknown(`(?:oneTimeBattleStep|\\bbattle)\\(${STR}`, valid)).toEqual([]);
         expect(unknown(`TemporaryBattleList\\[${STR}\\]`, new Set(tempBattleDefinitions))).toEqual([]);
     });
 
@@ -72,6 +74,7 @@ describe('Content references', () => {
         expect(unknown(`DefeatGymQuest\\(\\s*\\d+,\\s*\\d+,\\s*${STR}`, gymNames)).toEqual([]);
         expect(unknown(`getDungeonIndex\\(${STR}\\)`, dungeonNames)).toEqual([]);
         expect(unknown(`DefeatDungeonQuest\\(\\s*\\d+,\\s*\\d+,\\s*${STR}`, dungeonNames)).toEqual([]);
+        expect(unknown(`(?:dungeonStep|\\bdungeon)\\(${STR}`, dungeonNames)).toEqual([]);
         const gymDefinitions = matchAll(read('scripts/gym/GymList.ts'), `new Gym\\(\\s*${STR},\\s*${STR}`.replace(`${STR},\\s*${STR}`, `'(?:[^'\\\\]|\\\\.)*',\\s*${STR}`));
         expect(gymDefinitions.filter((g) => !gymNames.has(g))).toEqual([]);
         const dungeonDefinitions = matchAll(read('scripts/dungeons/Dungeon.ts'), `new Dungeon\\(${STR}`);
@@ -183,6 +186,24 @@ describe('Content reachability', () => {
                 .map((battle) => `${battle} (in ${town})`);
         });
         expect(violations).toEqual([]);
+    });
+
+    it('maps old quest line layouts onto the current steps', () => {
+        const problems: string[] = [];
+        questLineHelper.split(/new QuestLine\(/).slice(1).forEach((section) => {
+            const questLine = unescapeQuotes(section.match(new RegExp(`^\\s*${STR}`))[1]);
+            const body = section.split('App.game.quests.questLines.push(')[0];
+            const steps = (body.match(/\.addQuest\(/g) ?? []).length;
+            [...body.matchAll(/withStepMigration\((\d+), \[([\d, ]*)\]\)/g)].forEach((m) => {
+                const oldSteps = +m[1];
+                const map = m[2].split(',').map((v) => +v.trim());
+                const ascending = map.every((v, i) => i === 0 || v >= map[i - 1]);
+                if (map.length !== oldSteps || !ascending || map[0] !== 0 || map[map.length - 1] > steps || oldSteps === steps) {
+                    problems.push(`${questLine}: ${oldSteps} -> ${steps} steps, map [${map.join(', ')}]`);
+                }
+            });
+        });
+        expect(problems).toEqual([]);
     });
 
     it('lets quest steps for one-time battles count victories from before the step started', () => {

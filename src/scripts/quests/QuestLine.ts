@@ -8,6 +8,8 @@ class QuestLine {
     curQuestObject: KnockoutComputed<any>;
     curQuestInitial: KnockoutObservable<number>;
     totalQuests: number;
+    // Maps the current step of saves made with an older step layout (keyed by the old step count) to the new layout
+    stepMigrations: Record<number, number[]> = {};
 
     autoBegin: KnockoutSubscription;
     private pausableStates = [GameConstants.GameState.town, GameConstants.GameState.fighting];
@@ -59,6 +61,20 @@ class QuestLine {
                 this.state(QuestLineState.ended);
             }
         });
+    }
+
+    withStepMigration(oldStepCount: number, newIndexByOldIndex: number[]): QuestLine {
+        this.stepMigrations[oldStepCount] = newIndexByOldIndex;
+        return this;
+    }
+
+    // Returns the step to resume at for a saved quest line, or undefined if the save already uses the current layout
+    migratedStep(savedQuest: number, savedSteps?: number): number | undefined {
+        const oldStepCount = savedSteps ?? Object.keys(this.stepMigrations).map(Number)[0];
+        if (oldStepCount == undefined || oldStepCount === this.totalQuests || !this.stepMigrations[oldStepCount]) {
+            return undefined;
+        }
+        return this.stepMigrations[oldStepCount][savedQuest] ?? this.totalQuests;
     }
 
     addQuest(quest: Quest) {
@@ -192,6 +208,7 @@ class QuestLine {
             state: this.state(),
             name: this.name,
             quest: this.curQuest(),
+            steps: this.totalQuests,
             initial: this.curQuestObject().initial?.() ?? this.curQuestInitial(),
         };
         if (this.curQuestObject() instanceof MultipleQuestsQuest) {

@@ -4109,32 +4109,95 @@ class QuestLineHelper {
         App.game.quests.questLines.push(gigantamaxQuestLine);
     }
 
+    /* Story step helpers: all of them complete instantly if the player already did them before starting the step */
+
+    private static oneTimeBattleStep(name: string, description: string): Quest {
+        return new DefeatTemporaryBattleQuest(name, description).withInitialValue(0);
+    }
+
+    private static travelStep(region: GameConstants.Region, route: number, description: string): Quest {
+        return new DefeatPokemonsQuest(GameConstants.ROUTE_KILLS_NEEDED, 0, route, region, description).withInitialValue(0);
+    }
+
+    private static dungeonStep(name: string, description: string): Quest {
+        return new DefeatDungeonQuest(1, 0, name).withDescription(description).withInitialValue(0);
+    }
+
     /* Hisui QuestLines */
 
     public static createHisuiRiftQuestLine() {
         const hisuiRiftQuestLine = new QuestLine('The Rift of Hisui', 'Join the Galaxy Expedition Team and calm the frenzied Nobles of Hisui.', new GymBadgeRequirement(BadgeEnums.Elite_GalarChampion), GameConstants.BulletinBoards.Hisui);
+        const battle = QuestLineHelper.oneTimeBattleStep;
+        const travel = (route: number, description: string) => QuestLineHelper.travelStep(GameConstants.Region.hisui, route, description);
+        const dungeon = QuestLineHelper.dungeonStep;
 
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Volo 1', 'You have fallen through a rift in the sky and landed on Prelude Beach. Meet Volo of the Ginkgo Guild in Jubilife Village.').withInitialValue(0));
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Akari 1', 'Prove to Akari of the Survey Corps that you can handle Pokémon.').withInitialValue(0));
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Warden Mai', 'Head into the Obsidian Fieldlands and meet Warden Mai at Fieldlands Camp.').withInitialValue(0));
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lord of the Woods: Kleavor', 'The Lord of the Woods has been struck by lightning from the rift. Quell Kleavor at Grandtree Arena.').withInitialValue(0));
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lady of the Ridge: Lilligant', 'The Diamond Clan needs your help in the Crimson Mirelands. Quell Lady Lilligant at Brava Arena.').withInitialValue(0));
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lord of the Isles: Arcanine', 'The Pearl Clan asks you to cross to Firespit Island in the Cobalt Coastlands. Quell Lord Arcanine at Molten Arena.').withInitialValue(0));
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lord of the Hollow: Electrode', 'Climb the Coronet Highlands and quell Lord Electrode at Moonview Arena.').withInitialValue(0));
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('Lord of the Tundra: Avalugg', 'Brave the blizzards of the Alabaster Icelands and quell Lord Avalugg at Icepeak Arena.').withInitialValue(0));
+        // Obsidian Fieldlands
+        hisuiRiftQuestLine.addQuest(battle('Volo 1', 'You have fallen through a rift in the sky and landed on Prelude Beach. Meet Volo of the Ginkgo Guild in Jubilife Village.'));
+        hisuiRiftQuestLine.addQuest(battle('Akari 1', 'Prove to Akari of the Survey Corps in Jubilife Village that you can handle Pokémon.'));
+        hisuiRiftQuestLine.addQuest(travel(2, 'Head out into the Obsidian Fieldlands. Cross Aspiration Hill and Horseshoe Plains to reach Fieldlands Camp.'));
+        hisuiRiftQuestLine.addQuest(battle('Warden Mai', 'Meet Warden Mai at Fieldlands Camp.'));
+        hisuiRiftQuestLine.addQuest(travel(5, 'Survey the Fieldlands up to Deertrack Heights.'));
+        hisuiRiftQuestLine.addQuest(battle('Alpha Kricketune', 'An alpha Kricketune is causing trouble near Heights Camp. Defeat it.'));
+        hisuiRiftQuestLine.addQuest(travel(9, 'Follow the path through the Fieldlands to Gruelling Grove, at the foot of Grandtree Arena.'));
+        hisuiRiftQuestLine.addQuest(battle('Warden Lian', 'Warden Lian guards Grandtree Arena. Prove your worth to him.'));
+        hisuiRiftQuestLine.addQuest(battle('Irida 1', 'Irida of the Pearl Clan wants to test you at Grandtree Arena.'));
+        hisuiRiftQuestLine.addQuest(battle('Lord of the Woods: Kleavor', 'The Lord of the Woods has been struck by lightning from the rift. Quell Kleavor at Grandtree Arena.'));
+        hisuiRiftQuestLine.addQuest(battle('Akari 2', 'Return to Jubilife Village and report to Akari.'));
+        // Crimson Mirelands
+        hisuiRiftQuestLine.addQuest(dungeon('Ancient Solaceon Ruins', 'Volo wants to show you something in the Crimson Mirelands. Explore the Ancient Solaceon Ruins past Golden Lowlands.'));
+        hisuiRiftQuestLine.addQuest(battle('Volo 2', 'Volo is waiting for you at the Ancient Solaceon Ruins.'));
+        hisuiRiftQuestLine.addQuest(battle('Coin 1', 'Coin of the Ginkgo Guild is waiting at Mirelands Camp.'));
+        hisuiRiftQuestLine.addQuest(travel(22, 'The Diamond Clan needs your help. Cross the Crimson Mirelands to Holm of Trials.'));
+        hisuiRiftQuestLine.addQuest(battle('Lady of the Ridge: Lilligant', 'Quell Lady Lilligant at Brava Arena.'));
         hisuiRiftQuestLine.addQuest(new MultipleQuestsQuest(
             [
-                new DefeatTemporaryBattleQuest('Adaman 2', 'Earn Adaman\'s trust at Ancient Lake Valor.').withInitialValue(0),
-                new DefeatTemporaryBattleQuest('Irida 3', 'Earn Irida\'s trust at Pearl Settlement.').withInitialValue(0),
-                new DefeatTemporaryBattleQuest('Beni', 'Defeat the ninja Beni at the Stone Portal.').withInitialValue(0),
-            ], 'Commander Kamado has banished you from Jubilife Village. Gain the support of the clan leaders and uncover the truth.'));
-        hisuiRiftQuestLine.addQuest(new DefeatTemporaryBattleQuest('The Galaxy Team\'s Kamado', 'Visit the three ancient lakes, then face Commander Kamado at Prelude Beach.').withInitialValue(0));
+                battle('Irida 2', 'Meet Irida at Beachside Camp.'),
+                battle('Ursaluna', 'Help Warden Calaba with Ursaluna at Sludge Mound.'),
+            ], 'Lady Lilligant is calm again. Meet Irida at Beachside Camp and help out at Sludge Mound.'));
+        // Cobalt Coastlands
+        hisuiRiftQuestLine.addQuest(travel(36, 'The Pearl Clan asks you to come to the Cobalt Coastlands. Travel along the coast to Seagrass Haven.'));
+        hisuiRiftQuestLine.addQuest(dungeon('Firespit Island', 'Cross over to Firespit Island and make your way to Molten Arena.'));
+        hisuiRiftQuestLine.addQuest(battle('Clover', 'Clover of the Ginkgo Guild blocks the way at Molten Arena.'));
+        hisuiRiftQuestLine.addQuest(battle('Coin 2', 'Coin wants a rematch at Molten Arena.'));
+        hisuiRiftQuestLine.addQuest(battle('Charm 1', 'Charm of the Ginkgo Guild challenges you at Molten Arena.'));
+        hisuiRiftQuestLine.addQuest(battle('Lord of the Isles: Arcanine', 'Quell Lord Arcanine at Molten Arena.'));
+        // Coronet Highlands
+        hisuiRiftQuestLine.addQuest(battle('Adaman 1', 'Adaman of the Diamond Clan is waiting for you in Jubilife Village.'));
+        hisuiRiftQuestLine.addQuest(travel(38, 'Climb into the Coronet Highlands up to Heavenward Lookout.'));
+        hisuiRiftQuestLine.addQuest(battle('Melli 1', 'Melli of the Pearl Clan is lurking in the Ancient Wayward Cave.'));
+        hisuiRiftQuestLine.addQuest(travel(40, 'Continue through the Highlands to Lonely Spring.'));
+        hisuiRiftQuestLine.addQuest(battle('Warden Ingo', 'Warden Ingo is waiting at Clamberclaw Cliffs.'));
+        hisuiRiftQuestLine.addQuest(travel(46, 'Climb Mount Coronet up to Cloudcap Pass, right below Moonview Arena.'));
+        hisuiRiftQuestLine.addQuest(battle('Melli 2', 'Melli wants a rematch at Moonview Arena.'));
+        hisuiRiftQuestLine.addQuest(battle('Lord of the Hollow: Electrode', 'Quell Lord Electrode at Moonview Arena.'));
+        // Alabaster Icelands
+        hisuiRiftQuestLine.addQuest(travel(48, 'Brave the blizzards of the Alabaster Icelands up to Bonechill Wastes.'));
+        hisuiRiftQuestLine.addQuest(battle('Warden Gaeric', 'Warden Gaeric is waiting at Avalugg\'s Legacy.'));
+        hisuiRiftQuestLine.addQuest(travel(54, 'Make your way through the Icelands to Glacier Terrace.'));
+        hisuiRiftQuestLine.addQuest(battle('Warden Sabi', 'Warden Sabi is waiting at the Ancient Snowpoint Temple.'));
+        hisuiRiftQuestLine.addQuest(battle('Hisuian Braviary', 'Warden Sabi\'s Braviary has gone frenzied at the Ancient Snowpoint Temple. Calm it down.'));
+        hisuiRiftQuestLine.addQuest(battle('Lord of the Tundra: Avalugg', 'Quell Lord Avalugg at Icepeak Arena.'));
+        // Finale
         hisuiRiftQuestLine.addQuest(new MultipleQuestsQuest(
             [
-                new DefeatTemporaryBattleQuest('Dialga (Origin)', 'Calm Dialga at the Temple of Sinnoh.').withInitialValue(0),
-                new DefeatTemporaryBattleQuest('Palkia (Origin)', 'Calm Palkia at the Temple of Sinnoh.').withInitialValue(0),
+                dungeon('Ancient Lake Valor', 'Explore Ancient Lake Valor.'),
+                battle('Adaman 2', 'Earn Adaman\'s trust at Ancient Lake Valor.'),
+                dungeon('Ancient Lake Acuity', 'Explore Ancient Lake Acuity.'),
+                battle('Irida 3', 'Earn Irida\'s trust at Pearl Settlement.'),
+                battle('Beni', 'Defeat the ninja Beni at the Stone Portal.'),
+                battle('Charm 2', 'Charm is hiding in the Primeval Grotto.'),
+            ], 'Commander Kamado has banished you from Jubilife Village. Explore the lakes, gain the support of the clan leaders and uncover the truth.'));
+        hisuiRiftQuestLine.addQuest(dungeon('Ancient Lake Verity', 'Explore Ancient Lake Verity, the last of the three ancient lakes.'));
+        hisuiRiftQuestLine.addQuest(battle('The Galaxy Team\'s Kamado', 'Face Commander Kamado at Prelude Beach.'));
+        hisuiRiftQuestLine.addQuest(new MultipleQuestsQuest(
+            [
+                battle('Dialga (Origin)', 'Calm Dialga at the Temple of Sinnoh.'),
+                battle('Palkia (Origin)', 'Calm Palkia at the Temple of Sinnoh.'),
             ], 'The rift is tearing open above Mount Coronet. Calm Dialga and Palkia at the Temple of Sinnoh.'));
         hisuiRiftQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Temple of Sinnoh').withDescription('Volo is waiting for you at the Temple of Sinnoh. Defeat him to earn the Azure Badge.'));
+
+        // Saves from the old 12 step version resume right after the last step they finished
+        hisuiRiftQuestLine.withStepMigration(12, [0, 1, 2, 4, 10, 16, 23, 31, 37, 38, 40, 41]);
 
         App.game.quests.questLines.push(hisuiRiftQuestLine);
     }
@@ -4224,18 +4287,27 @@ class QuestLineHelper {
 
     public static createPaldeaVictoryQuestLine() {
         const paldeaVictoryQuestLine = new QuestLine('Victory Road', 'Challenge Paldea\'s Gyms to challenge your new rival, Nemona.', new GymBadgeRequirement(BadgeEnums.Azure), GameConstants.BulletinBoards.Paldea);
+        const travel = (route: number, description: string) => QuestLineHelper.travelStep(GameConstants.Region.paldea, route, description);
 
         paldeaVictoryQuestLine.addQuest(new TalkToNPCQuest(PaldeaNemona1, 'Talk to Nemona in Cabo Poco.'));
-        paldeaVictoryQuestLine.addQuest(new DefeatTemporaryBattleQuest('Nemona 1', 'Nemona wants to battle you right away! Defeat her in Cabo Poco.').withInitialValue(0));
+        paldeaVictoryQuestLine.addQuest(QuestLineHelper.oneTimeBattleStep('Nemona 1', 'Nemona wants to battle you right away! Defeat her in Cabo Poco.'));
+        paldeaVictoryQuestLine.addQuest(travel(3, 'Head along Poco Path into the South Province towards Cortondo.'));
         paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Cortondo').withDescription('Defeat Katy at the Cortondo Gym.'));
+        paldeaVictoryQuestLine.addQuest(travel(5, 'Travel through the South Province to Artazon.'));
         paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Artazon').withDescription('Defeat Brassius at the Artazon Gym.'));
-        paldeaVictoryQuestLine.addQuest(new DefeatTemporaryBattleQuest('Nemona 2', 'Nemona is waiting for you in Artazon. Show her how much you have grown!').withInitialValue(0));
+        paldeaVictoryQuestLine.addQuest(QuestLineHelper.oneTimeBattleStep('Nemona 2', 'Nemona is waiting for you in Artazon. Show her how much you have grown!'));
+        paldeaVictoryQuestLine.addQuest(travel(9, 'Travel east to Levincia. The way is only safe after defeating the Stony Cliff and Open Sky Titans (Path of Legends).'));
         paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Levincia').withDescription('Defeat Iono at the Levincia Gym.'));
-        paldeaVictoryQuestLine.addQuest(new DefeatTemporaryBattleQuest('Nemona 3', 'Nemona caught up with you in Levincia. Battle her again!').withInitialValue(0));
+        paldeaVictoryQuestLine.addQuest(QuestLineHelper.oneTimeBattleStep('Nemona 3', 'Nemona caught up with you in Levincia. Battle her again!'));
+        paldeaVictoryQuestLine.addQuest(travel(11, 'Cross the Asado Desert to Cascarrafa. The desert opens up after defeating the Lurking Steel Titan near Zapapico (Path of Legends).'));
         paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Cascarrafa').withDescription('Defeat Kofu at the Cascarrafa Gym.'));
+        paldeaVictoryQuestLine.addQuest(travel(12, 'Travel through the West Province to Medali.'));
         paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Medali').withDescription('Defeat Larry at the Medali Gym.'));
+        paldeaVictoryQuestLine.addQuest(travel(15, 'Travel back south to Alfornada. The way opens up after defeating the Quaking Earth Titans in the Asado Desert (Path of Legends).'));
         paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Alfornada').withDescription('Defeat Tulip at the Alfornada Gym.'));
+        paldeaVictoryQuestLine.addQuest(travel(16, 'Take the Dalizapa Passage north to Montenevera.'));
         paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Montenevera').withDescription('Defeat Ryme at the Montenevera Gym.'));
+        paldeaVictoryQuestLine.addQuest(travel(17, 'Climb the North Province to Glaseado Mountain.'));
         paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Glaseado Mountain').withDescription('Defeat Grusha at the Glaseado Gym.'));
         paldeaVictoryQuestLine.addQuest(new MultipleQuestsQuest(
             [
@@ -4247,34 +4319,55 @@ class QuestLineHelper {
         paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Top Champion Geeta').withDescription('Defeat Top Champion Geeta to become a Champion.'));
         paldeaVictoryQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Champion Nemona').withDescription('As promised, battle Champion Nemona in Mesagoza as equals!'));
 
+        // Saves from the old 15 step version resume right after the last step they finished
+        paldeaVictoryQuestLine.withStepMigration(15, [0, 1, 2, 4, 6, 7, 9, 10, 12, 14, 16, 18, 20, 21, 22]);
+
         App.game.quests.questLines.push(paldeaVictoryQuestLine);
     }
 
     public static createPaldeaLegendsQuestLine() {
         const paldeaLegendsQuestLine = new QuestLine('Path of Legends', 'Help Arven search for the Herba Mystica.', new GymBadgeRequirement(BadgeEnums.Azure), GameConstants.BulletinBoards.Paldea);
+        const travel = (route: number, description: string) => QuestLineHelper.travelStep(GameConstants.Region.paldea, route, description);
 
         paldeaLegendsQuestLine.addQuest(new TalkToNPCQuest(PaldeaArven1, 'Talk to Arven at Poco Path Lighthouse.'));
+        paldeaLegendsQuestLine.addQuest(travel(4, 'Travel through the South Province to the cliffs near Los Platos.'));
         paldeaLegendsQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Stony Cliff Titan').withDescription('Defeat the Stony Cliff Titan, Klawf, near Los Platos.'));
-        paldeaLegendsQuestLine.addQuest(new DefeatTemporaryBattleQuest('Arven 1', 'Arven wants to test your strength in Los Platos.').withInitialValue(0));
+        paldeaLegendsQuestLine.addQuest(QuestLineHelper.oneTimeBattleStep('Arven 1', 'Arven wants to test your strength in Los Platos.'));
+        paldeaLegendsQuestLine.addQuest(travel(6, 'Head into the West Province near Cortondo. The road opens up after defeating Katy at the Cortondo Gym (Victory Road).'));
         paldeaLegendsQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Open Sky Titan').withDescription('Defeat the Open Sky Titan, Bombirdier, near Cortondo.'));
+        paldeaLegendsQuestLine.addQuest(travel(10, 'Travel east to Zapapico. The way needs the Gym Badges of Artazon and Levincia (Victory Road).'));
         paldeaLegendsQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Lurking Steel Titan').withDescription('Defeat the Lurking Steel Titan, Orthworm, near Zapapico.'));
+        paldeaLegendsQuestLine.addQuest(travel(11, 'Cross into the Asado Desert.'));
         paldeaLegendsQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Asado Desert').withDescription('Defeat the Quaking Earth Titans in the Asado Desert near Cascarrafa.'));
+        paldeaLegendsQuestLine.addQuest(travel(19, 'Travel north to Casseroya Lake. The way needs the Gym Badges of Cascarrafa, Medali, Alfornada, Montenevera and Glaseado (Victory Road).'));
         paldeaLegendsQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Casseroya Lake').withDescription('Defeat the False Dragon Titan, Dondozo and Tatsugiri, at Casseroya Lake.'));
         paldeaLegendsQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Pokémon Trainer Arven').withDescription('Mabosstiff has recovered! Accept Arven\'s challenge at Poco Path Lighthouse.'));
+
+        // Saves from the old 8 step version resume right after the last step they finished
+        paldeaLegendsQuestLine.withStepMigration(8, [0, 1, 3, 4, 6, 8, 10, 12]);
 
         App.game.quests.questLines.push(paldeaLegendsQuestLine);
     }
 
     public static createPaldeaStarfallQuestLine() {
         const paldeaStarfallQuestLine = new QuestLine('Starfall Street', 'Help Cassiopeia disband Team Star.', new GymBadgeRequirement(BadgeEnums.Azure), GameConstants.BulletinBoards.Paldea);
+        const travel = (route: number, description: string) => QuestLineHelper.travelStep(GameConstants.Region.paldea, route, description);
 
         paldeaStarfallQuestLine.addQuest(new TalkToNPCQuest(PaldeaCassiopeia1, 'Someone called Cassiopeia is trying to reach you. Check your messages at Naranjuva Academy.'));
+        paldeaStarfallQuestLine.addQuest(travel(6, 'Find the Dark Crew\'s base in the West Province. The road needs the Cortondo Gym Badge (Victory Road) and the Stony Cliff Titan (Path of Legends).'));
         paldeaStarfallQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Segin Squad\'s Base').withDescription('Take down Giacomo of Team Star\'s Dark Crew.'));
+        paldeaStarfallQuestLine.addQuest(travel(8, 'Find the Fire Crew\'s base in the East Province. The way needs the Artazon Gym Badge (Victory Road) and the Open Sky Titan (Path of Legends).'));
         paldeaStarfallQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Schedar Squad\'s Base').withDescription('Take down Mela of Team Star\'s Fire Crew.'));
+        paldeaStarfallQuestLine.addQuest(travel(13, 'Find the Poison Crew\'s base in the West Province. The way needs the Levincia and Cascarrafa Gym Badges (Victory Road) and the Lurking Steel Titan (Path of Legends).'));
         paldeaStarfallQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Navi Squad\'s Base').withDescription('Take down Atticus of Team Star\'s Poison Crew.'));
+        paldeaStarfallQuestLine.addQuest(travel(14, 'Find the Fairy Crew\'s base in Tagtree Thicket. The way needs the Medali Gym Badge (Victory Road).'));
         paldeaStarfallQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Ruchbah Squad\'s Base').withDescription('Take down Ortega of Team Star\'s Fairy Crew.'));
+        paldeaStarfallQuestLine.addQuest(travel(17, 'Find the Fighting Crew\'s base in the North Province. The way needs the Alfornada and Montenevera Gym Badges (Victory Road) and the Quaking Earth Titans (Path of Legends).'));
         paldeaStarfallQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Caph Squad\'s Base').withDescription('Take down Eri of Team Star\'s Fighting Crew.'));
         paldeaStarfallQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Penny of Team Star').withDescription('Cassiopeia has revealed herself as Penny. Battle her at Naranjuva Academy.'));
+
+        // Saves from the old 7 step version resume right after the last step they finished
+        paldeaStarfallQuestLine.withStepMigration(7, [0, 1, 3, 5, 7, 9, 11]);
 
         App.game.quests.questLines.push(paldeaStarfallQuestLine);
     }
@@ -4303,21 +4396,28 @@ class QuestLineHelper {
 
     public static createKitakamiTealMaskQuestLine() {
         const tealMaskQuestLine = new QuestLine('Kitakami: The Teal Mask', 'Join the school trip to Kitakami and uncover the truth behind the legend of the ogre.', new GymBadgeRequirement(BadgeEnums.Elite_Nemona), GameConstants.BulletinBoards.Kitakami);
+        const battle = QuestLineHelper.oneTimeBattleStep;
+        const travel = (route: number, description: string) => QuestLineHelper.travelStep(GameConstants.Region.paldea, route, description);
 
         tealMaskQuestLine.addQuest(new TalkToNPCQuest(KitakamiCarmine1, 'Meet Carmine in Mossui Town.'));
-        tealMaskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Carmine 1', 'Carmine wants to see what a Paldean Champion can do. Battle her in Mossui Town.').withInitialValue(0));
-        tealMaskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Kieran 1', 'Carmine\'s little brother Kieran wants to battle too.').withInitialValue(0));
+        tealMaskQuestLine.addQuest(battle('Carmine 1', 'Carmine wants to see what a Paldean Champion can do. Battle her in Mossui Town.'));
+        tealMaskQuestLine.addQuest(battle('Kieran 1', 'Carmine\'s little brother Kieran wants to battle too.'));
+        tealMaskQuestLine.addQuest(travel(23, 'Follow Kitakami Road and Apple Hills to Loyalty Plaza.'));
         tealMaskQuestLine.addQuest(new MultipleQuestsQuest(
             [
-                new DefeatTemporaryBattleQuest('Okidogi', 'Defeat Okidogi.').withInitialValue(0),
-                new DefeatTemporaryBattleQuest('Munkidori', 'Defeat Munkidori.').withInitialValue(0),
-                new DefeatTemporaryBattleQuest('Fezandipiti', 'Defeat Fezandipiti.').withInitialValue(0),
+                battle('Okidogi', 'Defeat Okidogi.'),
+                battle('Munkidori', 'Defeat Munkidori.'),
+                battle('Fezandipiti', 'Defeat Fezandipiti.'),
             ], 'The Loyal Three have appeared at Loyalty Plaza! Defeat all three of them.'));
-        tealMaskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Kieran 2', 'Kieran is upset that you kept Ogerpon a secret. Battle him at Kitakami Hall.').withInitialValue(0));
-        tealMaskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Ogerpon', 'Ogerpon wants to test you. Face it at the Dreaded Den.').withInitialValue(0));
+        tealMaskQuestLine.addQuest(battle('Kieran 2', 'Kieran is upset that you kept Ogerpon a secret. Battle him at Kitakami Hall.'));
+        tealMaskQuestLine.addQuest(travel(32, 'Explore Kitakami up to the Timeless Woods to find the Dreaded Den.'));
+        tealMaskQuestLine.addQuest(battle('Ogerpon', 'Ogerpon wants to test you. Face it at the Dreaded Den.'));
         tealMaskQuestLine.addQuest(new TalkToNPCQuest(KitakamiKieran1, 'Talk to Kieran at Kitakami Hall.'));
         tealMaskQuestLine.addQuest(new CaptureSpecificPokemonQuest('Ogerpon (Teal Mask)').withDescription('Catch Ogerpon in the Dreaded Den.'));
         tealMaskQuestLine.addQuest(new TalkToNPCQuest(KitakamiCarmine2, 'Say goodbye to Carmine in Mossui Town.'));
+
+        // Saves from the old 9 step version resume right after the last step they finished
+        tealMaskQuestLine.withStepMigration(9, [0, 1, 2, 3, 5, 6, 8, 9, 10]);
 
         App.game.quests.questLines.push(tealMaskQuestLine);
     }
@@ -4332,11 +4432,15 @@ class QuestLineHelper {
         indigoDiskQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Elite Drayton').withDescription('Defeat Drayton of the BB Elite Four.'));
         indigoDiskQuestLine.addQuest(new DefeatGymQuest(1, 0, 'Champion Kieran').withDescription('Kieran has become the BB League Champion. Defeat him!'));
         indigoDiskQuestLine.addQuest(new TalkToNPCQuest(BlueberryBriar1, 'Talk to Briar at Blueberry Academy.'));
+        indigoDiskQuestLine.addQuest(QuestLineHelper.travelStep(GameConstants.Region.paldea, 38, 'Explore the Terarium biomes up to the Polar Biome, where the entrance to the Underdepths lies.'));
         indigoDiskQuestLine.addQuest(new DefeatDungeonQuest(1, 0, 'Area Zero Underdepths').withDescription('Join Briar\'s expedition and clear the Area Zero Underdepths.'));
         indigoDiskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Kieran 3', 'Kieran followed you into the Underdepths. Battle him one last time.').withInitialValue(0));
         indigoDiskQuestLine.addQuest(new DefeatTemporaryBattleQuest('Terapagos', 'Terapagos has gone out of control! Calm it down.').withInitialValue(0));
         indigoDiskQuestLine.addQuest(new CaptureSpecificPokemonQuest('Terapagos').withDescription('Catch Terapagos in the Area Zero Underdepths.'));
         indigoDiskQuestLine.addQuest(new TalkToNPCQuest(BlueberryBriar2, 'Tell Briar about Terapagos at Blueberry Academy.'));
+
+        // Saves from the old 12 step version resume right after the last step they finished
+        indigoDiskQuestLine.withStepMigration(12, [0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12]);
 
         App.game.quests.questLines.push(indigoDiskQuestLine);
     }
