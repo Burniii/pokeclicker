@@ -2699,6 +2699,9 @@ export const ModalCollapseList = [
     'undergroundDisplayBattery',
     'plotListCard',
     'zCrystalItemContainerBody',
+    'fusionBattleBody',
+    'fusionMapBody',
+    'fusionTeamBody',
 ];
 
 export enum ConsumableType {

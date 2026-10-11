@@ -22,7 +22,9 @@ class FusionWorld implements Saveable {
     public balls: Record<'fusion' | 'super', KnockoutObservable<number>> = { fusion: ko.observable(0), super: ko.observable(0) };
     public ballChoice: KnockoutObservable<'fusion' | 'super'> = ko.observable('fusion');
     public catchMode: KnockoutObservable<'new' | 'all' | 'none'> = ko.observable('new');
-    public area: KnockoutObservable<string> = ko.observable('f1');
+    public area: KnockoutObservable<string> = ko.observable('t1');
+    // Fusions that have been met in battle (seen in the Fusion dex)
+    public seen: KnockoutObservableArray<string> = ko.observableArray([]);
     public kills: KnockoutObservable<Record<string, number>> = ko.observable({});
     public badges: KnockoutObservableArray<string> = ko.observableArray([]);
     public announced = false;
@@ -59,6 +61,9 @@ class FusionWorld implements Saveable {
     public clickDamage = ko.pureComputed(() => 1 + this.caught().length + Math.round(this.teamAttack() * 0.05));
 
     public areaUnlocked(area: FusionArea): boolean {
+        if (!area) {
+            return false;
+        }
         if (area.unlock.badge && !this.badges().includes(area.unlock.badge)) {
             return false;
         }
@@ -69,6 +74,25 @@ class FusionWorld implements Saveable {
     }
 
     public currentArea = ko.pureComputed(() => FusionData.area(this.area()));
+    public inTown = ko.pureComputed(() => this.currentArea()?.kind === 'town');
+    public inBattle = ko.pureComputed(() => this.started() && !this.inTown());
+
+    public isSeen(id: string): boolean {
+        return this.isCaught(id) || this.seen().includes(id);
+    }
+
+    public killsOn(id: string): number {
+        return this.kills()[id] ?? 0;
+    }
+
+    // Town of a gym, to return there after the fight
+    private gymTown(gymId: string): string {
+        return FusionData.areas.find((a) => a.gym === gymId)?.id ?? 't1';
+    }
+
+    public startGym(gymId: string) {
+        this.goTo(gymId);
+    }
     public dexCount = ko.pureComputed(() => new Set(this.caught().map((m) => m.id)).size);
 
     public addLog(text: string) {
@@ -96,6 +120,11 @@ class FusionWorld implements Saveable {
         }
         this.area(id);
         this.catching(false);
+        this.counter = 0;
+        if (area.kind === 'town') {
+            this.enemy(null);
+            return;
+        }
         if (area.kind === 'gym') {
             this.gymIndex = 0;
             this.gymTimeLeft(area.timeLimit);
@@ -108,17 +137,27 @@ class FusionWorld implements Saveable {
         const area = this.currentArea();
         if (area.kind === 'gym') {
             const member = area.team[this.gymIndex];
+            if (!this.seen().includes(member.id)) {
+                this.seen.push(member.id);
+            }
             this.enemy({ id: member.id, level: member.level, hp: member.hp, maxHp: member.hp });
             return;
         }
+        if (!area.pokemon) {
+            this.enemy(null);
+            return;
+        }
         const id = area.pokemon[Math.floor(Math.random() * area.pokemon.length)];
+        if (!this.seen().includes(id)) {
+            this.seen.push(id);
+        }
         const level = area.levels[0] + Math.floor(Math.random() * (area.levels[1] - area.levels[0] + 1));
         const hp = Math.round(area.hp * (0.9 + Math.random() * 0.2));
         this.enemy({ id, level, hp, maxHp: hp });
     }
 
     public click() {
-        if (!this.started() || this.catching()) {
+        if (!this.inBattle() || this.catching()) {
             return;
         }
         this.damage(this.clickDamage());
@@ -163,7 +202,7 @@ class FusionWorld implements Saveable {
                     this.addLog(`${area.leader} erneut besiegt.`);
                 }
                 GameHelper.incrementObservable(this.energy, area.reward);
-                this.goTo(area.unlock.area ?? 'f4');
+                this.goTo(this.gymTown(area.id));
                 return;
             }
             this.spawn();
@@ -185,9 +224,13 @@ class FusionWorld implements Saveable {
         this.spawn();
     }
 
+    public catchChance(id: string): number {
+        return Math.min(0.95, FusionData.catchRate(id) / 255 * 0.6 + 0.1 + FusionWorld.BALLS[this.ballChoice()].bonus);
+    }
+
     private finishCatch() {
         const enemy = this.enemy();
-        const chance = Math.min(0.95, FusionData.catchRate(enemy.id) / 255 * 0.6 + 0.1 + FusionWorld.BALLS[this.ballChoice()].bonus);
+        const chance = this.catchChance(enemy.id);
         const species = FusionData.speciesById(enemy.id);
         if (Math.random() < chance) {
             if (this.isCaught(enemy.id)) {
@@ -223,12 +266,12 @@ class FusionWorld implements Saveable {
             this.announced = true;
             Notifier.notify({
                 title: '🧬 Fusionswelt freigeschaltet',
-                message: 'Bills Experiment ist geglückt! Öffne die Fusionswelt über den 🧬-Knopf unten links und wähle deinen ersten Fusionspartner.',
+                message: 'Bills Experiment ist geglückt! Unter der Town Map gibt es jetzt die Fusionskarte und das Fusionsfenster. Wähle dort im Fusionslabor deinen ersten Fusionspartner.',
                 type: NotificationConstants.NotificationOption.info,
                 timeout: 60 * 1000,
             });
         }
-        if (!this.starter()) {
+        if (!this.starter() || this.inTown()) {
             return;
         }
         if (!this.enemy()) {
@@ -249,7 +292,7 @@ class FusionWorld implements Saveable {
             this.gymTimeLeft(this.gymTimeLeft() - 1);
             if (this.gymTimeLeft() <= 0) {
                 this.addLog(`Zeit abgelaufen – ${area.leader} war zu stark. Trainiere weiter!`);
-                this.goTo(area.unlock.area ?? 'f4');
+                this.goTo(this.gymTown(area.id));
                 return;
             }
         }
@@ -265,6 +308,7 @@ class FusionWorld implements Saveable {
             ballChoice: this.ballChoice(),
             catchMode: this.catchMode(),
             area: this.area(),
+            seen: this.seen(),
             kills: this.kills(),
             badges: this.badges(),
             announced: this.announced,
@@ -283,7 +327,8 @@ class FusionWorld implements Saveable {
         this.ballChoice(json.ballChoice ?? 'fusion');
         this.catchMode(json.catchMode ?? 'new');
         const area = FusionData.area(json.area);
-        this.area(area && area.kind === 'route' ? json.area : 'f1');
+        this.area(!area ? 't1' : area.kind === 'gym' ? this.gymTown(area.id) : area.id);
+        this.seen((json.seen ?? []).filter((id: string) => FusionData.speciesById(id)));
         this.kills(json.kills ?? {});
         this.badges(json.badges ?? []);
         this.announced = !!json.announced;

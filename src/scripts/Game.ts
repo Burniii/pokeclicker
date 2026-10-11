@@ -335,7 +335,6 @@ class Game implements TmpGameType {
         this.research.initialize();
         Activities.initialize();
         this.automation.initialize();
-        FusionUI.initialize();
         BundledTranslations.register();
         if (player.regionStarters[GameConstants.Region.kanto]() === GameConstants.Starter.None) {
             StartSequenceRunner.start();

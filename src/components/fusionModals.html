@@ -1,0 +1,44 @@
+<!-- Fusion shop -->
+<div class="modal noselect fade" id="fusionShopModal" tabindex="-1" role="dialog" aria-labelledby="fusionShopModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fusionShopModalLabel">Fusions-Shop</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <p class="small">Fusionsenergie: <b data-bind="text: App.game.fusionWorld.energy().toLocaleString('de-DE')"></b> ⚡ – nur in der Fusionswelt gültig.</p>
+                <!-- ko foreach: ['fusion', 'super'] -->
+                <div class="d-flex align-items-center mb-2">
+                    <img width="28" class="mr-2" src="" data-bind="attr: { src: `assets/images/pokeball/${$data === 'super' ? 'Ultraball' : 'Pokeball'}.svg` }">
+                    <div class="flex-grow-1 text-left">
+                        <div class="font-weight-bold" data-bind="text: FusionWorld.BALLS[$data].name"></div>
+                        <small class="text-muted" data-bind="text: `${FusionWorld.BALLS[$data].price} ⚡${FusionWorld.BALLS[$data].bonus ? ' · +15 % Fangchance' : ''} · Bestand ${App.game.fusionWorld.balls[$data]().toLocaleString('de-DE')}`"></small>
+                    </div>
+                    <!-- ko foreach: [1, 10, 100] -->
+                    <button class="btn btn-sm btn-outline-primary ml-1" data-bind="click: () => App.game.fusionWorld.buy($parent, $data), disable: App.game.fusionWorld.energy() < FusionWorld.BALLS[$parent].price * $data, text: `×${$data}`"></button>
+                    <!-- /ko -->
+                </div>
+                <!-- /ko -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Credits of the fusion sprites -->
+<div class="modal noselect fade" id="fusionCreditsModal" tabindex="-1" role="dialog" aria-labelledby="fusionCreditsModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fusionCreditsModalLabel">Credits der Fusions-Sprites</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body text-left small">
+                <p>Alle Fusions-Sprites stammen aus der Community von <i>Pokémon Infinite Fusion</i> (bezogen über infinite-fusion.net). Vielen Dank an die Zeichnerinnen und Zeichner:</p>
+                <div data-bind="foreach: FusionData.species">
+                    <div><b data-bind="text: name"></b> <span class="text-muted" data-bind="text: `(${FusionData.partNames(id)})`"></span> – <span data-bind="text: artist"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

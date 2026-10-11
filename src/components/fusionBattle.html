@@ -1,0 +1,114 @@
+<div id="fusionBattleContainer" class="card sortable border-secondary mb-3" data-bind="visible: App.game.fusionWorld.unlocked()">
+    <div class="card-header p-0" data-toggle="collapse" href="#fusionBattleBody">
+        <span>Fusionswelt</span>
+    </div>
+    <button class="btn btn-sm btn-primary" style="position: absolute; right: 0px; top: 0px; width: auto; height: 41px; cursor: default;" title="Fusionsenergie – nur in der Fusionswelt gültig"
+        data-bind="text: `⚡ ${App.game.fusionWorld.energy().toLocaleString('de-DE')}`"></button>
+    <div id="fusionBattleBody" class="card-body p-0 show">
+        <!-- ko if: App.game.fusionWorld.unlocked() -->
+        <div class="battle-view fusion-battle-view p-0 justify-content-center no-gutters no-select" data-bind="class: FusionUI.battleClass()">
+
+            <!-- Starter choice in the Fusion lab -->
+            <!-- ko ifnot: App.game.fusionWorld.starter() -->
+            <div class="fusion-town">
+                <div class="pageItemTitle d-flex justify-content-center"><span style="font-size: 1.8rem;">Fusionslabor</span></div>
+                <p class="fusion-panel small m-2 p-2">Bill hat drei Fusionspartner für dich vorbereitet. Alles in der Fusionswelt ist vom Hauptspiel getrennt – eigenes Team, eigene Level, eigener Fusionsdex.</p>
+                <div class="d-flex justify-content-around" data-bind="foreach: FusionData.starters">
+                    <button class="btn btn-light fusion-starter" data-bind="click: () => App.game.fusionWorld.chooseStarter($data)">
+                        <img data-bind="attr: { src: FusionData.image($data) }" width="96" height="96">
+                        <div class="font-weight-bold" data-bind="text: FusionData.speciesById($data).name"></div>
+                        <small class="text-muted d-block" data-bind="text: FusionData.partNames($data)"></small>
+                        <small class="d-block" data-bind="text: FusionUI.typeNames($data)"></small>
+                    </button>
+                </div>
+            </div>
+            <!-- /ko -->
+
+            <!-- Town view -->
+            <!-- ko if: App.game.fusionWorld.starter() && App.game.fusionWorld.inTown() -->
+            <div class="fusion-town" data-bind="with: App.game.fusionWorld.currentArea()">
+                <div class="pageItemTitle d-flex justify-content-center">
+                    <span style="font-size: 1.8rem;" data-bind="text: name"></span>
+                </div>
+                <div class="row no-gutters">
+                    <div class="col-4 no-gutters">
+                        <div class="list-group">
+                            <!-- ko if: $data.gym -->
+                            <div class="btn-group btn-block" style="margin-top: 0px;" data-bind="with: FusionData.area($data.gym)">
+                                <button class="btn btn-secondary" data-bind="click: () => App.game.fusionWorld.startGym(id),
+                                    text: `${App.game.fusionWorld.badges().includes(badge) ? '🏅 ' : ''}${leader}`,
+                                    tooltip: { title: `${name}: ${team.length} Fusionen, ${timeLimit} Sekunden. Belohnung: ${badge} und ${reward} ⚡`, trigger: 'hover', placement: 'right' }"></button>
+                            </div>
+                            <!-- /ko -->
+                            <button class="btn btn-secondary btn-block mt-0" data-bind="click: () => $('#fusionShopModal').modal('show')">Fusions-Shop</button>
+                            <button class="btn btn-secondary btn-block mt-0" data-bind="click: () => FusionUI.openDex()">Fusionsdex</button>
+                            <!-- ko if: id === 't1' -->
+                            <button class="btn btn-secondary btn-block mt-0" data-bind="click: () => $('#fusionCreditsModal').modal('show')">Credits</button>
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                    <div class="col-8"></div>
+                </div>
+                <div style="flex-grow: 1;"></div>
+                <div class="fusion-panel small text-left m-2 p-2" data-bind="text: id === 't1'
+                    ? 'Bills Fusionslabor. Wähle auf der Fusionskarte einen Fusionspfad, um Fusionen zu bekämpfen und zu fangen.'
+                    : `In ${name} wartet die Fusionsarena. Wer den Fusionsorden hat, findet den Weg zur Mysteriösen Höhle.`"></div>
+            </div>
+            <!-- /ko -->
+
+            <!-- Battles (routes, cave, gym) -->
+            <!-- ko if: App.game.fusionWorld.inBattle() && App.game.fusionWorld.enemy() -->
+            <div class="row justify-content-center no-gutters" data-bind="with: App.game.fusionWorld.enemy()">
+                <div class="col no-gutters clickable" style="height: 280px; display: block;" data-bind="click: () => App.game.fusionWorld.click()">
+                    <div class="pageItemTitle d-flex justify-content-center">
+                        <div class="title-left">
+                            <span class="small align-self-center ml-1" data-bind="text: FusionUI.typeNames(id)"></span>
+                        </div>
+                        <div class="d-flex align-items-center px-2">
+                            <span style="font-size: 1.6rem;" data-bind="text: FusionData.speciesById(id).name"></span>
+                            <!-- ko if: App.game.fusionWorld.isCaught(id) -->
+                            <img class="pokeball-smallest ml-2" src="assets/images/pokeball/Pokeball.svg" title="Schon gefangen"/>
+                            <!-- /ko -->
+                        </div>
+                        <div class="title-right">
+                            <span class="small align-self-center mr-1" data-bind="text: `Lv ${level}`"></span>
+                        </div>
+                    </div>
+                    <!-- ko if: App.game.fusionWorld.currentArea().kind === 'gym' -->
+                    <div class="timer small" data-bind="text: `${App.game.fusionWorld.currentArea().leader} · ${App.game.fusionWorld.gymIndex + 1}/${App.game.fusionWorld.currentArea().team.length} · ⏱ ${App.game.fusionWorld.gymTimeLeft()} s`"></div>
+                    <!-- /ko -->
+                    <div data-bind="visible: !App.game.fusionWorld.catching()">
+                        <img class="enemy fusion-enemy" src="" data-bind="attr: { src: FusionData.image(id) }"/>
+                    </div>
+                    <div class="catchChance" data-bind="visible: App.game.fusionWorld.catching()">
+                        <img class="pokeball-animated" src="" data-bind="attr: { src: `assets/images/pokeball/${App.game.fusionWorld.ballChoice() === 'super' ? 'Ultraball' : 'Pokeball'}.svg` }"/>
+                        <br>
+                        Fangchance:
+                        <span data-bind="text: `${Math.floor(App.game.fusionWorld.catchChance(id) * 100)}%`"></span>
+                    </div>
+                    <div class="progress hitpoints" style="height: 20px;">
+                        <div class="progress-bar bg-danger" role="progressbar" data-bind="style: { width: `${FusionUI.hpPercent()}%` }">
+                            <span style="font-size: 12px;" data-bind="text: `${hp.toLocaleString('de-DE')} / ${maxHp.toLocaleString('de-DE')}`"></span>
+                        </div>
+                    </div>
+                    <h2 class="pageItemFooter" style="display: block; font-size: 1rem;">
+                        <table width="100%">
+                            <tr>
+                                <td width="50%" data-bind="text: App.game.fusionWorld.currentArea().name"></td>
+                                <td width="50%" data-bind="text: App.game.fusionWorld.currentArea().kind === 'gym'
+                                    ? `Arenakampf`
+                                    : `${App.game.fusionWorld.killsOn(App.game.fusionWorld.area()).toLocaleString('de-DE')} Fusionen besiegt`"></td>
+                            </tr>
+                            <tr>
+                                <td width="50%" data-bind="text: `Team-Angriff: ${App.game.fusionWorld.teamAttack().toLocaleString('de-DE')}`"></td>
+                                <td width="50%" data-bind="text: `Klick-Angriff: ${App.game.fusionWorld.clickDamage().toLocaleString('de-DE')}`"></td>
+                            </tr>
+                        </table>
+                    </h2>
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+    </div>
+</div>

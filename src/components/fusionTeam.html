@@ -1,0 +1,60 @@
+<div id="fusionTeamContainer" class="card sortable border-secondary mb-3" data-bind="visible: App.game.fusionWorld.unlocked()">
+    <div class="card-header p-0" data-toggle="collapse" href="#fusionTeamBody">
+        <span>Fusions-Team</span>
+    </div>
+    <button class="btn btn-sm btn-primary" style="position: absolute; right: 0px; top: 0px; width: auto; height: 41px;" title="Fusionsdex"
+        data-bind="click: () => FusionUI.openDex(), text: `🧬 ${App.game.fusionWorld.dexCount()}/${FusionData.species.length}`"></button>
+    <div id="fusionTeamBody" class="card-body p-0 show">
+        <!-- ko if: App.game.fusionWorld.unlocked() -->
+        <table class="table table-sm table-bordered m-0 small">
+            <tbody>
+                <tr>
+                    <!-- ko foreach: ['fusion', 'super'] -->
+                    <td class="p-1 clickable" data-bind="click: () => App.game.fusionWorld.ballChoice($data),
+                        css: { 'table-active font-weight-bold': App.game.fusionWorld.ballChoice() === $data },
+                        tooltip: { title: `${FusionWorld.BALLS[$data].name}${FusionWorld.BALLS[$data].bonus ? ' (+15 % Fangchance)' : ''} – klicken zum Auswählen`, trigger: 'hover' }">
+                        <img width="20" src="" data-bind="attr: { src: `assets/images/pokeball/${$data === 'super' ? 'Ultraball' : 'Pokeball'}.svg` }">
+                        <span data-bind="text: App.game.fusionWorld.balls[$data]().toLocaleString('de-DE')"></span>
+                    </td>
+                    <!-- /ko -->
+                </tr>
+                <tr>
+                    <td class="p-1" colspan="2">
+                        <select class="custom-select custom-select-sm" title="Welche Fusionen gefangen werden" data-bind="value: App.game.fusionWorld.catchMode">
+                            <option value="new">Fangen: nur neue</option>
+                            <option value="all">Fangen: alle</option>
+                            <option value="none">Fangen: nie</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-left fusion-team-list">
+            <!-- ko foreach: FusionUI.teamList() -->
+            <div class="d-flex align-items-center small px-1 border-bottom pokemon-row" style="gap: 6px;">
+                <img data-bind="attr: { src: FusionData.image(id) }" style="max-height: 52px;" width="52" src="" alt="" />
+                <div class="flex-grow-1" style="min-width: 0;">
+                    <div class="d-flex align-items-center">
+                        <div data-bind="text: FusionData.speciesById(id).name"></div>
+                        <div class="ml-auto text-right text-nowrap">
+                            <span class="text-muted small">Lv</span>
+                            <span data-bind="text: FusionWorld.levelOf($data)"></span>
+                        </div>
+                    </div>
+                    <div class="text-muted text-truncate" data-bind="text: `${FusionUI.typeNames(id)} · Angriff ${Math.round(FusionData.attack(id) * FusionWorld.levelOf($data) / 100).toLocaleString('de-DE')}`,
+                        attr: { title: FusionData.partNames(id) }"></div>
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot: App.game.fusionWorld.starter() -->
+            <div class="p-2 small text-muted">Wähle im Fusionslabor deinen ersten Fusionspartner.</div>
+            <!-- /ko -->
+        </div>
+        <!-- ko if: App.game.fusionWorld.log().length -->
+        <ul class="list-unstyled small text-left mb-0 px-1 py-1 border-top fusion-log" data-bind="foreach: App.game.fusionWorld.log">
+            <li data-bind="text: $data"></li>
+        </ul>
+        <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</div>

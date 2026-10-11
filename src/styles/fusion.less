@@ -1,85 +1,58 @@
-.fusion-fab {
-    position: fixed;
-    left: 8px;
-    bottom: 44px;
-    z-index: 1030;
+// Fusion world modules (separate game): battle/town view, map and team list
+#fusionBattleContainer {
+  .fusion-battle-view {
+    position: relative;
+  }
 
-    .btn {
-        border-radius: 1rem;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 40%);
+  .fusion-town {
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fusion-panel {
+    color: whitesmoke;
+    background-color: rgba(0, 0, 0, 60%);
+    border-radius: 4px;
+  }
+
+  .fusion-starter {
+    width: 30%;
+    padding: 4px;
+
+    img {
+      image-rendering: pixelated;
     }
+  }
+
+  .fusion-enemy {
+    width: 96px;
+    image-rendering: pixelated;
+  }
 }
 
-.fusion-window {
-    position: fixed;
-    right: 16px;
-    bottom: 16px;
-    width: 460px;
-    max-width: calc(100vw - 16px);
-    z-index: 1040;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 45%);
-    text-align: left;
+#fusionMapSvg {
+  .fusion-map-path {
+    pointer-events: none;
+  }
+}
 
-    .fusion-titlebar {
-        cursor: move;
+#fusionTeamContainer {
+  .fusion-team-list {
+    max-height: 320px;
+    overflow-y: auto;
+
+    img {
+      image-rendering: pixelated;
     }
+  }
 
-    .card-body {
-        max-height: 70vh;
-        overflow-y: auto;
-    }
+  .fusion-log {
+    max-height: 96px;
+    overflow-y: auto;
+  }
+}
 
-    .fusion-areas {
-        width: 45%;
-    }
-
-    .fusion-enemy {
-        image-rendering: pixelated;
-        transition: transform 0.05s;
-
-        &:active {
-            transform: scale(0.95);
-        }
-
-        &.catching {
-            opacity: 0.5;
-        }
-    }
-
-    .fusion-hp {
-        height: 8px;
-    }
-
-    .fusion-log {
-        min-height: 3em;
-        color: #6c757d;
-    }
-
-    .fusion-list {
-        max-height: 50vh;
-        overflow-y: auto;
-
-        img {
-            image-rendering: pixelated;
-        }
-    }
-
-    .fusion-dex {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-        gap: 4px;
-
-        img {
-            image-rendering: pixelated;
-
-            &.unknown {
-                filter: brightness(0);
-                opacity: 0.35;
-            }
-        }
-    }
-
-    .fusion-starter img {
-        image-rendering: pixelated;
-    }
+#fusionDexModal .pokedex-pokemon-sprite {
+  image-rendering: pixelated;
 }
