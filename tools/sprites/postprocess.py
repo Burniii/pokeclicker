@@ -125,8 +125,21 @@ def match_palette(img: Image.Image, palette) -> Image.Image:
     return out
 
 
-def redraw_like(base: Image.Image, draft: Image.Image) -> Image.Image:
-    """Turns an AI redraw of the base sprite back into a sprite: same size, position and palette as the base."""
+def extra_colors(img: Image.Image, palette, count=6, distance=60):
+    """Colours of img that are far from every palette colour (e.g. a new blue cap), reduced to a few."""
+    far = [c for c in img.convert('RGBA').getdata()
+           if c[3] and min(sum((p[i] - c[i]) ** 2 for i in range(3)) for p in palette) > distance ** 2]
+    if len(far) < 8:
+        return []
+    strip = Image.new('RGB', (len(far), 1))
+    strip.putdata([c[:3] for c in far])
+    q = strip.quantize(colors=count, method=Image.Quantize.MEDIANCUT).convert('RGB')
+    return sorted({c + (255,) for c in q.getdata()})
+
+
+def redraw_like(base: Image.Image, draft: Image.Image, new_colors=6) -> Image.Image:
+    """Turns an AI redraw of the base sprite back into a sprite: same size and position as the base, using the
+    base palette plus a few new accent colours for things the base does not have (clothes, accessories)."""
     box = base.getbbox()
     fig = remove_background(draft)
     fig = fig.crop(fig.getbbox())
@@ -135,7 +148,8 @@ def redraw_like(base: Image.Image, draft: Image.Image) -> Image.Image:
     size = (max(1, round(fig.width * scale)), max(1, round(fig.height * scale)))
     small = fig.resize(size, Image.BOX)
     small.putalpha(small.getchannel('A').point(lambda a: 255 if a >= 128 else 0))
-    small = match_palette(small, palette_of(base))
+    palette = palette_of(base)
+    small = match_palette(small, palette + extra_colors(small, palette, new_colors))
     out = Image.new('RGBA', base.size, (0, 0, 0, 0))
     out.alpha_composite(small, (box[0] + (w - size[0]) // 2, box[3] - size[1]))
     return out
