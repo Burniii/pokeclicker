@@ -201,6 +201,7 @@ import { ItemList } from './items/ItemList';
 import Item from './items/Item';
 import { MultiplierDecreaser } from './items/types';
 import EnergyRestore from './items/EnergyRestore';
+import BattleItem from './items/BattleItem';
 import EffectEngineRunner from './effectEngine/effectEngineRunner';
 import ItemHandler from './items/ItemHandler';
 import CaughtIndicatingItem from './items/CaughtIndicatingItem';
@@ -469,6 +470,7 @@ Object.assign(<any>window, {
     Item,
     MultiplierDecreaser,
     EnergyRestore,
+    BattleItem,
     EffectEngineRunner,
     ItemHandler,
     CaughtIndicatingItem,

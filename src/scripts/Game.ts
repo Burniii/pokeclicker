@@ -52,6 +52,7 @@ class Game implements TmpGameType {
     public expeditions: Expeditions;
     public ranch: Ranch;
     public fishing: Fishing;
+    public automation: Automation;
 
     constructor() {
         // Needs to be loaded first so save data can be updated (specifically "player" data)
@@ -69,6 +70,7 @@ class Game implements TmpGameType {
         this.expeditions = new Expeditions();
         this.ranch = new Ranch();
         this.fishing = new Fishing();
+        this.automation = new Automation();
         this.breeding = new Breeding(this.multiplier);
         this.pokeballs = new Pokeballs();
         this.pokeballFilters = new PokeballFilters();
@@ -330,6 +332,7 @@ class Game implements TmpGameType {
         this.cutscenes.initialize();
         this.research.initialize();
         Activities.initialize();
+        this.automation.initialize();
         BundledTranslations.register();
         if (player.regionStarters[GameConstants.Region.kanto]() === GameConstants.Starter.None) {
             StartSequenceRunner.start();
@@ -424,6 +427,8 @@ class Game implements TmpGameType {
     }
 
     gameTick() {
+        this.automation.tick();
+
         // Acheivements
         Game.achievementCounter += GameConstants.TICK_TIME;
         if (Game.achievementCounter >= GameConstants.ACHIEVEMENT_TICK) {

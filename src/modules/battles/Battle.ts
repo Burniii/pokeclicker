@@ -27,6 +27,9 @@ export default class Battle {
     static pokeball: KnockoutObservable<GameConstants.Pokeball> = ko.observable(GameConstants.Pokeball.Pokeball);
     static lastPokemonAttack = Date.now();
     static lastClickAttack = Date.now();
+    // Set by the click automation, only every few automated clicks play sounds and effects
+    static autoClicking = false;
+    static autoClickCounter = 0;
     static route;
 
     /**
@@ -71,8 +74,10 @@ export default class Battle {
         GameHelper.incrementObservable(App.game.statistics.clickAttacks);
         const damage = App.game.party.calculateClickAttack(true);
         this.enemyPokemon().damage(damage);
-        BattleSounds.play('hit');
-        BattleEffects.clickHit(damage, this.enemyPokemon().type1);
+        if (!Battle.autoClicking || Battle.autoClickCounter++ % 5 === 0) {
+            BattleSounds.play('hit');
+            BattleEffects.clickHit(damage, this.enemyPokemon().type1);
+        }
         if (!this.enemyPokemon().isAlive()) {
             this.defeatPokemon();
         }

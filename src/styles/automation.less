@@ -1,0 +1,69 @@
+.automation {
+    .automation-feature {
+        border-left: 4px solid #6c757d;
+
+        &.automation-on {
+            border-left-color: #28a745;
+        }
+
+        &.automation-locked {
+            opacity: 0.7;
+        }
+    }
+
+    .automation-icon {
+        font-size: 1.6rem;
+        width: 2rem;
+        text-align: center;
+    }
+
+    .automation-toggle {
+        min-width: 3.5rem;
+    }
+
+    .automation-settings {
+        background: rgba(0, 0, 0, 5%);
+        border-radius: 4px;
+    }
+
+    .automation-shop input.form-control {
+        max-width: 6rem;
+    }
+}
+
+.automation-fab {
+    position: fixed;
+    left: 8px;
+    bottom: 8px;
+    z-index: 1030;
+
+    .btn {
+        border-radius: 1rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 40%);
+    }
+}
+
+.automation-farm-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 28px);
+    gap: 2px;
+
+    .automation-farm-cell {
+        width: 28px;
+        height: 28px;
+        background: #8d6e63;
+        border-radius: 3px;
+        text-align: center;
+        line-height: 28px;
+        color: #ffeb3b;
+
+        &.locked {
+            background: #424242;
+        }
+
+        img {
+            width: 24px;
+            height: 24px;
+        }
+    }
+}
