@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="activitiesModalLabel">Activities</h5>
-        <span class="small text-muted ml-3 mt-1" data-bind="text: `Research Rank ${Research.rank()} · ${Research.totalStars().toLocaleString('en-US')} ★ · ${App.game.pokemonTraits.mints()} Mints`"></span>
+        <span class="small text-muted ml-3 mt-1 mr-auto" data-bind="text: `Research Rank ${Research.rank()} · ${Research.totalStars().toLocaleString('en-US')} ★ · ${App.game.pokemonTraits.mints()} Mints`"></span>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
       <!-- ko if: DisplayObservables.modalState.activitiesModal !== 'hidden' -->
@@ -22,19 +22,19 @@
           <!-- Research -->
           <div class="tab-pane active" id="activities-research">
             <p class="small mb-1">Every species has 5 research tasks. Each finished task gives a ★ (+1% attack for that Pokémon). Your ★ raise your Research Rank, which unlocks rewards, expedition and ranch slots.</p>
-            <div class="progress mb-1 position-relative" style="height: 18px;">
+            <div class="progress activity-progress mb-2">
               <div class="progress-bar bg-warning" data-bind="style: { width: `${Research.progressToNextRank().current / Research.progressToNextRank().needed * 100}%` }"></div>
-              <small class="position-absolute w-100 text-center" data-bind="text: `${Research.progressToNextRank().current} / ${Research.progressToNextRank().needed} ★ to rank ${Research.rank() + 1} (${Research.reward(Research.rank() + 1).description})`"></small>
+              <span class="activity-progress-label" data-bind="text: `${Research.progressToNextRank().current} / ${Research.progressToNextRank().needed} ★ to rank ${Research.rank() + 1} (${Research.reward(Research.rank() + 1).description})`"></span>
             </div>
             <!-- ko if: App.game.research.claimedRank() < Research.rank() -->
             <button class="btn btn-sm btn-success mb-2" data-bind="click: () => App.game.research.claimRewards(), text: `Claim ${Research.rank() - App.game.research.claimedRank()} rank reward(s)`"></button>
             <!-- /ko -->
             <p class="small text-muted mb-1">Pokémon with the fewest ★ first. Hover for the tasks.</p>
-            <div class="d-flex flex-wrap" data-bind="foreach: ActivitiesUI.researchList()">
-              <div class="text-center m-1 p-1 border rounded" style="width: 74px;" data-bind="tooltip: { title: ActivitiesUI.researchProgress($data.pokemon.id), html: true, trigger: 'hover' }">
-                <img width="40" src="" data-bind="attr: { src: PokemonHelper.getImage($data.pokemon.id) }">
-                <div class="small text-truncate" data-bind="text: $data.pokemon.displayName"></div>
-                <div class="small text-warning" data-bind="text: '★'.repeat($data.stars) + '☆'.repeat(5 - $data.stars)"></div>
+            <div class="activity-grid" data-bind="foreach: ActivitiesUI.researchList()">
+              <div class="activity-tile" data-bind="tooltip: { title: ActivitiesUI.researchProgress($data.pokemon.id), html: true, trigger: 'hover' }">
+                <img class="activity-sprite" src="" data-bind="attr: { src: PokemonHelper.getImage($data.pokemon.id) }">
+                <div class="activity-name" data-bind="text: $data.pokemon.displayName"></div>
+                <div class="activity-stars" data-bind="text: '★'.repeat($data.stars) + '☆'.repeat(5 - $data.stars)"></div>
               </div>
             </div>
           </div>
@@ -71,10 +71,10 @@
               <button class="btn btn-sm btn-outline-secondary mr-1" data-bind="click: () => App.game.expeditions.autoSelect()">Auto-pick</button>
               <button class="btn btn-sm btn-success" data-bind="enable: App.game.expeditions.canStart(), click: () => App.game.expeditions.start()">Start</button>
             </div>
-            <div class="d-flex flex-wrap" data-bind="foreach: ActivitiesUI.expeditionCandidates()">
-              <div class="text-center m-1 p-1 border rounded clickable" style="width: 74px;" data-bind="css: { 'border-success bg-success text-light': App.game.expeditions.selected().includes($data.pokemon.id) }, click: () => App.game.expeditions.toggleMember($data.pokemon.id)">
-                <img width="40" src="" data-bind="attr: { src: PokemonHelper.getImage($data.pokemon.id) }">
-                <div class="small text-truncate" data-bind="text: $data.pokemon.displayName"></div>
+            <div class="activity-grid" data-bind="foreach: ActivitiesUI.expeditionCandidates()">
+              <div class="activity-tile clickable" data-bind="css: { 'border-success bg-success text-light': App.game.expeditions.selected().includes($data.pokemon.id) }, click: () => App.game.expeditions.toggleMember($data.pokemon.id)">
+                <img class="activity-sprite" src="" data-bind="attr: { src: PokemonHelper.getImage($data.pokemon.id) }">
+                <div class="activity-name" data-bind="text: $data.pokemon.displayName, attr: { title: $data.pokemon.displayName }"></div>
                 <div class="small" data-bind="text: $data.match ? '✓ type' : ''"></div>
               </div>
             </div>
@@ -92,10 +92,10 @@
               <h6 class="mb-0 flex-grow-1" data-bind="text: `Residents (${App.game.ranch.residents().length}/${App.game.ranch.slots()})`"></h6>
               <button class="btn btn-sm btn-success" data-bind="click: () => App.game.ranch.collect()">Collect all</button>
             </div>
-            <div class="d-flex flex-wrap" data-bind="foreach: App.game.ranch.residents()">
-              <div class="text-center m-1 p-1 border rounded" style="width: 110px;">
-                <img width="40" src="" data-bind="attr: { src: PokemonHelper.getImage($data.id) }">
-                <div class="small text-truncate" data-bind="text: PokemonHelper.displayName(pokemonMap[$data.id].name)"></div>
+            <div class="activity-grid" data-bind="foreach: App.game.ranch.residents()">
+              <div class="activity-tile">
+                <img class="activity-sprite" src="" data-bind="attr: { src: PokemonHelper.getImage($data.id) }">
+                <div class="activity-name" data-bind="text: PokemonHelper.displayName(pokemonMap[$data.id].name)"></div>
                 <div class="small text-danger" data-bind="text: ActivitiesUI.hearts($data.id)"></div>
                 <div class="small text-muted" data-bind="text: ActivitiesUI.productText($data.id)"></div>
                 <div class="small" data-bind="text: `${App.game.ranch.hours($data).toFixed(1)}h stored`"></div>
@@ -106,10 +106,10 @@
             <div class="small text-muted border rounded p-1 my-2" data-bind="html: App.game.ranch.lastReport().join('<br/>')"></div>
             <!-- /ko -->
             <h6 class="mt-2">Move a Pokémon to the ranch</h6>
-            <div class="d-flex flex-wrap" data-bind="foreach: ActivitiesUI.ranchCandidates()">
-              <div class="text-center m-1 p-1 border rounded clickable" style="width: 90px;" data-bind="click: () => App.game.ranch.add($data.id)">
-                <img width="40" src="" data-bind="attr: { src: PokemonHelper.getImage($data.id) }">
-                <div class="small text-truncate" data-bind="text: $data.displayName"></div>
+            <div class="activity-grid" data-bind="foreach: ActivitiesUI.ranchCandidates()">
+              <div class="activity-tile clickable" data-bind="click: () => App.game.ranch.add($data.id)">
+                <img class="activity-sprite" src="" data-bind="attr: { src: PokemonHelper.getImage($data.id) }">
+                <div class="activity-name" data-bind="text: $data.displayName, attr: { title: $data.displayName }"></div>
                 <div class="small text-muted text-truncate" data-bind="text: ActivitiesUI.productText($data.id)"></div>
               </div>
             </div>
@@ -152,10 +152,10 @@
               <!-- /ko -->
             </div>
             <!-- /ko -->
-            <div class="d-flex flex-wrap" data-bind="foreach: ActivitiesUI.carePokemon()">
-              <div class="text-center m-1 p-1 border rounded clickable" style="width: 80px;" data-bind="css: { 'border-primary': ActivitiesUI.careId() === $data.id }, click: () => ActivitiesUI.selectCare($data.id)">
-                <img width="40" src="" data-bind="attr: { src: PokemonHelper.getImage($data.id) }">
-                <div class="small text-truncate" data-bind="text: $data.displayName"></div>
+            <div class="activity-grid" data-bind="foreach: ActivitiesUI.carePokemon()">
+              <div class="activity-tile clickable" data-bind="css: { 'border-primary': ActivitiesUI.careId() === $data.id }, click: () => ActivitiesUI.selectCare($data.id)">
+                <img class="activity-sprite" src="" data-bind="attr: { src: PokemonHelper.getImage($data.id) }">
+                <div class="activity-name" data-bind="text: $data.displayName, attr: { title: $data.displayName }"></div>
                 <div class="small text-muted text-truncate" data-bind="text: App.game.pokemonTraits.nature($data.id).name"></div>
               </div>
             </div>
