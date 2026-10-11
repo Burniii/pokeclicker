@@ -31,6 +31,10 @@ class Automation implements Saveable {
             new AutoGemUpgrade(),
             new AutoShop(),
             new AutoFarm(),
+            new AutoGym(),
+            new AutoDungeon(),
+            new AutoBattleFrontier(),
+            new AutoSafari(),
         ];
         this.features.forEach((f) => f.init());
     }
