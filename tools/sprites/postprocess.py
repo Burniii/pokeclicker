@@ -153,3 +153,37 @@ def redraw_like(base: Image.Image, draft: Image.Image, new_colors=6) -> Image.Im
     out = Image.new('RGBA', base.size, (0, 0, 0, 0))
     out.alpha_composite(small, (box[0] + (w - size[0]) // 2, box[3] - size[1]))
     return out
+
+
+def recolor_ramp(img: Image.Image, ramp, keep=None) -> Image.Image:
+    """Recolours a (pixelated) accessory onto a hand-picked shade ramp (dark -> light) by brightness.
+    Outline pixels stay as they are; `keep(c)` can protect colours such as a golden badge."""
+    out = img.convert('RGBA').copy()
+    px = out.load()
+    lum = lambda c: 0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]
+    inner = [px[x, y] for y in range(out.height) for x in range(out.width)
+             if px[x, y][3] and px[x, y] != OUTLINE and not (keep and keep(px[x, y]))]
+    if not inner:
+        return out
+    lo, hi = min(map(lum, inner)), max(map(lum, inner))
+    for y in range(out.height):
+        for x in range(out.width):
+            c = px[x, y]
+            if not c[3] or c == OUTLINE or (keep and keep(c)):
+                continue
+            t = 0 if hi == lo else (lum(c) - lo) / (hi - lo)
+            px[x, y] = tuple(ramp[min(len(ramp) - 1, int(t * len(ramp)))]) + (255,)
+    return out
+
+
+def restore(composite: Image.Image, base: Image.Image, box, only=None) -> Image.Image:
+    """Copies the base sprite's opaque pixels inside box (x0, y0, x1, y1) back on top, e.g. so fingers
+    hold an item or antennae stay in front of a hat. `only(x, y, colour)` can narrow the selection."""
+    out = composite.copy()
+    src, dst = base.convert('RGBA').load(), out.load()
+    for y in range(box[1], box[3]):
+        for x in range(box[0], box[2]):
+            c = src[x, y]
+            if c[3] and (only is None or only(x, y, c)):
+                dst[x, y] = c
+    return out
