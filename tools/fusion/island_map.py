@@ -1,96 +1,336 @@
-# Pixel-art map of the Fusion island, drawn at 1/4 size (1 px = 4 map px, 1 tile = 4 px) and upscaled.
-# Usage: python3 tools/fusion/island_map.py src/assets/images/fusion-island.png
-import random, math, sys
-from PIL import Image, ImageDraw
-random.seed(7)
-W, H = 400, 240
-img = Image.new('RGB', (W, H), (52, 112, 186))
-d = ImageDraw.Draw(img)
-px = img.load()
-# Ocean texture
+"""Builds the map of the Fusion island in the style of the Kanto town map.
+
+The map is assembled from real 16px tiles of src/assets/images/kanto-kanto.png:
+- buildings, the cave islet and the sea route markings are copied as whole tile blocks,
+- water, grass, paths and every coast or path edge are synthesised tile by tile: for each
+  target tile the Kanto tile with the same terrain and the most similar 8 neighbours is copied,
+  so coastlines, beaches and path borders look exactly like the Kanto ones,
+- trees, bushes and flowers are cut out of Kanto tiles and placed on the grass.
+
+Usage: python3 tools/fusion/island_map.py src/assets/images/fusion-island.png
+The tile positions of towns and routes must match FusionData.areas (map: x, y, w, h).
+"""
+import random
+import sys
+from collections import Counter, defaultdict, deque
+
+from PIL import Image
+
+T = 16
+W, H = 100, 60
+KANTO = 'src/assets/images/kanto-kanto.png'
+
+random.seed(11)
+K = Image.open(KANTO).convert('RGB')
+KW, KH = K.width // T, K.height // T
+
+GRASS_A = [(112, 200, 160), (65, 178, 139), (159, 224, 193)]
+GRASS_B = [(101, 180, 144), (59, 161, 125), (144, 202, 174)]
+GRASS_C = [(92, 165, 132), (56, 145, 112), (133, 185, 154)]
+GRASS_D = [(79, 141, 113), (42, 121, 91), (112, 161, 138)]
+GRASS = set(GRASS_A + GRASS_B + GRASS_C + GRASS_D)
+SAND = {(232, 224, 136), (219, 193, 137), (209, 184, 104), (216, 192, 136)}
+EDGE = {(184, 224, 160)}
+DIRT = {(122, 72, 73), (88, 55, 65), (150, 104, 103), (184, 144, 136), (215, 192, 156), (199, 163, 148), (65, 47, 65), (132, 88, 89)}
+W1 = {(72, 120, 216), (72, 144, 217)}
+W2 = {(49, 98, 175), (64, 122, 186)}
+W3 = {(40, 79, 145), (52, 99, 153)}
+
+
+def is_water(p):
+    return p[2] > 140 and p[2] > p[0] + 50 and p[2] > p[1] + 20
+
+
+def label_of(tile):
+    """Terrain label of a 16x16 tile: W1/W2/W3 water, S sand path, G grass, X anything else."""
+    px = list(tile.get_flattened_data()) if hasattr(tile, 'get_flattened_data') else list(tile.getdata())
+    n = len(px)
+    water = [p for p in px if is_water(p)]
+    if len(water) * 2 >= n:
+        # Water tiles must not carry route markings, rocks or buildings
+        if any(not is_water(p) and p not in DIRT and p not in GRASS and p not in SAND and p not in EDGE for p in px):
+            return 'X'
+        c = Counter('1' if p in W1 else '2' if p in W2 else '3' if p in W3 else '?' for p in water)
+        return f'W{max("123", key=lambda k: c[k])}'
+    if sum(p in SAND for p in px) * 2 >= n:
+        return 'S'
+    grass = sum(p in GRASS for p in px)
+    if grass * 2 >= n and grass + sum(p in EDGE or p in DIRT or is_water(p) for p in px) >= n * 0.92:
+        # Cliff dirt only belongs to grass tiles at the coast (checked once all labels are known)
+        return 'Gd' if any(p in DIRT for p in px) else 'G'
+    return 'X'
+
+
+# Labels of all Kanto tiles and how often each tile picture occurs
+klabel = {}
+kfreq = {}
+pictures = Counter()
+for ty in range(KH):
+    for tx in range(KW):
+        tile = K.crop((tx * T, ty * T, tx * T + T, ty * T + T))
+        klabel[tx, ty] = label_of(tile)
+        pictures[tile.tobytes()] += 1
+        kfreq[tx, ty] = tile.tobytes()
+kfreq = {k: pictures[v] for k, v in kfreq.items()}
+for (tx, ty), lbl in list(klabel.items()):
+    if lbl == 'Gd':
+        coast = any(klabel.get((tx + dx, ty + dy), 'X').startswith('W') for dx in (-1, 0, 1) for dy in (-1, 0, 1))
+        klabel[tx, ty] = 'G' if coast else 'X'
+
+NEIGH = [(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)]
+WEIGHT = [1, 3, 1, 3, 3, 1, 3, 1]
+
+
+def kl(x, y):
+    return klabel.get((x, y), 'X')
+
+
+def coarse(lbl):
+    return 'W' if lbl.startswith('W') else lbl
+
+
+# Index Kanto tiles by label and 4-neighbourhood (coarse) for quick lookup
+index = defaultdict(list)
+by_label = defaultdict(list)
+for (tx, ty), lbl in klabel.items():
+    if lbl == 'X':
+        continue
+    key = (lbl,) + tuple(coarse(kl(tx + dx, ty + dy)) for dx, dy in ((0, -1), (-1, 0), (1, 0), (0, 1)))
+    index[key].append((tx, ty))
+    by_label[lbl].append((tx, ty))
+
+# ---------------------------------------------------------------------------------------------
+# Target layout (tile coordinates)
+# ---------------------------------------------------------------------------------------------
+target = [['W2'] * W for _ in range(H)]
+fixed = {}  # (x, y) -> Kanto tile copied unchanged (blocks)
+land = [[False] * W for _ in range(H)]
+
+
+def fill_land(x0, y0, x1, y1):
+    for y in range(y0, y1):
+        for x in range(x0, x1):
+            land[y][x] = True
+
+
+def cut_water(x0, y0, x1, y1):
+    for y in range(y0, y1):
+        for x in range(x0, x1):
+            land[y][x] = False
+
+
+# West island (Fusion lab, route 1)
+fill_land(10, 26, 36, 45)
+fill_land(13, 23, 30, 26)
+fill_land(8, 30, 10, 42)
+fill_land(16, 45, 31, 48)
+cut_water(10, 26, 13, 28)
+cut_water(32, 26, 36, 29)
+cut_water(33, 42, 36, 45)
+# East island (routes 3 and 4, Helix City)
+fill_land(48, 12, 72, 46)
+fill_land(52, 9, 68, 12)
+fill_land(46, 18, 48, 40)
+fill_land(55, 46, 70, 50)
+fill_land(72, 22, 76, 40)
+cut_water(48, 12, 51, 15)
+cut_water(68, 42, 72, 46)
+cut_water(70, 12, 72, 14)
+
 for y in range(H):
     for x in range(W):
-        if (x * 7 + y * 13) % 29 == 0 or random.random() < 0.02:
-            px[x, y] = (78, 140, 210)
-T = 4  # pixels per tile
+        if land[y][x]:
+            target[y][x] = 'G'
 
-def blob(cx, cy, rx, ry, jitter, n=48):
-    pts = []
-    for i in range(n):
-        a = 2 * math.pi * i / n
-        r = 1 + random.uniform(-jitter, jitter)
-        pts.append((cx + math.cos(a) * rx * r, cy + math.sin(a) * ry * r))
-    return pts
 
-# Island (several overlapping blobs), first as sand then grass slightly smaller
-shapes = [(28, 40, 26, 12), (48, 30, 18, 18), (68, 28, 20, 16), (78, 42, 14, 10), (50, 45, 22, 8), (16, 40, 10, 9)]
-for cx, cy, rx, ry in shapes:
-    d.polygon(blob(cx * T, cy * T, (rx + 2) * T, (ry + 2) * T, 0.08), fill=(226, 206, 140))
-for cx, cy, rx, ry in shapes:
-    d.polygon(blob(cx * T, cy * T, rx * T, ry * T, 0.08), fill=(104, 176, 72))
-# Grass texture
+def path(x0, y0, x1, y1):
+    for y in range(y0, y1):
+        for x in range(x0, x1):
+            target[y][x] = 'S'
+
+
+def block(kx, ky, w, h, x, y):
+    """Copy a w x h tile block from Kanto (kx, ky) to (x, y)."""
+    for dy in range(h):
+        for dx in range(w):
+            fixed[x + dx, y + dy] = (kx + dx, ky + dy)
+            target[y + dy][x + dx] = kl(kx + dx, ky + dy)
+
+
+# Routes (sand paths, 3 tiles wide like the Kanto routes)
+path(16, 36, 34, 39)      # Fusionspfad 1
+path(47, 36, 64, 39)      # Fusionspfad 3
+path(61, 17, 64, 36)      # Fusionspfad 4
+path(17, 31, 20, 36)      # Path in front of the lab
+# Beaches
+for bx0, by0, bx1, by1 in ((8, 38, 14, 42), (10, 42, 16, 45), (56, 46, 63, 50), (72, 30, 76, 37)):
+    for y in range(by0, by1):
+        for x in range(bx0, bx1):
+            if land[y][x]:
+                target[y][x] = 'S'
+
+# Water depth like on the Kanto map: light water along the coast, darker water far out
+dist = [[99] * W for _ in range(H)]
+q = deque()
 for y in range(H):
     for x in range(W):
-        if px[x, y] == (104, 176, 72) and random.random() < 0.12:
-            px[x, y] = random.choice([(92, 160, 62), (120, 190, 86)])
+        if land[y][x]:
+            dist[y][x] = 0
+            q.append((x, y))
+while q:
+    x, y = q.popleft()
+    for dx, dy in NEIGH:
+        nx, ny = x + dx, y + dy
+        if 0 <= nx < W and 0 <= ny < H and dist[ny][nx] > dist[y][x] + 1:
+            dist[ny][nx] = dist[y][x] + 1
+            q.append((nx, ny))
+for y in range(H):
+    for x in range(W):
+        if not land[y][x]:
+            target[y][x] = 'W1' if dist[y][x] <= 1 else 'W3' if dist[y][x] >= 10 else 'W2'
 
-def trees(x0, y0, x1, y1, count, colors=((40, 110, 50), (54, 130, 60))):
-    for _ in range(count):
-        x = random.randint(x0 * T, x1 * T); y = random.randint(y0 * T, y1 * T)
-        if px[x, y][1] < 150 or px[x, y][2] > 150:
+# Blocks copied from Kanto
+block(47, 39, 5, 5, 15, 26)   # Pokémon Lab of Cinnabar Island -> Fusion lab
+block(62, 9, 9, 4, 56, 13)    # Mart, Pokémon Center and gym sign -> Helix City
+block(34, 51, 7, 7, 80, 9)    # Seafoam Islands -> Mysterious cave
+# Sea route markings (white lines) of Fusionspfad 2 and of the way to the cave
+for x in range(36, 46):
+    block(32, 54, 1, 3, x, 36)
+for x in range(73, 80):
+    block(32, 54, 1, 3, x, 12)
+
+# ---------------------------------------------------------------------------------------------
+# Tile synthesis
+# ---------------------------------------------------------------------------------------------
+
+
+def tl(x, y):
+    if 0 <= x < W and 0 <= y < H:
+        return target[y][x]
+    return 'W3'
+
+
+def choose(x, y):
+    lbl = tl(x, y)
+    want = [tl(x + dx, y + dy) for dx, dy in NEIGH]
+    key = (lbl,) + tuple(coarse(tl(x + dx, y + dy)) for dx, dy in ((0, -1), (-1, 0), (1, 0), (0, 1)))
+    cands = index.get(key) or by_label.get(lbl) or by_label['G']
+    best, best_score = [], -1
+    for tx, ty in cands:
+        score = 0
+        for (dx, dy), w, wl in zip(NEIGH, WEIGHT, want):
+            got = kl(tx + dx, ty + dy)
+            if got == wl:
+                score += w * 2
+            elif coarse(got) == coarse(wl):
+                score += w
+        if score > best_score:
+            best, best_score = [(tx, ty)], score
+        elif score == best_score:
+            best.append((tx, ty))
+    # Water keeps its wave pattern because every tile repeats it every 16px.
+    # Among equally good tiles, common pictures are preferred: calm water and plain grass like on the Kanto map
+    return random.choices(best, weights=[kfreq[b] ** 2 for b in best])[0]
+
+
+out = Image.new('RGB', (W * T, H * T))
+for y in range(H):
+    for x in range(W):
+        src = fixed.get((x, y)) or choose(x, y)
+        out.paste(K.crop((src[0] * T, src[1] * T, src[0] * T + T, src[1] * T + T)), (x * T, y * T))
+
+# One grass shade everywhere (Kanto uses darker shades for plateaus)
+remap = {b: a for b, a in zip(GRASS_B + GRASS_C + GRASS_D, GRASS_A * 3)}
+px = out.load()
+for y in range(out.height):
+    for x in range(out.width):
+        p = px[x, y]
+        if p in remap:
+            px[x, y] = remap[p]
+
+# Lab block: the pond behind the lab roof becomes grass
+grass_tile = K.crop((224, 0, 240, 16))
+for x in range(15, 20):
+    for yy in range(0, 9):
+        for xx in range(16):
+            p = px[x * T + xx, 26 * T + yy]
+            if is_water(p) or (p[1] > p[0] + 20 and p[1] > p[2] - 10):
+                px[x * T + xx, 26 * T + yy] = grass_tile.getpixel((xx, yy))
+
+# ---------------------------------------------------------------------------------------------
+# Vegetation sprites (cut out of Kanto tiles, grass made transparent)
+# ---------------------------------------------------------------------------------------------
+
+
+def sprite(x0, y0, x1, y1):
+    """Cut an object out of Kanto: ground (grass, water, coast) around it becomes transparent."""
+    im = K.crop((x0, y0, x1, y1)).convert('RGBA')
+    p = im.load()
+    seen = set()
+    q = deque([(x, y) for x in range(im.width) for y in (0, im.height - 1)] +
+              [(x, y) for y in range(im.height) for x in (0, im.width - 1)])
+    while q:
+        x, y = q.popleft()
+        if (x, y) in seen or not (0 <= x < im.width and 0 <= y < im.height):
             continue
-        c = random.choice(colors)
-        d.ellipse((x - 3, y - 3, x + 3, y + 3), fill=c, outline=(24, 70, 30))
-        px[x, y - 1] = (90, 170, 90)
+        seen.add((x, y))
+        c = p[x, y][:3]
+        if c in GRASS or c in DIRT or is_water(c):
+            p[x, y] = (0, 0, 0, 0)
+            q.extend([(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)])
+    return im
 
-# Forest along route 1
-trees(17, 30, 33, 37, 70)
-trees(17, 43, 33, 49, 60)
-# River/lake along route 2
-d.polygon(blob(41 * T, 30 * T, 4 * T, 10 * T, 0.12), fill=(70, 140, 214))
-d.line([(41 * T, 20 * T), (41 * T, 40 * T)], fill=(96, 164, 228), width=3)
-# Volcanic area around route 3
-for cx in (44, 52, 58):
-    d.polygon(blob(cx * T, 13 * T, 4 * T, 3 * T, 0.2), fill=(140, 92, 70))
-d.polygon([(52 * T - 10, 13 * T + 6), (52 * T, 13 * T - 14), (52 * T + 10, 13 * T + 6)], fill=(110, 70, 56))
-d.ellipse((52 * T - 3, 13 * T - 15, 52 * T + 3, 13 * T - 11), fill=(240, 110, 40))
-# Desert around route 4
-d.polygon(blob(72 * T, 28 * T, 6 * T, 9 * T, 0.15), fill=(222, 196, 120))
-for _ in range(40):
-    x = random.randint(66 * T, 78 * T); y = random.randint(20 * T, 37 * T)
-    if px[x, y] == (222, 196, 120):
-        px[x, y] = (200, 170, 96)
-# Mountain with the cave
-d.polygon(blob(84 * T, 38 * T, 8 * T, 7 * T, 0.12), fill=(128, 120, 116))
-for i in range(3):
-    bx = (79 + i * 4) * T
-    d.polygon([(bx - 12, 36 * T), (bx, 30 * T + i * 3), (bx + 12, 36 * T)], fill=(150, 144, 140), outline=(90, 84, 80))
-    d.polygon([(bx - 3, 31 * T + i * 3), (bx, 30 * T + i * 3), (bx + 3, 31 * T + i * 3)], fill=(240, 240, 250))
-# Lab plaza: DNA helix decoration
-for i in range(18):
-    y = 28 * T + i * 2
-    a = i / 3.0
-    x1 = 13 * T + int(math.sin(a) * 6); x2 = 13 * T - int(math.sin(a) * 6)
-    px[x1, y] = (220, 60, 160); px[x2, y] = (60, 200, 230)
-    if i % 3 == 0:
-        d.line([(x1, y), (x2, y)], fill=(240, 240, 240))
-# Dirt paths below the routes
-for rx, ry, rw, rh in ((16, 38.5, 18, 3), (34, 18, 3, 23.5), (37, 18, 26, 3), (63, 18, 3, 21), (67.5, 40.5, 12.5, 2)):
-    d.rectangle((rx * T + 1, ry * T + 1, (rx + rw) * T - 2, (ry + rh) * T - 2), fill=(206, 180, 122))
-    for _ in range(int(rw * rh)):
-        x = random.randint(int(rx * T) + 1, int((rx + rw) * T) - 2); y = random.randint(int(ry * T) + 1, int((ry + rh) * T) - 2)
-        px[x, y] = (184, 158, 104)
-# Cave entrance
-d.rectangle((80 * T, 37 * T, 85 * T - 1, 42 * T - 1), fill=(110, 102, 98))
-d.ellipse((81 * T, 38 * T + 2, 84 * T - 1, 42 * T + 4), fill=(30, 26, 28))
-# Town plazas
-for tx, ty, tw, th in ((10, 37, 6, 6), (61.5, 39, 6, 6)):
-    d.rectangle((tx * T - 3, ty * T - 3, (tx + tw) * T + 2, (ty + th) * T + 2), fill=(196, 190, 176), outline=(120, 110, 100))
-# Small houses around towns
-for hx, hy in ((8, 35), (17, 35), (8, 44), (60, 37), (68, 37), (60, 46), (68, 46)):
-    x, y = hx * T, hy * T
-    d.rectangle((x, y + 2, x + 6, y + 7), fill=(236, 230, 214), outline=(80, 70, 60))
-    d.polygon([(x - 1, y + 3), (x + 3, y - 1), (x + 7, y + 3)], fill=(200, 70, 70), outline=(80, 40, 40))
 
-out = img.resize((W * 4, H * 4), Image.NEAREST)
-out.save(sys.argv[1])
+# Isolated tree on Route 21's north shore (its crown reaches 5px into the tile row above)
+TREE = sprite(56 * T, 41 * T + 10, 58 * T, 44 * T)
+BUSH = sprite(58 * T, 43 * T, 59 * T, 44 * T)
+FLOWER = sprite(58 * T, 42 * T, 59 * T, 43 * T)
+FLOWERS = sprite(47 * T, 1 * T, 48 * T, 2 * T)
+
+
+def free(x, y, w, h):
+    for yy in range(y, y + h):
+        for xx in range(x, x + w):
+            if not (0 <= xx < W and 0 <= yy < H) or target[yy][xx] != 'G' or (xx, yy) in fixed:
+                return False
+            # keep one tile of grass to the coast
+            if any(tl(xx + dx, yy + dy).startswith('W') for dx, dy in NEIGH):
+                return False
+    return True
+
+
+used = set()
+
+
+def place(img, x, y, w, h):
+    if free(x, y, w, h) and not any((xx, yy) in used for xx in range(x, x + w) for yy in range(y, y + h)):
+        out.paste(img, (x * T, (y + h) * T - img.height), img)
+        used.update((xx, yy) for xx in range(x, x + w) for yy in range(y, y + h))
+        return True
+    return False
+
+
+def forest(x0, y0, x1, y1, density=0.8):
+    """Loose groups of trees like on the Kanto routes, with bushes in the gaps."""
+    for y in range(y0, y1, 2):
+        for x in range(x0 + random.randint(0, 1), x1, 2):
+            if random.random() < density:
+                place(TREE, x, y, 2, 2)
+            elif random.random() < 0.5:
+                place(BUSH, x + random.randint(0, 1), y + random.randint(0, 1), 1, 1)
+
+
+forest(13, 40, 34, 45, 0.6)
+forest(21, 28, 33, 35, 0.55)
+forest(49, 40, 60, 46, 0.6)
+forest(66, 19, 72, 36, 0.6)
+forest(50, 18, 60, 35, 0.45)
+for _ in range(900):
+    x, y = random.randrange(W), random.randrange(H)
+    r = random.random()
+    if r < 0.3:
+        place(BUSH, x, y, 1, 1)
+    elif r < 0.4:
+        place(random.choice([FLOWER, FLOWERS]), x, y, 1, 1)
+
+out.save(sys.argv[1] if len(sys.argv) > 1 else 'fusion-island.png', optimize=True)

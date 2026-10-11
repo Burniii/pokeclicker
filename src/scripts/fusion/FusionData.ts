@@ -75,31 +75,31 @@ class FusionData {
     public static readonly areas: FusionArea[] = [
         {
             id: 't1', name: 'Fusionslabor', kind: 'town', unlock: {}, background: 'power-plant',
-            map: { x: 10, y: 37, w: 6, h: 6 },
+            map: { x: 15, y: 26, w: 5, h: 5 },
         },
         {
             id: 'f1', name: 'Fusionspfad 1', kind: 'route', unlock: {}, levels: [3, 8], hp: 30, energy: 1, background: 'forest',
-            map: { x: 16, y: 38.5, w: 18, h: 3 },
+            map: { x: 16, y: 36, w: 18, h: 3 },
             pokemon: ['25.133', '133.25', '132.25', '52.133', '54.79', '36.40'],
         },
         {
             id: 'f2', name: 'Fusionspfad 2', kind: 'route', unlock: { area: 'f1', kills: 25 }, levels: [10, 18], hp: 200, energy: 3, background: 'water',
-            map: { x: 34, y: 18, w: 3, h: 23.5 },
+            map: { x: 36, y: 36, w: 10, h: 3 },
             pokemon: ['129.130', '115.128', '135.136', '134.131', '123.127', '68.76'],
         },
         {
             id: 'f3', name: 'Fusionspfad 3', kind: 'route', unlock: { area: 'f2', kills: 25 }, levels: [20, 30], hp: 1100, energy: 8, background: 'fire',
-            map: { x: 37, y: 18, w: 26, h: 3 },
+            map: { x: 47, y: 36, w: 14, h: 3 },
             pokemon: ['59.38', '38.59', '3.143', '143.3', '9.130', '130.9', '25.6', '6.25'],
         },
         {
             id: 'f4', name: 'Fusionspfad 4', kind: 'route', unlock: { area: 'f3', kills: 25 }, levels: [35, 45], hp: 4500, energy: 20, background: 'desert',
-            map: { x: 63, y: 18, w: 3, h: 21 },
+            map: { x: 61, y: 17, w: 3, h: 22 },
             pokemon: ['131.148', '148.131', '94.6', '142.6', '65.94', '143.149', '149.143', '6.149', '149.6'],
         },
         {
             id: 't2', name: 'Helixstadt', kind: 'town', unlock: { area: 'f4', kills: 25 }, background: 'battlefield', gym: 'gym1',
-            map: { x: 61.5, y: 39, w: 6, h: 6 },
+            map: { x: 56, y: 13, w: 9, h: 4 },
         },
         {
             id: 'gym1', name: 'Fusionsarena', kind: 'gym', unlock: { area: 'f4', kills: 25 }, background: 'battlefield',
@@ -112,13 +112,13 @@ class FusionData {
         },
         {
             id: 'f5', name: 'Mysteriöse Höhle', kind: 'cave', unlock: { badge: 'Fusionsorden' }, levels: [60, 70], hp: 25000, energy: 50, background: 'cave',
-            map: { x: 80, y: 37, w: 5, h: 5 },
+            map: { x: 80, y: 10, w: 7, h: 6 },
             pokemon: ['94.150', '150.94', '151.150', '150.151', '145.146', '144.145', '146.144'],
         },
     ];
 
     // Decorative paths on the map that connect locations without being an area themselves
-    public static readonly mapPaths: { x: number, y: number, w: number, h: number }[] = [{ x: 67.5, y: 40.5, w: 12.5, h: 2 }];
+    public static readonly mapPaths: { x: number, y: number, w: number, h: number }[] = [];
 
     public static speciesById(id: string): FusionSpecies {
         return FusionData.species.find((s) => s.id === id);
