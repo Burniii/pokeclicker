@@ -35,6 +35,7 @@ class Automation implements Saveable {
             new AutoDungeon(),
             new AutoBattleFrontier(),
             new AutoSafari(),
+            new AutoFocus(),
         ];
         this.features.forEach((f) => f.init());
     }
@@ -51,6 +52,8 @@ class Automation implements Saveable {
     public enabledCount = ko.pureComputed(() => this.features.filter((f) => f.unlocked() && f.enabled()).length);
 
     public initialize() {
+        // A catch filter left over from the focus automation is added again when needed
+        this.feature<AutoFocus>('focus')?.removeFilter();
         this.refreshUnlocks(true);
         this.started = true;
     }
@@ -107,6 +110,7 @@ class Automation implements Saveable {
                 }
             }
         });
+        this.feature<AutoFocus>('focus')?.refreshModes(silent);
     }
 
     public notify(message: string, type = NotificationConstants.NotificationOption.primary, timeout = 3000) {

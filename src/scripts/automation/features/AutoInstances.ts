@@ -38,6 +38,10 @@ class AutoGym extends AutomationFeature {
         if (App.game.gameState === GameConstants.GameState.gym) {
             return;
         }
+        if (App.game.automation.feature('focus')?.active()) {
+            this.status('Pausiert, solange der Fokus aktiv ist.');
+            return;
+        }
         if (App.game.gameState !== GameConstants.GameState.town) {
             this.status('Wartet, bis du in einer Stadt mit Arena bist.');
             return;
@@ -112,8 +116,15 @@ class AutoDungeon extends AutomationFeature {
     }
 
     public run() {
+        const focus = App.game.automation.feature<AutoFocus>('focus');
         if (App.game.gameState === GameConstants.GameState.dungeon) {
-            this.explore();
+            if (!focus?.handlesDungeon) {
+                this.explore();
+            }
+            return;
+        }
+        if (focus?.active()) {
+            this.status('Pausiert, solange der Fokus aktiv ist.');
             return;
         }
         if (App.game.gameState !== GameConstants.GameState.town || !(player.town instanceof DungeonTown)) {
@@ -142,7 +153,7 @@ class AutoDungeon extends AutomationFeature {
         DungeonRunner.initializeDungeon(dungeon);
     }
 
-    private wantChest(tile: DungeonTile): boolean {
+    public wantChest(tile: DungeonTile): boolean {
         const min = this.setting('chests');
         if (min === 'none') {
             return false;
@@ -151,7 +162,7 @@ class AutoDungeon extends AutomationFeature {
         return AutoDungeon.tiers.indexOf(tier) >= AutoDungeon.tiers.indexOf(min);
     }
 
-    private explore() {
+    public explore() {
         // A hired dungeon guide explores on its own
         if (DungeonGuides.hired() || DungeonRunner.fighting() || DungeonRunner.fightingBoss() || DungeonBattle.catching() || DungeonRunner.dungeonFinished()) {
             return;

@@ -148,6 +148,58 @@
   <!-- /ko -->
 </script>
 
+<script type="text/html" id="automationFocusSettingsTemplate">
+  <div class="form-row align-items-center mb-1">
+    <div class="col-7 small">Ziel</div>
+    <div class="col-5">
+      <select class="form-control form-control-sm" data-bind="options: availableModes(), optionsText: 'name', optionsValue: 'id', value: settings.mode"></select>
+    </div>
+  </div>
+  <div class="small text-muted">
+    Noch gesperrte Ziele:
+    <span data-bind="text: AutoFocus.modes.filter((m) => !m.id.startsWith('gem:') && !availableModes().includes(m)).map((m) => `${m.name} (${m.hint})`).join(' · ') || 'keine'"></span>
+  </div>
+  <div class="small text-muted mt-1">Für Tokens, Quests und Pokérus legt der Fokus vorübergehend einen eigenen Fangfilter „🤖 Automatik“ an und entfernt ihn wieder.</div>
+</script>
+
 <script type="text/html" id="automationOverviewTemplate">
-  <p class="small text-muted">Hier ist noch keine Übersicht vorhanden.</p>
+  <div class="card mb-2"><div class="card-body p-2">
+    <b>🧭 Gehe zu</b>
+    <div class="form-row mt-1">
+      <div class="col"><select class="form-control form-control-sm" data-bind="options: AutomationOverview.towns(), value: AutomationOverview.goToTarget"></select></div>
+      <div class="col-auto"><button class="btn btn-sm btn-primary" data-bind="click: () => AutomationOverview.goTo()">Reisen</button></div>
+    </div>
+  </div></div>
+
+  <div class="card mb-2"><div class="card-body p-2">
+    <b>🐾 Wandernde Pokémon</b> <small class="text-muted">(Route mit erhöhter Chance)</small>
+    <table class="table table-sm small mb-0">
+      <tbody data-bind="foreach: AutomationOverview.roamers()">
+        <tr>
+          <td data-bind="text: `${region} · ${group}`"></td>
+          <td><a href="#" data-bind="text: route, click: () => AutomationOverview.goToRoamers(region, route)"></a></td>
+          <td data-bind="foreach: pokemon">
+            <span class="mr-2" data-bind="text: `${name}${shiny ? ' ✨' : caught ? ' ✔' : ' ✖'}`, css: { 'text-success': caught, 'text-danger': !caught }"></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div></div>
+
+  <div class="card mb-2"><div class="card-body p-2">
+    <b>💎 Entwicklungs-Items mit Nutzen</b>
+    <!-- ko if: !AutomationOverview.stones().length --><div class="small text-muted">Keine Items, die gerade etwas Neues bringen.</div><!-- /ko -->
+    <div class="small" data-bind="foreach: AutomationOverview.stones()">
+      <div><img data-bind="attr: { src: image }" height="20"> <span data-bind="text: `${name} ×${amount}: ${text}`"></span></div>
+    </div>
+    <!-- ko if: AutomationOverview.stones().length --><a href="#" class="small" data-bind="click: () => { $('#automationModal').modal('hide'); $('#showItemsModal').modal('show'); }">Item-Beutel öffnen</a><!-- /ko -->
+  </div></div>
+
+  <div class="card mb-2"><div class="card-body p-2">
+    <b>📋 Questreihen am Schwarzen Brett</b>
+    <!-- ko if: !AutomationOverview.questLines().length --><div class="small text-muted">Keine offenen Questreihen.</div><!-- /ko -->
+    <div class="small" data-bind="foreach: AutomationOverview.questLines()">
+      <div><span data-bind="text: name"></span> · <a href="#" data-bind="text: town, click: () => AutomationOverview.goTo(town)"></a></div>
+    </div>
+  </div></div>
 </script>
