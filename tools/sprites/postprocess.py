@@ -187,3 +187,48 @@ def restore(composite: Image.Image, base: Image.Image, box, only=None) -> Image.
             if c[3] and (only is None or only(x, y, c)):
                 dst[x, y] = c
     return out
+
+
+def from_edit(base: Image.Image, edited: Image.Image, tolerance=60, new_colors=8) -> Image.Image:
+    """Turns an instruction-edited, upscaled copy of a sprite back into a sprite of the base size.
+    Pixels that still look like the original get the exact original colour, changed pixels keep the
+    edit (snapped to the base palette plus a few new colours), the background becomes transparent."""
+    w, h = base.size
+    big = remove_background(edited.convert('RGBA'), tolerance=30)
+    sx, sy = big.width / w, big.height / h
+    small = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    bp, sp, op = big.load(), small.load(), base.convert('RGBA').load()
+    for y in range(h):
+        for x in range(w):
+            sp[x, y] = bp[min(big.width - 1, int((x + 0.5) * sx)), min(big.height - 1, int((y + 0.5) * sy))]
+    palette = palette_of(base)
+    changed = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    cp = changed.load()
+    for y in range(h):
+        for x in range(w):
+            c, o = sp[x, y], op[x, y]
+            if not c[3]:
+                continue
+            if o[3] and sum((c[i] - o[i]) ** 2 for i in range(3)) <= tolerance ** 2:
+                sp[x, y] = o
+            else:
+                cp[x, y] = c
+    extra = extra_colors(changed, palette, new_colors, distance=40)
+    snapped = match_palette(changed, palette + extra).load()
+    for y in range(h):
+        for x in range(w):
+            if cp[x, y][3]:
+                sp[x, y] = snapped[x, y]
+    return small
+
+
+def shiny_for_edit(base: Image.Image, shiny_base: Image.Image, variant: Image.Image) -> Image.Image:
+    """Shiny version of an edited sprite: unchanged pixels come from the official shiny sprite,
+    added parts (clothes, items) keep their colours."""
+    out = variant.convert('RGBA').copy()
+    vp, bp, sp = out.load(), base.convert('RGBA').load(), shiny_base.convert('RGBA').load()
+    for y in range(out.height):
+        for x in range(out.width):
+            if vp[x, y][3] and vp[x, y] == bp[x, y]:
+                vp[x, y] = sp[x, y]
+    return out
