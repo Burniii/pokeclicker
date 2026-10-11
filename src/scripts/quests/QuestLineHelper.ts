@@ -148,6 +148,18 @@ class QuestLineHelper {
         App.game.quests.questLines.push(tutorial);
     }
 
+    // Bill's fusion experiment opens the separate Fusion world (after the Johto Champion)
+    public static createFusionExperimentQuestLine() {
+        const fusionQuestLine = new QuestLine('The Fusion Experiment', 'Bill is working on a strange experiment that fuses Pokémon. Help him finish it.', new GymBadgeRequirement(BadgeEnums.Elite_JohtoChampion), GameConstants.BulletinBoards.Kanto);
+        fusionQuestLine.addQuest(new TalkToNPCQuest(BillFusion1, 'Visit Bill at Bill\'s House. He has a strange new experiment.'));
+        fusionQuestLine.addQuest(new MultipleQuestsQuest([
+            new CaptureSpecificPokemonQuest('Ditto', 1).withDescription('Catch a Ditto for its DNA.'),
+            new DefeatDungeonQuest(3, 0, 'Cerulean Cave').withDescription('Gather energy by clearing Cerulean Cave 3 times.'),
+        ], 'Bill needs Ditto DNA and the strange energy of Cerulean Cave.'));
+        fusionQuestLine.addQuest(new TalkToNPCQuest(BillFusion2, 'Bring everything back to Bill at Bill\'s House.'));
+        App.game.quests.questLines.push(fusionQuestLine);
+    }
+
     // Available upon talking with Bill's Grandpa.
     public static createBillsGrandpaQuestLine() {
         const BillsGrandpaQuestLine = new QuestLine('Bill\'s Grandpa Treasure Hunt', 'Check the hints and bring Bill\'s Grandpa the Pokémon he wants to see.', new RouteKillRequirement(10, GameConstants.Region.kanto, 25), GameConstants.BulletinBoards.Kanto);
@@ -4528,6 +4540,7 @@ class QuestLineHelper {
         this.createTutorial();
         this.createRocketKantoQuestLine();
         this.createBillsGrandpaQuestLine();
+        this.createFusionExperimentQuestLine();
         this.createUndergroundQuestLine();
         this.createBillSeviiQuestLine();
         this.createPersonsofInterestQuestLine();

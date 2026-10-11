@@ -53,6 +53,7 @@ class Game implements TmpGameType {
     public ranch: Ranch;
     public fishing: Fishing;
     public automation: Automation;
+    public fusionWorld: FusionWorld;
 
     constructor() {
         // Needs to be loaded first so save data can be updated (specifically "player" data)
@@ -71,6 +72,7 @@ class Game implements TmpGameType {
         this.ranch = new Ranch();
         this.fishing = new Fishing();
         this.automation = new Automation();
+        this.fusionWorld = new FusionWorld();
         this.breeding = new Breeding(this.multiplier);
         this.pokeballs = new Pokeballs();
         this.pokeballFilters = new PokeballFilters();
@@ -333,6 +335,7 @@ class Game implements TmpGameType {
         this.research.initialize();
         Activities.initialize();
         this.automation.initialize();
+        FusionUI.initialize();
         BundledTranslations.register();
         if (player.regionStarters[GameConstants.Region.kanto]() === GameConstants.Starter.None) {
             StartSequenceRunner.start();
@@ -428,6 +431,7 @@ class Game implements TmpGameType {
 
     gameTick() {
         this.automation.tick();
+        this.fusionWorld.tick();
 
         // Acheivements
         Game.achievementCounter += GameConstants.TICK_TIME;

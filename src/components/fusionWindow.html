@@ -1,0 +1,123 @@
+<!-- ko if: App.game.fusionWorld.unlocked() -->
+<div class="fusion-fab">
+  <button class="btn btn-sm" title="Fusionswelt"
+    data-bind="click: () => FusionUI.toggle(), css: FusionUI.open() ? 'btn-info' : 'btn-primary',
+      text: `🧬 ${App.game.fusionWorld.dexCount()}/${FusionData.species.length}`"></button>
+</div>
+
+<div id="fusionWindow" class="fusion-window card noselect" data-bind="visible: FusionUI.open(), css: { minimized: FusionUI.minimized() }">
+  <div class="fusion-titlebar card-header d-flex align-items-center p-1 px-2" data-bind="event: { mousedown: FusionUI.startDrag }">
+    <b class="mr-2">🧬 Fusionswelt</b>
+    <small class="text-muted flex-grow-1" data-bind="text: App.game.fusionWorld.started() ? `${App.game.fusionWorld.currentArea().name} · ⚡ ${App.game.fusionWorld.energy().toLocaleString('de-DE')}` : 'Wähle deinen Partner'"></small>
+    <button class="btn btn-sm btn-link p-0 px-1" title="Minimieren" data-bind="click: () => FusionUI.minimized(!FusionUI.minimized()), text: FusionUI.minimized() ? '▢' : '–'"></button>
+    <button class="btn btn-sm btn-link p-0 px-1" title="Schließen (läuft weiter)" data-bind="click: () => FusionUI.open(false)">✕</button>
+  </div>
+
+  <div class="card-body p-2" data-bind="visible: !FusionUI.minimized()">
+    <!-- Starter choice -->
+    <!-- ko ifnot: App.game.fusionWorld.starter() -->
+    <p class="small mb-2">Bill hat drei Fusionspartner für dich vorbereitet. Alles in der Fusionswelt ist vom Hauptspiel getrennt – eigenes Team, eigene Level, eigener Pokédex.</p>
+    <div class="d-flex justify-content-around" data-bind="foreach: FusionData.starters">
+      <button class="btn btn-light fusion-starter" data-bind="click: () => App.game.fusionWorld.chooseStarter($data)">
+        <img data-bind="attr: { src: FusionData.image($data) }" width="96" height="96">
+        <div class="font-weight-bold" data-bind="text: FusionData.speciesById($data).name"></div>
+        <small class="text-muted d-block" data-bind="text: FusionData.partNames($data)"></small>
+        <small class="d-block" data-bind="text: FusionUI.typeNames($data)"></small>
+      </button>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if: App.game.fusionWorld.starter() -->
+    <ul class="nav nav-tabs nav-fill small mb-2">
+      <li class="nav-item"><a class="nav-link p-1" href="#" data-bind="click: () => FusionUI.tab('battle'), css: { active: FusionUI.tab() === 'battle' }">Kampf</a></li>
+      <li class="nav-item"><a class="nav-link p-1" href="#" data-bind="click: () => FusionUI.tab('team'), css: { active: FusionUI.tab() === 'team' }">Team</a></li>
+      <li class="nav-item"><a class="nav-link p-1" href="#" data-bind="click: () => FusionUI.tab('dex'), css: { active: FusionUI.tab() === 'dex' }, text: `Dex ${App.game.fusionWorld.dexCount()}/${FusionData.species.length}`"></a></li>
+      <li class="nav-item"><a class="nav-link p-1" href="#" data-bind="click: () => FusionUI.tab('shop'), css: { active: FusionUI.tab() === 'shop' }">Shop</a></li>
+      <li class="nav-item"><a class="nav-link p-1" href="#" data-bind="click: () => FusionUI.tab('credits'), css: { active: FusionUI.tab() === 'credits' }">Credits</a></li>
+    </ul>
+
+    <!-- Battle -->
+    <!-- ko if: FusionUI.tab() === 'battle' -->
+    <div class="d-flex">
+      <div class="fusion-areas mr-2" data-bind="foreach: FusionData.areas">
+        <button class="btn btn-sm btn-block text-left mb-1"
+          data-bind="click: () => App.game.fusionWorld.goTo(id), disable: !App.game.fusionWorld.areaUnlocked($data),
+            css: App.game.fusionWorld.area() === id ? 'btn-primary' : 'btn-outline-secondary', text: FusionUI.areaLabel($data)"></button>
+      </div>
+      <div class="flex-grow-1 text-center fusion-battle" data-bind="with: App.game.fusionWorld.enemy()">
+        <div class="small font-weight-bold" data-bind="text: `${FusionData.speciesById(id).name} · Lv ${level}${App.game.fusionWorld.isCaught(id) ? ' ✔' : ''}`"></div>
+        <div class="small text-muted" data-bind="text: FusionUI.typeNames(id)"></div>
+        <img class="fusion-enemy clickable" data-bind="attr: { src: FusionData.image(id) }, click: () => App.game.fusionWorld.click(), css: { catching: App.game.fusionWorld.catching() }" width="128" height="128">
+        <div class="progress fusion-hp"><div class="progress-bar bg-danger" data-bind="style: { width: `${FusionUI.hpPercent()}%` }"></div></div>
+        <div class="small" data-bind="text: App.game.fusionWorld.catching() ? '⚪ Fangversuch…' : `${hp.toLocaleString('de-DE')} / ${maxHp.toLocaleString('de-DE')} KP`"></div>
+        <!-- ko if: App.game.fusionWorld.currentArea().kind === 'gym' -->
+        <div class="small text-danger" data-bind="text: `${App.game.fusionWorld.currentArea().leader} · ${App.game.fusionWorld.gymIndex + 1}/${App.game.fusionWorld.currentArea().team.length} · ⏱ ${App.game.fusionWorld.gymTimeLeft()} s`"></div>
+        <!-- /ko -->
+        <div class="small text-muted" data-bind="text: `Team-Angriff ${App.game.fusionWorld.teamAttack().toLocaleString('de-DE')}/s · Klick ${App.game.fusionWorld.clickDamage().toLocaleString('de-DE')}`"></div>
+      </div>
+    </div>
+    <div class="d-flex align-items-center small mt-1">
+      <span class="mr-1">Fangen:</span>
+      <select class="form-control form-control-sm mr-1 w-auto" data-bind="value: App.game.fusionWorld.catchMode">
+        <option value="new">nur neue</option>
+        <option value="all">alle</option>
+        <option value="none">nie</option>
+      </select>
+      <select class="form-control form-control-sm w-auto" data-bind="value: App.game.fusionWorld.ballChoice">
+        <option value="fusion" data-bind="text: `Fusionsball (${App.game.fusionWorld.balls.fusion()})`"></option>
+        <option value="super" data-bind="text: `Superfusionsball (${App.game.fusionWorld.balls.super()})`"></option>
+      </select>
+    </div>
+    <ul class="list-unstyled small mb-0 mt-1 fusion-log" data-bind="foreach: App.game.fusionWorld.log">
+      <li data-bind="text: $data"></li>
+    </ul>
+    <!-- /ko -->
+
+    <!-- Team -->
+    <!-- ko if: FusionUI.tab() === 'team' -->
+    <div class="fusion-list" data-bind="foreach: App.game.fusionWorld.caught().slice().sort((a, b) => b.exp - a.exp)">
+      <div class="d-flex align-items-center border-bottom py-1">
+        <img data-bind="attr: { src: FusionData.image(id) }" width="40" height="40">
+        <div class="flex-grow-1 small ml-1">
+          <b data-bind="text: FusionData.speciesById(id).name"></b>
+          <span class="text-muted" data-bind="text: ` · ${FusionUI.typeNames(id)}`"></span>
+        </div>
+        <small data-bind="text: `Lv ${FusionWorld.levelOf($data)} · Angriff ${Math.round(FusionData.attack(id) * FusionWorld.levelOf($data) / 100)}`"></small>
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- Dex -->
+    <!-- ko if: FusionUI.tab() === 'dex' -->
+    <div class="fusion-dex" data-bind="foreach: FusionData.species">
+      <div class="fusion-dex-entry text-center" data-bind="attr: { title: App.game.fusionWorld.isCaught(id) ? `${name} (${FusionData.partNames(id)})` : '???' }">
+        <img data-bind="attr: { src: FusionData.image(id) }, css: { unknown: !App.game.fusionWorld.isCaught(id) }" width="56" height="56">
+        <div class="small text-truncate" data-bind="text: App.game.fusionWorld.isCaught(id) ? name : '???'"></div>
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- Shop -->
+    <!-- ko if: FusionUI.tab() === 'shop' -->
+    <p class="small">Fusionsenergie: <b data-bind="text: App.game.fusionWorld.energy().toLocaleString('de-DE')"></b> ⚡ – nur in der Fusionswelt gültig.</p>
+    <!-- ko foreach: ['fusion', 'super'] -->
+    <div class="d-flex align-items-center mb-1 small">
+      <span class="flex-grow-1" data-bind="text: `${FusionWorld.BALLS[$data].name} (${FusionWorld.BALLS[$data].price} ⚡)${FusionWorld.BALLS[$data].bonus ? ' · +15 % Fangchance' : ''} · Bestand ${App.game.fusionWorld.balls[$data]()}`"></span>
+      <!-- ko foreach: [1, 10, 100] -->
+      <button class="btn btn-sm btn-outline-primary ml-1" data-bind="click: () => App.game.fusionWorld.buy($parent, $data), disable: App.game.fusionWorld.energy() < FusionWorld.BALLS[$parent].price * $data, text: `×${$data}`"></button>
+      <!-- /ko -->
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+
+    <!-- Credits -->
+    <!-- ko if: FusionUI.tab() === 'credits' -->
+    <p class="small mb-1">Alle Fusions-Sprites stammen aus der Community von <i>Pokémon Infinite Fusion</i> (bezogen über infinite-fusion.net). Vielen Dank an die Zeichnerinnen und Zeichner:</p>
+    <div class="fusion-list small" data-bind="foreach: FusionData.species">
+      <div><b data-bind="text: name"></b> <span class="text-muted" data-bind="text: `(${FusionData.partNames(id)})`"></span> – <span data-bind="text: artist"></span></div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+  </div>
+</div>
+<!-- /ko -->

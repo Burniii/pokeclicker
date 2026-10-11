@@ -3,6 +3,14 @@
 // [[pokemon::Name]] inserts the translated Pokémon name.
 
 export const bundledQuestlinesDe: Record<string, string> = {
+    // The Fusion Experiment
+    'The Fusion Experiment': 'Das Fusions-Experiment',
+    'Bill is working on a strange experiment that fuses Pokémon. Help him finish it.': 'Bill arbeitet an einem seltsamen Experiment, das Pokémon verschmilzt. Hilf ihm, es abzuschließen.',
+    'Visit Bill at Bill\'s House. He has a strange new experiment.': 'Besuche Bill in Bills Haus. Er hat ein seltsames neues Experiment.',
+    'Bill needs Ditto DNA and the strange energy of Cerulean Cave.': 'Bill braucht [[pokemon::Ditto]]-DNA und die seltsame Energie der Azuria-Höhle.',
+    'Catch a Ditto for its DNA.': 'Fange ein [[pokemon::Ditto]] für seine DNA.',
+    'Gather energy by clearing Cerulean Cave 3 times.': 'Sammle Energie, indem du die Azuria-Höhle 3-mal abschließt.',
+    'Bring everything back to Bill at Bill\'s House.': 'Bring alles zu Bill in Bills Haus zurück.',
     // The Rift of Hisui
     'The Rift of Hisui': 'Der Riss von Hisui',
     'Join the Galaxy Expedition Team and calm the frenzied Nobles of Hisui.': 'Schließe dich dem Galaktik-Expeditionsteam an und besänftige die rasenden Adligen von Hisui.',

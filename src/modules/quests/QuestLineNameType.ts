@@ -11,6 +11,7 @@ export type QuestLineNameType
     = 'Tutorial Quests'
     | 'Team Rocket'
     | 'Bill\'s Grandpa Treasure Hunt'
+    | 'The Fusion Experiment'
     | 'Mining Expedition'
     | 'Bill\'s Errand'
     | 'Persons of Interest'

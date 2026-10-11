@@ -396,6 +396,22 @@ const CeruleanSuperNerd = new NPC('Super Nerd Jovan', [
     'That day I learned that I should frequently download a save.',
 ], {image: 'assets/images/npcs/Super Nerd.png'});
 
+const BillFusion1 = new NPC('Bill', [
+    'Oh, a visitor! Come in, come in. You won\'t believe what I found while working on my PC system.',
+    'When I transferred a Ditto, its DNA got mixed with another Pokémon in the transfer stream. For a moment there was a creature that was both at once!',
+    'I think I can rebuild that by accident on purpose. I need fresh Ditto DNA and a lot of energy - the strange energy deep inside Cerulean Cave should do.',
+], {image: 'assets/images/npcs/Bill.png',
+    requirement: new MultiRequirement([new QuestLineStartedRequirement('The Fusion Experiment'), new QuestLineStepCompletedRequirement('The Fusion Experiment', 0, GameConstants.AchievementOption.less)]),
+});
+
+const BillFusion2 = new NPC('Bill', [
+    'You did it! Ditto DNA and Cerulean Cave energy... let me just plug this in... and...',
+    'It worked! The fusions are stable - but they can only exist inside the fusion space I opened. It is a whole little world of its own!',
+    'I prepared three fusion partners for you. Pick one and explore the Fusion Island. Everything you do there stays there.',
+], {image: 'assets/images/npcs/Bill.png',
+    requirement: new MultiRequirement([new QuestLineStepCompletedRequirement('The Fusion Experiment', 1), new QuestLineStepCompletedRequirement('The Fusion Experiment', 2, GameConstants.AchievementOption.less)]),
+});
+
 const BillsGrandpa1 = new NPC('Bill\'s Grandpa', [
     'Hm? You know Bill? He\'s my grandson. He\'s not here right now. He does something with PCs, so I\'m house-sitting.',
     'I like Pokémon but I\'m not as knowledgeable as my grandson. My grandson Bill told me about a Pokémon that is pink and like a balloon.',
@@ -1044,7 +1060,7 @@ TownList['Bill\'s House'] = new Town(
     ],
     {
         requirements: [new RouteKillRequirement(10, GameConstants.Region.kanto, 25)],
-        npcs: [BillsGrandpa1, BillsGrandpa2, BillsGrandpa3, BillsGrandpa4, BillsGrandpa5, BillsGrandpa6, BillsGrandpa7, BillsGrandpa8, BillsHouseEusine, BillGrandpaChristmas],
+        npcs: [BillFusion1, BillFusion2, BillsGrandpa1, BillsGrandpa2, BillsGrandpa3, BillsGrandpa4, BillsGrandpa5, BillsGrandpa6, BillsGrandpa7, BillsGrandpa8, BillsHouseEusine, BillGrandpaChristmas],
     }
 );
 TownList['Vermilion City'] = new Town(
