@@ -3,6 +3,8 @@
 
 type FusionMon = { id: string, exp: number };
 type FusionEnemy = { id: string, level: number, hp: number, maxHp: number };
+type FusionTutorialEvent = 'defeat' | 'newCatch' | 'buyBalls';
+type FusionTutorialStep = { title: string, text: string, event: FusionTutorialEvent, goal: number, reward: string, give: (world: FusionWorld) => void };
 
 // A second, completely separate little game that runs next to the base game in its own window.
 // It has its own team, levels, Pokédex, currency and progress and never changes anything of the base game.
@@ -11,6 +13,28 @@ class FusionWorld implements Saveable {
     defaults: Record<string, any> = {};
 
     public static readonly QUEST_LINE = 'The Fusion Experiment';
+    // Short tutorial of the Fusion world. It has its own progress and rewards, like everything here.
+    public static readonly TUTORIAL: FusionTutorialStep[] = [
+        {
+            title: 'Kämpfen in der Fusionswelt',
+            text: 'Besiege 10 wilde Fusionen, z. B. auf Fusionspfad 1 (auf der Fusionskarte anklicken). Dein Fusions-Team greift von selbst an – mit Klicks auf die wilde Fusion hilfst du nach. Für jeden Sieg gibt es Fusionsenergie ⚡ und Erfahrung für das ganze Team.',
+            event: 'defeat', goal: 10, reward: '10 Fusionsbälle',
+            give: (world) => GameHelper.incrementObservable(world.balls.fusion, 10),
+        },
+        {
+            title: 'Fusionen fangen',
+            text: 'Fange 2 neue Fusionen. Nach einem Sieg wird automatisch ein Fusionsball geworfen. Im Modul „Fusions-Team“ wählst du Ball und Fangmodus. Im Fusionsdex siehst du Kopf und Körper jeder Fusion: der Kopf bestimmt Typ 1, der Körper Typ 2.',
+            event: 'newCatch', goal: 2, reward: '100 ⚡ Fusionsenergie',
+            give: (world) => GameHelper.incrementObservable(world.energy, 100),
+        },
+        {
+            title: 'Energie und Fortschritt',
+            text: 'Fusionsenergie gilt nur in der Fusionswelt. Kaufe im Fusions-Shop im Fusionslabor 10 Fusionsbälle. 25 Siege auf einem Fusionspfad öffnen den nächsten – so geht es bis zur Fusionsarena in Helixstadt.',
+            event: 'buyBalls', goal: 10, reward: '3 Superfusionsbälle',
+            give: (world) => GameHelper.incrementObservable(world.balls.super, 3),
+        },
+    ];
+
     public static readonly BALLS = {
         fusion: { name: 'Fusionsball', price: 10, bonus: 0 },
         super: { name: 'Superfusionsball', price: 40, bonus: 0.15 },
@@ -28,6 +52,8 @@ class FusionWorld implements Saveable {
     public kills: KnockoutObservable<Record<string, number>> = ko.observable({});
     public badges: KnockoutObservableArray<string> = ko.observableArray([]);
     public announced = false;
+    public tutorialStep: KnockoutObservable<number> = ko.observable(0);
+    public tutorialProgress: KnockoutObservable<number> = ko.observable(0);
 
     // Runtime state (not saved)
     public enemy: KnockoutObservable<FusionEnemy> = ko.observable(null);
@@ -212,6 +238,7 @@ class FusionWorld implements Saveable {
         const kills = { ...this.kills() };
         kills[area.id] = (kills[area.id] ?? 0) + 1;
         this.kills(kills);
+        this.tutorialEvent('defeat');
         const mode = this.catchMode();
         const wanted = mode === 'all' || (mode === 'new' && !this.isCaught(enemy.id));
         const ball = this.ballChoice();
@@ -239,6 +266,7 @@ class FusionWorld implements Saveable {
             } else {
                 this.caught.push({ id: enemy.id, exp: Math.pow(enemy.level, 3) });
                 this.addLog(`Neu: ${species.name} gefangen! (${this.dexCount()} / ${FusionData.species.length})`);
+                this.tutorialEvent('newCatch');
                 Notifier.notify({ title: '🧬 Fusionswelt', message: `${species.name} gefangen!`, image: FusionData.image(enemy.id), type: NotificationConstants.NotificationOption.success });
             }
         } else {
@@ -255,6 +283,31 @@ class FusionWorld implements Saveable {
         }
         GameHelper.incrementObservable(this.energy, -price);
         GameHelper.incrementObservable(this.balls[ball], amount);
+        if (ball === 'fusion') {
+            this.tutorialEvent('buyBalls', amount);
+        }
+    }
+
+    public tutorial = ko.pureComputed(() => FusionWorld.TUTORIAL[this.tutorialStep()]);
+
+    private tutorialEvent(event: FusionTutorialEvent, amount = 1) {
+        const step = this.tutorial();
+        if (!step || step.event !== event) {
+            return;
+        }
+        this.tutorialProgress(Math.min(step.goal, this.tutorialProgress() + amount));
+        // Nothing left to catch: the catching step cannot be done any more
+        if (this.tutorialProgress() >= step.goal || (event === 'newCatch' && this.dexCount() >= FusionData.species.length)) {
+            step.give(this);
+            Notifier.notify({
+                title: `🧬 Tutorial ${this.tutorialStep() + 1}/${FusionWorld.TUTORIAL.length} erledigt`,
+                message: `${step.title} – Belohnung: ${step.reward}`,
+                type: NotificationConstants.NotificationOption.success,
+            });
+            this.addLog(`Tutorial erledigt: ${step.title} (${step.reward})`);
+            this.tutorialStep(this.tutorialStep() + 1);
+            this.tutorialProgress(0);
+        }
     }
 
     // Called from the base game tick (100 ms), but uses only its own state
@@ -312,6 +365,8 @@ class FusionWorld implements Saveable {
             kills: this.kills(),
             badges: this.badges(),
             announced: this.announced,
+            tutorialStep: this.tutorialStep(),
+            tutorialProgress: this.tutorialProgress(),
         };
     }
 
@@ -332,5 +387,7 @@ class FusionWorld implements Saveable {
         this.kills(json.kills ?? {});
         this.badges(json.badges ?? []);
         this.announced = !!json.announced;
+        this.tutorialStep(Math.min(json.tutorialStep ?? 0, FusionWorld.TUTORIAL.length));
+        this.tutorialProgress(json.tutorialProgress ?? 0);
     }
 }

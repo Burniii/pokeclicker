@@ -6,6 +6,18 @@
         data-bind="click: () => FusionUI.openDex(), text: `🧬 ${App.game.fusionWorld.dexCount()}/${FusionData.species.length}`"></button>
     <div id="fusionTeamBody" class="card-body p-0 show">
         <!-- ko if: App.game.fusionWorld.unlocked() -->
+        <!-- ko if: App.game.fusionWorld.starter() && App.game.fusionWorld.tutorial() -->
+        <div class="fusion-tutorial text-left small p-2 border-bottom" data-bind="with: App.game.fusionWorld.tutorial()">
+            <div class="font-weight-bold" data-bind="text: `📘 Tutorial ${App.game.fusionWorld.tutorialStep() + 1}/${FusionWorld.TUTORIAL.length}: ${title}`"></div>
+            <div class="my-1" data-bind="text: text"></div>
+            <div class="progress" style="height: 16px;">
+                <div class="progress-bar bg-info" data-bind="style: { width: `${App.game.fusionWorld.tutorialProgress() / goal * 100}%` }">
+                    <span data-bind="text: `${App.game.fusionWorld.tutorialProgress()} / ${goal}`"></span>
+                </div>
+            </div>
+            <div class="text-muted mt-1" data-bind="text: `Belohnung: ${reward}`"></div>
+        </div>
+        <!-- /ko -->
         <table class="table table-sm table-bordered m-0 small">
             <tbody>
                 <tr>
