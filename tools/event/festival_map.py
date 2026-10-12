@@ -31,16 +31,16 @@ kind = np.zeros((H, W), np.uint8)
 # Islands: rectangles with jagged, chamfered outlines (stepped at 16px like the Alola coasts)
 # ---------------------------------------------------------------------------------------------
 ISLANDS = {
-    'plaza': (33, 15, 67, 43),
-    's1': (3, 20, 21, 39),     # Kanto: party
-    's2': (3, 1, 21, 13),      # Johto: lantern festival
-    's3': (26, 1, 46, 12),     # Hoenn: Millennium festival (Jirachi, circus tent)
-    's4': (52, 1, 72, 12),     # Sinnoh: contest stage
-    's5': (77, 1, 97, 18),     # Unova: amusement park
-    's6': (78, 23, 97, 39),    # Kalos: Halloween
-    's7': (75, 45, 97, 59),    # Alola: beach
-    's8': (49, 47, 70, 59),    # Galar: party
-    's9': (22, 47, 42, 59),    # Paldea: crowns
+    'plaza': (32, 15, 68, 44),
+    's1': (2, 19, 22, 40),     # Kanto: party
+    's2': (2, 1, 22, 14),      # Johto: lantern festival
+    's3': (26, 1, 47, 14),     # Hoenn: Millennium festival (Jirachi, circus tent)
+    's4': (52, 1, 73, 14),     # Sinnoh: contest stage
+    's5': (77, 1, 98, 19),     # Unova: amusement park
+    's6': (77, 23, 98, 40),    # Kalos: Halloween
+    's7': (74, 45, 98, 59),    # Alola: beach
+    's8': (48, 47, 71, 59),    # Galar: party
+    's9': (21, 47, 43, 59),    # Paldea: crowns
     'secret': (5, 47, 13, 57), # secret cave (Armored Mewtwo)
 }
 
@@ -92,8 +92,8 @@ def organic(x0, y0, x1, y1, seed, amp=2.6, radius=3.5):
     cx, cy, hw, hh = (x0 + x1) / 2, (y0 + y1) / 2, (x1 - x0) / 2 - radius, (y1 - y0) / 2 - radius
     qx, qy = np.abs(xs - cx) - hw, np.abs(ys - cy) - hh
     sd = np.hypot(np.maximum(qx, 0), np.maximum(qy, 0)) + np.minimum(np.maximum(qx, qy), 0) - radius
-    n = smooth_noise(seed, 4) * 0.7 + smooth_noise(seed + 1, 2) * 0.3
-    core = (np.abs(xs - cx) < (x1 - x0) / 2 - 1) & (np.abs(ys - cy) < (y1 - y0) / 2 - 1)
+    n = smooth_noise(seed, 6) * 0.6 + smooth_noise(seed + 1, 3) * 0.4
+    core = sd < -1.2
     return (sd < (n - 0.42) * amp) | core
 
 
@@ -113,7 +113,7 @@ LOBES = {
 }
 masks = {}
 for i, (k, b) in enumerate(ISLANDS.items()):
-    m = organic(*b, seed=i * 13 + 5, amp=2.2 if k in ('secret', 'plaza') else 5)
+    m = organic(*b, seed=i * 13 + 5, amp=2.2 if k in ('secret', 'plaza') else 5, radius=3 if k == 'plaza' else 5.5)
     for j, lb in enumerate(LOBES[k]):
         m |= organic(*lb, seed=500 + i * 7 + j, amp=3, radius=2.5)
     masks[k] = m
@@ -162,7 +162,7 @@ def area(x0, y0, x1, y1, k, only=(GRASS,)):
 # ---------------------------------------------------------------------------------------------
 PATHS = [
     # plaza island: west entrance and the pier in the south
-    (30, 29, 38, 31), (44, 37, 47, 44),
+    (30, 29, 38, 31), (34, 40, 40, 42), (38, 37, 40, 42),
     # s1
     (2, 29, 22, 31), (11, 18, 13, 31), (13, 31, 15, 34),
     # s2
@@ -172,7 +172,7 @@ PATHS = [
     # s4
     (51, 6, 73, 8),
     # s5
-    (76, 6, 89, 8), (87, 6, 89, 19), (89, 11, 92, 13), (81, 14, 87, 16),
+    (76, 6, 89, 8), (87, 6, 89, 19), (89, 11, 92, 13), (79, 16, 87, 18),
     # s6
     (87, 22, 89, 40), (82, 30, 87, 32), (89, 28, 94, 30),
     # s7
@@ -207,19 +207,40 @@ area(*FESTIVAL, FEST, (GRASS, PATH, STONE))
 BRIDGES = [
     ('h', 29, 18, 36), ('v', 11, 10, 24), ('h', 6, 18, 30), ('h', 6, 42, 56), ('h', 6, 68, 80),
     ('v', 87, 14, 26), ('v', 87, 36, 48), ('h', 52, 66, 78), ('h', 52, 39, 52), ('h', 52, 10, 25),
-    ('v', 45, 40, 46),    # pier of the plaza island
+    ('h', 40, 22, 34, 'pier'),    # ferry pier of the plaza island
 ]
 bridge = np.zeros((H, W), bool)
+landing = np.zeros((H, W), bool)
 bridge_cells = []
-for d, a, b0, b1 in BRIDGES:
-    cells = []
-    for t in range(b0, b1):
-        cs = [(t, a), (t, a + 1)] if d == 'h' else [(a, t), (a + 1, t)]
-        if all(not land[y, x] for x, y in cs):
-            cells.extend(cs)
+for d, a, b0, b1, *pier in BRIDGES:
+    def cells_at(t):
+        return [(t, a), (t, a + 1)] if d == 'h' else [(a, t), (a + 1, t)]
+    wet = [t for t in range(b0, b1) if any(not land[y, x] for x, y in cells_at(t))]
+    t0, t1 = min(wet), max(wet)
+    cells = [c for t in range(t0, t1 + 1) for c in cells_at(t)]
     for x, y in cells:
         bridge[y, x] = True
-    bridge_cells.append((d, cells))
+        land[y, x] = False
+        kind[y, x] = WATER
+    bridge_cells.append((d, cells, bool(pier)))
+    # landings: the path continues straight from the boardwalk until it meets the island's path
+    for start, step in ((t0 - 1, -1), (t1 + 1, 1)):
+        if pier and step == -1:
+            continue
+        t = start
+        for _ in range(10):
+            cs = cells_at(t)
+            if not all(0 <= x < W and 0 <= y < H and land[y, x] for x, y in cs):
+                break
+            hit = all(kind[y, x] in (PATH, STONE, FEST) for x, y in cs)
+            for x, y in cs:
+                if kind[y, x] in (GRASS, SAND):
+                    kind[y, x] = PATH
+                if t in (start, start + step):
+                    landing[y, x] = True
+            if hit and t != start:
+                break
+            t += step
 
 # ---------------------------------------------------------------------------------------------
 # Water depth (tile distance to land)
@@ -251,6 +272,16 @@ for x0, y0, x1, y1 in BEACHES:
         for x in range(x0, min(W, x1)):
             if land[y, x] and kind[y, x] == GRASS and coast[y, x] <= 2:
                 kind[y, x] = SAND
+
+# Plateaus (higher ground with a rock face to the south); dungeons are caves in their faces
+PLATEAUS = [(76, 9, 85, 16), (61, 46, 72, 52), (3, 45, 14, 52), (91, 33, 99, 41), (2, 9, 8, 15)]
+high = np.zeros((H, W), bool)
+for i, (x0, y0, x1, y1) in enumerate(PLATEAUS):
+    high |= organic(x0, y0, x1, y1, seed=900 + i, amp=1.6, radius=1.5)
+high &= land & (coast >= 2) & (kind == GRASS)
+for _ in range(2):    # no thin spikes
+    n = sum(np.roll(np.roll(high, dy, 0), dx, 1) for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)))
+    high &= n >= 2
 
 # Water depth: light along the coast, mid, and deep water only far from land (smoothed)
 depth = np.where(dist <= 2, 0, np.where(dist <= 6, 1, 2))
@@ -329,7 +360,7 @@ for i, t in enumerate(TEX['grass']):
     img[m] = tiled(t)[m]
 
 sand_px = rounded(kind == SAND, 3) & land_px
-path_px = rounded(kind == PATH, 3) & land_px
+path_px = (rounded(kind == PATH, 3) | up(landing & (kind == PATH))) & land_px
 stone_px = up(kind == STONE)
 fest_px = up(kind == FEST)
 path_px &= ~stone_px & ~fest_px
@@ -350,6 +381,42 @@ for m, inner in ((stone_px, (236, 238, 244)), (fest_px, (244, 236, 232))):
     edge3 = m & near(~m, 3) & ~edge1
     img[edge3] = inner
     img[edge1] = (150, 156, 176)
+
+# plateau faces: 12px rock wall on the south side, light rims on the sides, stairs where paths cross
+high_px = up(high)
+FACE = 20
+dd = np.full((PH, PW), 99)
+for k in range(1, FACE + 2):
+    dd[(dd == 99) & high_px & shift(~high_px, 0, -k)] = k
+xs = np.arange(PW)[None, :].repeat(PH, 0)
+crack = np.random.default_rng(8).random(PW // 2 + 1)
+for k in range(1, FACE + 1):
+    m = (dd == k) & ~path_px
+    # rock wall: light top edge, mid tone with irregular vertical cracks, dark foot
+    colx = crack[xs // 2]
+    col = np.where((colx < 0.22)[..., None], np.array((117, 68, 72)), np.array((150, 112, 106)))
+    col = np.where(((colx > 0.86) & (k > FACE // 2))[..., None], np.array((184, 144, 136)), col)
+    if k >= FACE - 2:
+        col = np.broadcast_to(np.array((196, 160, 148)), col.shape)
+    elif k <= 3:
+        col = np.where((colx < 0.5)[..., None], np.array((117, 68, 72)), np.array((100, 60, 66)))
+    img[m] = col[m]
+    if k == 1 or k == FACE:
+        img[m] = (85, 53, 64)
+    sm = (dd == k) & path_px                       # stairs
+    img[sm] = (150, 120, 70) if k % 3 == 0 else (224, 208, 150)
+img[(dd == FACE + 1) & ~path_px] = (65, 178, 140)    # grass lip above the wall
+below = ~high_px & shift(high_px, 0, 1) & land_px
+shade = ~high_px & (shift(high_px, 0, 2) | shift(high_px, 0, 3)) & land_px & ~below
+img[below & ~path_px] = (85, 53, 64)
+img[shade] = (img[shade] * 0.85).astype(np.int16)
+for k in range(1, 4):
+    m = high_px & (dd > FACE) & (shift(~high_px, k, 0) | shift(~high_px, -k, 0)) & ~path_px
+    img[m] = (85, 53, 64) if k == 1 else (184, 144, 136) if k == 2 else (216, 192, 160)
+top = high_px & shift(~high_px, 0, 1) & ~path_px
+img[top] = (85, 53, 64)
+img[high_px & shift(~high_px, 0, 2) & ~top & ~path_px] = (144, 108, 104)
+face_tiles = high & ~np.roll(high, -1, 0)
 
 # coast
 water_px = ~land_px
@@ -393,14 +460,14 @@ PLANK = [(232, 208, 144), (216, 188, 120), (200, 172, 108)]
 RAIL, SEAM, POST = (120, 80, 48), (150, 112, 70), (96, 60, 40)
 
 
-def boardwalk(d, cells):
+def boardwalk(d, cells, pier=False):
     if not cells:
         return
     xs = [x for x, _ in cells]
     ys = [y for _, y in cells]
     x0, y0, x1, y1 = min(xs) * T, min(ys) * T, (max(xs) + 1) * T, (max(ys) + 1) * T
     if d == 'h':
-        x0, x1 = x0 - 4, x1 + 4
+        x0, x1 = x0 - (0 if pier else 6), x1 + 6
         dr.rectangle((x0, y1, x1, y1 + 3), fill=(48, 96, 176))           # shadow
         for x in range(x0, x1, 4):
             c = PLANK[(x // 4) % 3]
@@ -413,7 +480,7 @@ def boardwalk(d, cells):
             dr.rectangle((x, y0, x + 2, y0 + 4), fill=POST)
             dr.rectangle((x, y1 - 4, x + 2, y1 + 1), fill=POST)
     else:
-        y0, y1 = y0 - 4, y1 + 4
+        y0, y1 = y0 - 6, y1 + 6
         dr.rectangle((x0 + 2, y1, x1 + 2, y1 + 3), fill=(48, 96, 176))
         dr.rectangle((x1, y0 + 4, x1 + 3, y1), fill=(48, 96, 176))
         for y in range(y0, y1, 4):
@@ -428,8 +495,8 @@ def boardwalk(d, cells):
             dr.rectangle((x1 - 4, y, x1 + 1, y + 2), fill=POST)
 
 
-for d, cells in bridge_cells:
-    boardwalk(d, cells)
+for d, cells, pier in bridge_cells:
+    boardwalk(d, cells, pier)
 
 # ---------------------------------------------------------------------------------------------
 # Objects (painted in y order) and occupancy for the vegetation
@@ -488,8 +555,11 @@ def try_put(im, cx, by):
     return True
 
 
+stall_rng = random.Random(4)
+
+
 def stall(c, cx, by):
-    put(fp.stall(c), cx, by)
+    put(fp.canopy_stall(c) if stall_rng.random() < 0.35 else fp.stall(c), cx, by)
 
 
 def line_obj(kind_, P, colors=None, layer=8):
@@ -539,9 +609,20 @@ for cx, by in ((46.4, 27.6), (53.6, 27.6), (46.4, 34.6), (53.6, 34.6)):
     put(fp.balloon_bunch(), cx, by)
 put(fp.flag_pole(C.PINK), 36.6, 28.6)
 put(fp.flag_pole(C.SKY), 36.6, 31.6)
-line_obj('bunting', [(37.5 * T, 23.6 * T), (44 * T, 25.2 * T), (50 * T, 25.6 * T), (56 * T, 25.2 * T), (62.5 * T, 23.6 * T)])
-line_obj('bunting', [(37.5 * T, 35.4 * T), (44 * T, 33.9 * T), (50 * T, 34.2 * T), (56 * T, 33.9 * T), (62.5 * T, 35.4 * T)], (C.YELLOW, C.RED, C.SKY, C.PURPLE), -40)
-put(SP['ship'], 52.6, 46.4, reserve=False)
+# garlands run along the stall rows (in front of the upper row, behind the lower row)
+string_line('bunting', [(38.7, 23.3), (42.6, 23.5), (46.5, 23.3)])
+string_line('bunting', [(53.5, 23.3), (57.4, 23.5), (61.3, 23.3)])
+for seg in (((38.7, 34.2), (42.6, 34.4), (46.5, 34.2)), ((53.5, 34.2), (57.4, 34.4), (61.3, 34.2))):
+    P = [(x * T, y * T) for x, y in seg]
+    line_obj('bunting', P, (C.YELLOW, C.RED, C.SKY, C.PURPLE), -60)
+    for x, y in seg:
+        put(fp.pole(16), x, y + 0.75, reserve=False, layer=-61)
+# a string of festival lights around the stage
+lights = fp.lights_ring(128, 76)
+put(lights, 50, 30.4 + 2.4, reserve=False, layer=-1500)
+# the ferry lies alongside the pier, a gangway leads aboard
+put(SP['ship'], 27.6, 42 + SP['ship'].height / T - 0.3, reserve=False)
+put(fp.gangway(), 26.2, 42.55, reserve=False, layer=5)
 for cx, by in ((35, 20), (65, 20), (35.4, 41), (64.6, 41), (34.8, 26)):
     try_put(SP['palm'], cx, by)
 
@@ -562,7 +643,6 @@ stall(C.ORANGE, 18, 6)
 put(fp.torii(), 20.2, 8.2, reserve=False, layer=40)
 string_line('lantern', [(4.6, 9.2), (8.6, 9.2), (10.4, 9.2)])
 string_line('lantern', [(13.6, 9.2), (17, 9.2), (20.4, 9.2)])
-stall(C.YELLOW, 6, 12)
 put(SP['house_brown'], 17, 12.6)
 
 # --- s3 Hoenn Millennium festival ----------------------------------------------------------------
@@ -588,10 +668,9 @@ for cx in (56.4, 62.6):
 # --- s5 Unova amusement park ---------------------------------------------------------------------
 put(fp.roller_coaster(), 82, 6)
 put(fp.ferris_wheel(), 93.6, 12.4)
-put(CAVE, 79.8, 16.2)
-stall(C.YELLOW, 84.2, 14)
+put(fp.cave_mouth(), 80.5, 16.05)
 put(fp.balloon_bunch(), 91, 6.4)
-for cx, by in ((90.2, 10.8), (85.8, 10.6), (95.6, 16.6)):
+for cx, by in ((90.2, 10.8), (85.8, 10.6), (94.4, 15.8)):
     put(fp.balloon_bunch(), cx, by)
 
 # --- s6 Kalos Halloween --------------------------------------------------------------------------
@@ -609,7 +688,7 @@ for cx, by in ((86.4, 25), (86.4, 33), (89.6, 37)):
 put(SP['pc'], 93, 52)
 stall(C.TEAL, 80, 52)
 stall(C.ORANGE, 82.6, 52)
-for i, (cx, by) in enumerate(((78.4, 58.2), (82.6, 58.8), (86.8, 58.2), (91, 58.8), (95, 58.2))):
+for i, (cx, by) in enumerate(((78.4, 57.2), (82.6, 57.8), (86.8, 57.2), (91, 57.8), (95, 57.2))):
     put(SP['umbrella_blue' if i % 2 else 'umbrella_red'], cx, by)
 put(SP['sailboat'], 72.5, 58.4, reserve=False)
 put(SP['sailboat'], 98.2, 44.4, reserve=False)
@@ -618,7 +697,7 @@ put(SP['sailboat'], 98.2, 44.4, reserve=False)
 put(SP['house_brown'], 53.4, 52)
 stall(C.RED, 58.2, 52)
 stall(C.WHITE, 60.8, 52)
-put(CAVE, 66.4, 52.2)
+put(fp.cave_mouth(), 66.5, 52.05)
 for i, cx in enumerate((56, 58.6, 61.4, 64)):
     stall((C.BLUE, C.YELLOW, C.RED, C.WHITE)[i], cx, 56.6)
 string_line('bunting', [(54.4, 54.6), (60, 54.4), (65.6, 54.6)], (C.RED, C.WHITE, C.BLUE))
@@ -632,47 +711,124 @@ for i, cx in enumerate((28, 30.6, 33.4, 36)):
 put(fp.balloon_bunch(), 39.6, 56.6)
 
 # --- secret islet --------------------------------------------------------------------------------
-put(CAVE, 9.4, 52.2)
+put(fp.cave_mouth(26, 22), 9.5, 52.05)
 
 # --- sea decoration ------------------------------------------------------------------------------
-for cx, by in ((1.5, 16), (2.5, 18), (98, 21), (97.5, 40.5), (47.5, 44.5), (19.5, 43.5), (71.5, 15), (24.5, 40), (73, 30.5), (30.5, 14.5)):
+for cx, by in ((1.5, 16), (2.5, 18), (98, 21), (97.5, 40.5), (47.5, 44.5), (71.5, 15), (73, 30.5), (30.5, 14.5), (20.5, 46.5)):
     if dist[int(by) - 1, int(cx)] >= 2:
         put(SP['rock'], cx, by, reserve=False)
 put(SP['sailboat'], 24.5, 17.5, reserve=False)
 put(SP['sailboat'], 73.5, 20.5, reserve=False)
 put(fp.blimp(), 49, 14.2, reserve=False, layer=5000)
-for cx, by, c in ((24.5, 2.6, C.PINK), (49, 2.6, C.YELLOW), (74.4, 2.8, C.SKY), (29, 44.6, C.PURPLE), (72.4, 42, C.ORANGE), (2, 44, C.GREEN)):
+for cx, by, c in ((24.5, 2.6, C.PINK), (49, 2.6, C.YELLOW), (74.4, 2.8, C.SKY), (17, 44.2, C.PURPLE), (72.4, 42, C.ORANGE), (2, 44, C.GREEN)):
     put(fp.firework(c), cx, by, reserve=False, layer=5000)
 
 # ---------------------------------------------------------------------------------------------
 # Vegetation per island
 # ---------------------------------------------------------------------------------------------
 FLORA = {
-    'plaza': ['palm', 'palm', 'shrub', 'tree_round'],
-    's1': ['tree_round', 'shrub', 'palm'],
-    's2': ['tree_conifer', 'tree_round', 'shrub'],
-    's3': ['palm', 'tree_round', 'shrub'],
-    's4': ['tree_conifer', 'tree_conifer_big', 'shrub'],
-    's5': ['tree_round', 'palm', 'shrub'],
-    's6': ['tree_conifer_big', 'tree_conifer', 'tree_conifer'],
-    's7': ['palm', 'palm', 'shrub'],
-    's8': ['tree_round', 'tree_conifer', 'shrub'],
-    's9': ['palm', 'tree_round', 'shrub'],
-    'secret': ['tree_conifer_big'],
+    'plaza': ['palm', 'palm', 'tree_round'],
+    's1': ['tree_round', 'tree_round', 'palm'],
+    's2': ['tree_conifer', 'tree_round', 'tree_conifer_big'],
+    's3': ['palm', 'tree_round'],
+    's4': ['tree_conifer', 'tree_conifer_big'],
+    's5': ['tree_round', 'palm'],
+    's6': ['tree_conifer_big', 'tree_conifer'],
+    's7': ['palm'],
+    's8': ['tree_round', 'tree_conifer'],
+    's9': ['palm', 'tree_round'],
+    'secret': ['tree_conifer_big', 'tree_conifer'],
 }
+veg = np.zeros((H, W), bool)       # tiles covered by tree crowns or plants
+
+
+def try_tree(im, cx, by):
+    """Trees may overlap each other like in dense forests, but never paths, plazas or objects."""
+    x, y = int(cx * T - im.width / 2), int(by * T - im.height)
+    tx0, tx1 = x // T, (x + im.width - 1) // T
+    ty0, ty1 = max(0, y // T), (y + im.height - 1) // T
+    if tx0 < 1 or tx1 >= W - 1 or ty1 >= H - 1:
+        return False
+    split = ty0 + (ty1 - ty0 + 1) // 2
+    # the trunk half needs free land, the crown may reach over the cliff into the sea but not over paths or objects
+    if occ[split:ty1 + 1, tx0:tx1 + 1].any() or (occ[ty0:split, tx0:tx1 + 1] & land[ty0:split, tx0:tx1 + 1]).any():
+        return False
+    base = [(int(cx - 0.5), ty1), (int(cx), ty1)]
+    for bx, byy in base:
+        if veg[byy, bx] or face_tiles[byy, bx]:
+            return False
+        if dist[byy, bx] != 0 or any(not land[byy + dy, bx + dx] for dx in (-1, 0, 1) for dy in (-1, 0, 1)):
+            return False
+    put(im, cx, by, reserve=False)
+    veg[ty0:ty1 + 1, tx0:tx1 + 1] = True
+    for bx, byy in base:
+        occ[byy, bx] = True
+    return True
+
+
+def try_plant(im, cx, by):
+    tx, ty = int(cx), int(by) - 1
+    if occ[ty, tx] or veg[ty, tx] or dist[ty, tx] != 0 or face_tiles[ty, tx]:
+        return False
+    if any(not land[ty + dy, tx + dx] for dx in (-1, 0, 1) for dy in (-1, 0, 1)):
+        return False
+    put(im, cx, by, reserve=False)
+    veg[ty, tx] = True
+    return True
+
+
+forest_noise = smooth_noise(91, 6)
+grass_noise = smooth_noise(92, 4)
 for key, (x0, y0, x1, y1) in ISLANDS.items():
-    for _ in range(260):
-        cx = random.uniform(x0 + 1, x1 - 1)
-        by = random.uniform(y0 + 2, y1)
-        try_put(SP[random.choice(FLORA[key])], round(cx * 2) / 2, round(by))
+    # dense groves where the noise is high, single trees elsewhere
+    for row, by in enumerate(frange(y0 + 2, y1 + 0.5, 1.25)):
+        off = 0.75 if row % 2 else 0.0
+        for cx in frange(x0 + 1 + off, x1 - 1, 1.5):
+            tx, ty = int(cx), min(H - 1, int(by))
+            dens = 0.95 if forest_noise[ty, tx] > 0.5 else 0.15
+            if random.random() < dens:
+                try_tree(SP[random.choice(FLORA[key])], cx, by)
+GROVES = [  # explicit groves in otherwise empty corners (palms on the plaza island)
+    ('plaza', (41, 38, 66, 44), ['palm', 'tree_round', 'palm']),
+    ('s7', (75, 45, 86, 50), ['palm']),
+    ('s1', (2, 19, 10, 25), ['tree_round', 'tree_conifer']),
+    ('s3', (26, 9, 47, 14), ['palm', 'tree_round']),
+    ('s9', (35, 46, 43, 51), ['palm']),
+]
+for key, (x0, y0, x1, y1), kinds in GROVES:
+    for row, by in enumerate(frange(y0 + 2, y1 + 0.5, 1.25)):
+        for cx in frange(x0 + 1 + (0.75 if row % 2 else 0), x1 - 1, 1.5):
+            if random.random() < 0.8:
+                try_tree(SP[random.choice(kinds)], cx, by)
 for key, (x0, y0, x1, y1) in ISLANDS.items():
-    for _ in range(200):
-        cx = random.randint(x0 + 1, x1 - 1) + 0.5
-        by = random.randint(y0 + 1, y1)
-        try_put(SP[random.choice(['fern', 'fern', 'shrub', 'flowers_red', 'flowers_blue'])], cx, by)
+    # patches of tall grass on the route islands (where wild Pokémon live)
+    if key not in ('plaza', 'secret'):
+        for ty in range(y0, y1):
+            for tx in range(x0, x1):
+                if grass_noise[ty, tx] > 0.6:
+                    try_plant(SP['fern'], tx + 0.5, ty + 1)
+# flower beds and a few shrubs
+for key, (x0, y0, x1, y1) in ISLANDS.items():
+    for _ in range(14):
+        cx, by = random.randint(x0 + 1, x1 - 2), random.randint(y0 + 2, y1)
+        f = SP[random.choice(['flowers_red', 'flowers_blue'])]
+        for dx, dy in ((0, 0), (1, 0), (0, 1), (1, 1)):
+            if random.random() < 0.8:
+                try_plant(f, cx + dx + 0.5, by + dy)
+    for _ in range(25):
+        try_plant(SP['shrub'], random.randint(x0 + 1, x1 - 2) + 0.5, random.randint(y0 + 2, y1))
+
+# sparkles on the open sea
+dr2 = ImageDraw.Draw(out)
+for _ in range(90):
+    tx, ty = random.randrange(1, W - 1), random.randrange(1, H - 1)
+    if dist[ty, tx] >= 2 and not bridge[ty, tx] and not occ[ty, tx]:
+        x, y = tx * T + random.randrange(2, 14), ty * T + random.randrange(2, 14)
+        dr2.point([(x, y), (x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)], fill=(200, 224, 248))
+        dr2.point((x, y), fill=(255, 255, 255))
 
 for by, x, y, im in objs:
-    if im.width >= 48 and im.height >= 40 and im.height < 300:
+    if im.width >= 14 and im.height >= 14 and im.height < 300 and im.width != 128:
         tx0, tx1, ty = x // T, (x + im.width - 1) // T, (y + im.height - 1) // T
         if not all(land[ty, t] or bridge[ty, t] for t in range(tx0, tx1 + 1)):
             print('object over water at', tx0, ty, im.size)

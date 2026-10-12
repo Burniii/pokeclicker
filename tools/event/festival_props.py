@@ -388,3 +388,64 @@ def fountain(w=40, h=30):
     for k in (-8, 8):
         d.point((w // 2 + k, 12), fill=(255, 255, 255, 255))
     return shadow(outline(im), 2)
+
+
+def lights_ring(w=128, h=76):
+    """Elliptic string of coloured festival lights (for the ground around the stage)."""
+    im = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.ellipse((2, 2, w - 3, h - 3), outline=(90, 70, 80, 255))
+    cols = [YELLOW, PINK, SKY, GREEN, ORANGE, PURPLE]
+    n = 28
+    for k in range(n):
+        a = k / n * 2 * math.pi
+        x, y = w / 2 + (w / 2 - 3) * math.cos(a), h / 2 + (h / 2 - 3) * math.sin(a)
+        dark, base, light = shades(cols[k % len(cols)])
+        d.ellipse((x - 2, y - 1, x + 2, y + 3), fill=base, outline=(70, 50, 60, 255))
+        d.point((x - 1, y), fill=(255, 255, 255, 255))
+    return im
+
+
+def gangway(w=10, h=14):
+    """Short boarding ramp between a pier and a ship."""
+    im = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rectangle((0, 0, w - 1, h - 1), fill=(200, 172, 108, 255))
+    for y in range(1, h, 3):
+        d.line((1, y, w - 2, y), fill=(150, 112, 70, 255))
+    d.line((0, 0, 0, h - 1), fill=(240, 240, 248, 255))
+    d.line((w - 1, 0, w - 1, h - 1), fill=(240, 240, 248, 255))
+    return outline(im)
+
+
+def cave_mouth(w=24, h=20):
+    """Dark cave entrance for a rock face, with a rocky frame and a lighter threshold."""
+    im = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.pieslice((0, 0, w - 1, 2 * h - 4), 180, 360, fill=(150, 112, 104, 255))
+    d.rectangle((0, h - 3, w - 1, h - 1), fill=(150, 112, 104, 255))
+    d.pieslice((4, 4, w - 5, 2 * h - 2), 180, 360, fill=(40, 28, 36, 255))
+    d.rectangle((4, h - 3, w - 5, h - 1), fill=(40, 28, 36, 255))
+    for x, y in ((2, h // 2), (w - 4, h // 2 - 2), (w // 2, 1), (5, 4), (w - 7, 4)):
+        d.point((x, y), fill=(200, 168, 152, 255))
+    d.line((6, h - 2, w - 7, h - 2), fill=(90, 70, 70, 255))
+    return outline(im)
+
+
+def canopy_stall(color, w=30, h=30):
+    """Round-topped food stall with a scalloped canopy (variation of stall())."""
+    dark, base, light = shades(color)
+    im = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rectangle((3, 14, w - 4, h - 2), fill=(236, 220, 184, 255))
+    d.rectangle((3, h - 7, w - 4, h - 2), fill=(200, 160, 112, 255))
+    for x in range(5, w - 6, 5):
+        d.rectangle((x, 16, x + 2, 19), fill=(248, 176, 64, 255))
+    d.chord((0, 0, w - 1, 22), 180, 360, fill=base)
+    d.rectangle((0, 10, w - 1, 13), fill=base)
+    for x in range(0, w, 6):
+        d.pieslice((x, 10, x + 6, 16), 0, 180, fill=light)
+    d.line((w // 2, 0, w // 2, 10), fill=light)
+    d.line((w // 4, 3, w // 4, 10), fill=dark)
+    d.line((3 * w // 4, 3, 3 * w // 4, 10), fill=dark)
+    return shadow(outline(im))
