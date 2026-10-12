@@ -111,11 +111,60 @@ class AutoFarm extends AutomationFeature {
         }
     }
 
+    // Kasib only appears when a berry withers (and no Colbur is on the farm)
+    public static kasibPossible(): boolean {
+        const farming = App.game.farming;
+        return !farming.unlockedBerries[BerryType.Kasib]() && farming.highestUnlockedBerry() >= BerryType.Occa;
+    }
+
+    // Starf appears when a shiny wanderer is caught while a plot is empty
+    public static starfLocked(): boolean {
+        return !App.game.farming.unlockedBerries[BerryType.Starf]();
+    }
+
+    // Plants the fastest berry everywhere and lets it wither, which can turn it into a Kasib Berry
+    private witherMode() {
+        const farming = App.game.farming;
+        const fastest = GameHelper.enumNumbers(BerryType)
+            .filter((b) => b >= 0 && b !== BerryType.Colbur && farming.unlockedBerries[b]() && farming.berryInventory[b]() > 0)
+            .sort((a, b) => BerryList[a].growthTime[PlotStage.Berry] - BerryList[b].growthTime[PlotStage.Berry])[0] ?? BerryType.Cheri;
+        farming.plotList.forEach((plot, index) => {
+            if (!plot.isUnlocked || plot.isSafeLocked) {
+                return;
+            }
+            if (!plot.isEmpty()) {
+                if (plot.berry === BerryType.Kasib) {
+                    if (plot.stage() === PlotStage.Berry) {
+                        this.harvest(index, false);
+                    }
+                } else if (plot.berry === BerryType.Colbur) {
+                    // Colbur blocks the Kasib Berry
+                    this.removeBerry(index);
+                }
+                return;
+            }
+            if (farming.hasBerry(fastest)) {
+                farming.plant(index, fastest);
+            }
+        });
+        this.plan(null);
+        this.status(`Ziel: <b>Kasib</b> · lässt ${BerryType[fastest]} verwelken (5 % Chance je verwelkter Pflanze)`);
+    }
+
     private plantMode(berry: BerryType) {
         const farming = App.game.farming;
         const late = this.setting('harvestLate');
         let planted = 0;
+        // One plot stays empty for the Starf Berry while it is locked
+        const reserve = this.setting('mutations') && AutoFarm.mutationsUnlocked() && AutoFarm.starfLocked()
+            ? FarmPlanner.unlockedPlots().slice(-1)[0] : -1;
         farming.plotList.forEach((plot, index) => {
+            if (index === reserve) {
+                if (!plot.isEmpty() && plot.stage() === PlotStage.Berry) {
+                    this.harvest(index, false);
+                }
+                return;
+            }
             if (!plot.isUnlocked || plot.isSafeLocked) {
                 return;
             }
@@ -144,7 +193,13 @@ class AutoFarm extends AutomationFeature {
             return p && Object.keys(p.needed).every((n) => farming.berryInventory[n]() + this.planted(+n) > 0);
         });
         if (target === undefined) {
-            this.status('Keine weitere Beere lässt sich mit den aktuellen Beeren per Mutation freischalten.');
+            if (AutoFarm.kasibPossible()) {
+                this.witherMode();
+                return true;
+            }
+            this.status(AutoFarm.starfLocked()
+                ? 'Warte auf ein schillerndes Pokémon auf der Farm für die Krambobeere (ein Feld bleibt dafür frei).'
+                : 'Keine weitere Beere lässt sich mit den aktuellen Beeren per Mutation freischalten.');
             return false;
         }
         const plan = FarmPlanner.plan(target);

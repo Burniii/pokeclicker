@@ -37,7 +37,8 @@ class FarmPlanner {
     public static isSupported(m: Mutation): boolean {
         return m instanceof GrowNearBerryMutation || m instanceof GrowNearBerryStrictMutation || m instanceof GrowNearFlavorMutation
             || m instanceof EvolveNearBerryMutation || m instanceof EvolveNearBerryStrictMutation || m instanceof EvolveNearBerryMinMutation
-            || m instanceof EvolveNearFlavorMutation || m instanceof FieldMutation || m instanceof FieldFlavorMutation;
+            || m instanceof EvolveNearFlavorMutation || m instanceof FieldMutation || m instanceof FieldFlavorMutation
+            || m instanceof PetayaMutation || m instanceof EnigmaMutation;
     }
 
     public static plan(target: BerryType): FarmPlan | null {
@@ -75,6 +76,12 @@ class FarmPlanner {
     }
 
     private static planMutation(m: Mutation, plots: number[]): FarmPlan | null {
+        if (m instanceof PetayaMutation) {
+            return FarmPlanner.planPetaya(m, plots);
+        }
+        if (m instanceof EnigmaMutation) {
+            return FarmPlanner.planEnigma(m, plots);
+        }
         if (m instanceof FieldMutation) {
             return FarmPlanner.planField(m, plots);
         }
@@ -311,6 +318,57 @@ class FarmPlanner {
         });
         const spots = Object.values(layout).filter((b) => b === FarmPlanner.EMPTY).length;
         return FarmPlanner.finish(m, layout, spots);
+    }
+
+    // Petaya: all 18 typed berries ripe at the same time, the mutation happens on the empty plots
+    private static planPetaya(m: PetayaMutation, plots: number[]): FarmPlan | null {
+        const required = Farming.getGeneration(3);
+        if (plots.length <= required.length) {
+            return null;
+        }
+        const queue = [...required];
+        const layout: Record<number, BerryType> = {};
+        const ordered = [...plots].sort((a, b) => FarmPlanner.distanceToCentre(b) - FarmPlanner.distanceToCentre(a));
+        ordered.forEach((i) => {
+            layout[i] = queue.shift() ?? FarmPlanner.EMPTY;
+        });
+        return FarmPlanner.finish(m, layout, plots.length - required.length);
+    }
+
+    // Enigma: an empty plot with four given berries above, left, right and below it (order of Plot.findPlusPlots)
+    private static planEnigma(m: EnigmaMutation, plots: number[]): FarmPlan | null {
+        const reqs = EnigmaMutation.getReqs();
+        const open = new Set(plots);
+        // Greedy placement from every possible first centre, the layout with the most mutation spots wins
+        let best: { layout: Record<number, BerryType>, spots: number } = null;
+        plots.forEach((first) => {
+            const layout: Record<number, BerryType> = {};
+            let spots = 0;
+            [first, ...plots].forEach((c) => {
+                const near = Plot.findPlusPlots(c);
+                if (near.length !== 4 || !near.every((n) => open.has(n)) || layout[c] !== undefined) {
+                    return;
+                }
+                if (near.some((n, k) => layout[n] !== undefined && layout[n] !== reqs[k])) {
+                    return;
+                }
+                layout[c] = FarmPlanner.EMPTY;
+                near.forEach((n, k) => {
+                    layout[n] = reqs[k];
+                });
+                spots++;
+            });
+            if (!best || spots > best.spots) {
+                best = { layout, spots };
+            }
+        });
+        if (!best?.spots) {
+            return null;
+        }
+        plots.forEach((i) => {
+            best.layout[i] = best.layout[i] ?? FarmPlanner.EMPTY;
+        });
+        return FarmPlanner.finish(m, best.layout, best.spots);
     }
 
     private static distanceToCentre(index: number): number {
