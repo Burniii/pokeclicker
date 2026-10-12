@@ -1,7 +1,7 @@
 // Registers the translations shipped with this fork for quest lines and settings
 class BundledTranslations {
     private static readonly languages = {
-        de: { questlines: bundledQuestlinesDe, settings: bundledSettingsDe, cutscenes: bundledCutscenesDe },
+        de: { questlines: bundledQuestlinesDe, settings: bundledSettingsDe, cutscenes: bundledCutscenesDe, npcDialogs: bundledNpcDialogsDe, npcNames: bundledNpcNamesDe },
     };
 
     public static register() {
@@ -22,6 +22,13 @@ class BundledTranslations {
                         quest.quests.forEach((task) => add(task.translationKey(), task.englishDescription));
                     }
                 });
+            });
+            // NPC dialog lines and names, keyed by their English text (see NPC.translate)
+            Object.entries(texts.npcDialogs).forEach(([english, translated]) => {
+                questlines[App.translation.translationHashKey(NPC.DIALOG_KEY, english)] = translated;
+            });
+            Object.entries(texts.npcNames).forEach(([english, translated]) => {
+                questlines[App.translation.translationHashKey(NPC.NAME_KEY, english)] = translated;
             });
             App.translation.addBundledResources(language, 'questlines', { ...questlines, ...texts.cutscenes });
             App.translation.addBundledResources(language, 'settings', texts.settings);

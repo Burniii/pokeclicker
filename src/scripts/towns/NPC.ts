@@ -19,8 +19,20 @@ class NPC {
         }
     }
 
+    public static readonly DIALOG_KEY = 'npc.dialog';
+    public static readonly NAME_KEY = 'npc.name';
+
+    // Translated NPC text, the English text is the key and the fallback
+    public static translate(text: string, key = NPC.DIALOG_KEY): string {
+        return text ? App.translation.getHashed(key, 'questlines', text)() : text;
+    }
+
+    get displayName(): string {
+        return NPC.translate(this.name, NPC.NAME_KEY);
+    }
+
     get dialogHTML(): string {
-        return this.dialog.map(line => `<p>${TextMerger.mergeText(line)}</p>`).join('\n');
+        return this.dialog.map(line => `<p>${TextMerger.mergeText(NPC.translate(line))}</p>`).join('\n');
     }
 
     public isVisible() {

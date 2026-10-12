@@ -18,23 +18,24 @@ class ProfNPC extends NPC {
 
 
         if (!nextRegionUnlocked) {
-            return `<p>Hello, new Champion, you've come a long way!</p>
-                    <p>Come see me once you've beat the Elite Four!</p>`;
+            return `<p>${NPC.translate('Hello, new Champion, you\'ve come a long way!')}</p>
+                    <p>${NPC.translate('Come see me once you\'ve beat the Elite Four!')}</p>`;
         }
 
         let html = '';
 
         if (completeDexAchievement.isCompleted()) {
-            html += `<p>${this.pokedexCompleteText}</p>`;
+            html += `<p>${NPC.translate(this.pokedexCompleteText)}</p>`;
         } else {
             if (requiresCompleteDex) {
-                html += '<p>To progress to the next region, you need to catch all Pokémon native to this region.</p>';
+                html += `<p>${NPC.translate('To progress to the next region, you need to catch all Pokémon native to this region.')}</p>`;
             }
-            html += `<p>You still have ${completeDexAchievement.property.requiredValue - completeDexAchievement.getProgress()} left to catch in this region! You're almost there!</p>`;
+            const left = completeDexAchievement.property.requiredValue - completeDexAchievement.getProgress();
+            html += `<p>${NPC.translate('You still have {COUNT} left to catch in this region! You\'re almost there!').replace('{COUNT}', `${left}`)}</p>`;
         }
 
         if (nextRegionUnlocked && (completeDexAchievement.isCompleted() || !requiresCompleteDex)) {
-            html += `<p>${this.nextRegionUnlockedText}</p>`;
+            html += `<p>${NPC.translate(this.nextRegionUnlockedText)}</p>`;
         }
 
         return html;

@@ -194,6 +194,7 @@ import BattleEffects from './battles/BattleEffects';
 import MapEffects from './worldmap/MapEffects';
 import TrainerCardFrames from './profile/TrainerCardFrames';
 import { bundledCutscenesDe, bundledQuestlinesDe, bundledSettingsDe } from './translation/bundled/de';
+import { bundledNpcDialogsDe, bundledNpcNamesDe } from './translation/bundled/npcsDe';
 import { pokemonBabyPrevolutionMap, pokemonList, pokemonMap } from './pokemons/PokemonList';
 import * as PokemonHelper from './pokemons/PokemonHelper';
 import { createLogContent } from './logbook/helpers';
@@ -458,6 +459,8 @@ Object.assign(<any>window, {
     MapEffects,
     TrainerCardFrames,
     bundledQuestlinesDe,
+    bundledNpcDialogsDe,
+    bundledNpcNamesDe,
     bundledSettingsDe,
     bundledCutscenesDe,
     beforeEvolve,

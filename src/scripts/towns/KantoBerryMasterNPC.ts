@@ -16,7 +16,7 @@ class KantoBerryMasterNPC extends NPC {
         }
 
         // After the farm is unlocked
-        return `<p>${KantoBerryMasterNPC.generateMessage(GameHelper.today())}</p>`;
+        return `<p>${NPC.translate(KantoBerryMasterNPC.generateMessage(GameHelper.today()))}</p>`;
     }
 
     public static generateMessage(date: Date): string {
