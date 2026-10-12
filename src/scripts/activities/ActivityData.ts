@@ -110,55 +110,114 @@ class ActivityData {
         }
     }
 
-    // Grants loot "amount" times (fractions are allowed for currencies), returns a short description
-    public static give(loot: ActivityLoot, multiplier: number, region: GameConstants.Region, shardType: PokemonType = PokemonType.None): string {
-        const scale = ActivityData.regionScale(region);
+    // Category of a loot entry: the item name for items, otherwise the kind
+    public static lootKey(loot: ActivityLoot): string {
+        return loot.kind === 'item' ? loot.name : loot.kind;
+    }
+
+    public static lootImage(loot: ActivityLoot): string {
+        switch (loot.kind) {
+            case 'item': return ItemList[loot.name]?.image ?? '';
+            case 'money': return 'assets/images/currency/money.svg';
+            case 'tokens': return 'assets/images/currency/dungeonToken.svg';
+            case 'questPoints': return 'assets/images/currency/questPoint.svg';
+            case 'farmPoints': return 'assets/images/currency/farmPoint.svg';
+            case 'diamonds': return 'assets/images/currency/diamond.svg';
+            case 'berry': return 'assets/images/items/berry/Oran.png';
+            default: return '';
+        }
+    }
+
+    // Emoji for loot without an image
+    public static lootEmoji(loot: ActivityLoot): string {
+        return loot.kind === 'mint' ? '🌿' : loot.kind === 'shards' ? '🔷' : '';
+    }
+
+    // Amount a loot entry gives with the given multiplier (no side effects); items and berries are whole numbers
+    public static amount(loot: ActivityLoot, multiplier: number, region: GameConstants.Region): number {
         const level = region + 1;
         switch (loot.kind) {
-            case 'item': {
-                const amount = Math.max(1, Math.round(loot.amount * multiplier));
+            case 'item':
+            case 'berry':
+            case 'shards':
+                return Math.max(1, Math.round(loot.amount * multiplier));
+            case 'money':
+            case 'tokens':
+                return Math.ceil(ActivityData.regionScale(region) * loot.factor * multiplier);
+            case 'questPoints': return Math.ceil(5 * level * multiplier);
+            case 'farmPoints': return Math.ceil(10 * level * multiplier);
+            case 'diamonds': return Math.ceil(0.5 * level * multiplier);
+            case 'mint': return 1;
+        }
+    }
+
+    // Exact amount without rounding, for previews of hourly production
+    public static rate(loot: ActivityLoot, multiplier: number, region: GameConstants.Region): number {
+        const level = region + 1;
+        switch (loot.kind) {
+            case 'item':
+            case 'berry':
+            case 'shards':
+                return loot.amount * multiplier;
+            case 'money':
+            case 'tokens':
+                return ActivityData.regionScale(region) * loot.factor * multiplier;
+            case 'questPoints': return 5 * level * multiplier;
+            case 'farmPoints': return 10 * level * multiplier;
+            case 'diamonds': return 0.5 * level * multiplier;
+            case 'mint': return multiplier;
+        }
+    }
+
+    // What each Pokémon type produces on the ranch, grouped by product
+    public static ranchCategories = ko.pureComputed(() => {
+        const groups: { key: string, loot: ActivityLoot, types: PokemonType[] }[] = [];
+        GameHelper.enumNumbers(PokemonType).filter((t) => t >= 0).forEach((type: PokemonType) => {
+            const loot = ActivityData.ranchProduct(type);
+            const key = ActivityData.lootKey(loot);
+            const group = groups.find((g) => g.key === key);
+            if (group) {
+                group.types.push(type);
+            } else {
+                groups.push({ key, loot, types: [type] });
+            }
+        });
+        return groups;
+    });
+
+    // Grants loot "amount" times (fractions are allowed for currencies), returns a short description
+    public static give(loot: ActivityLoot, multiplier: number, region: GameConstants.Region, shardType: PokemonType = PokemonType.None): string {
+        const amount = ActivityData.amount(loot, multiplier, region);
+        switch (loot.kind) {
+            case 'item':
                 player.gainItem(loot.name, amount);
                 return `${amount}× ${ActivityData.productName(loot)}`;
-            }
-            case 'money': {
-                const amount = Math.ceil(scale * loot.factor * multiplier);
+            case 'money':
                 App.game.wallet.gainMoney(amount, true);
                 return `${amount.toLocaleString('en-US')} Pokédollars`;
-            }
-            case 'tokens': {
-                const amount = Math.ceil(scale * loot.factor * multiplier);
+            case 'tokens':
                 App.game.wallet.gainDungeonTokens(amount, true);
                 return `${amount.toLocaleString('en-US')} Dungeon Tokens`;
-            }
-            case 'questPoints': {
-                const amount = Math.ceil(5 * level * multiplier);
+            case 'questPoints':
                 App.game.wallet.gainQuestPoints(amount, true);
                 return `${amount.toLocaleString('en-US')} Quest Points`;
-            }
-            case 'farmPoints': {
-                const amount = Math.ceil(10 * level * multiplier);
+            case 'farmPoints':
                 App.game.wallet.gainFarmPoints(amount, true);
                 return `${amount.toLocaleString('en-US')} Farm Points`;
-            }
-            case 'diamonds': {
-                const amount = Math.ceil(0.5 * level * multiplier);
+            case 'diamonds':
                 App.game.wallet.gainDiamonds(amount, true);
                 return `${amount.toLocaleString('en-US')} Diamonds`;
-            }
             case 'berry': {
                 const unlocked = App.game.farming.unlockedBerries.map((b, i) => (b() ? i : -1)).filter((i) => i >= 0);
                 const berry = (unlocked.length ? Rand.fromArray(unlocked) : BerryType.Cheri) as BerryType;
-                const amount = Math.max(1, Math.round(loot.amount * multiplier));
                 App.game.farming.gainBerry(berry, amount, false);
                 return `${amount}× ${BerryType[berry]} Berry`;
             }
-            case 'mint': {
+            case 'mint':
                 App.game.pokemonTraits.gainMints(1);
                 return '1 Mint';
-            }
             case 'shards': {
                 const type = shardType !== PokemonType.None ? shardType : Rand.intBetween(0, 17) as PokemonType;
-                const amount = Math.max(1, Math.round(loot.amount * multiplier));
                 App.game.pokemonTraits.gainShards(type, amount);
                 return `${amount}× ${PokemonType[type]} Tera Shards`;
             }

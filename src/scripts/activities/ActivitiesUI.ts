@@ -26,8 +26,20 @@ class ActivitiesUI {
             .slice(0, 40);
     });
 
+    // Ranch category filter (a loot key like 'berry' or 'Heart_scale'), empty for all
+    public static ranchCategory = ko.observable<string>('');
+
+    public static toggleRanchCategory(key: string) {
+        ActivitiesUI.ranchCategory(ActivitiesUI.ranchCategory() === key ? '' : key);
+    }
+
+    private static producesCategory(id: number): boolean {
+        const key = ActivitiesUI.ranchCategory();
+        return !key || App.game.ranch.products(id).some((p) => ActivityData.lootKey(p) === key);
+    }
+
     public static ranchCandidates = ko.pureComputed(() => Activities.available()
-        .filter((p) => ActivitiesUI.matches(p))
+        .filter((p) => ActivitiesUI.matches(p) && ActivitiesUI.producesCategory(p.id))
         .sort((a, b) => App.game.pokemonTraits.hearts(b.id) - App.game.pokemonTraits.hearts(a.id) || a.id - b.id)
         .slice(0, 40));
 
@@ -42,6 +54,49 @@ class ActivitiesUI {
             .map((p) => ({ pokemon: p, stars: Research.stars(p.id) }))
             .sort((a, b) => a.stars - b.stars || a.pokemon.id - b.pokemon.id)
             .slice(0, 60);
+    });
+
+    public static formatAmount(value: number): string {
+        if (value >= 100) {
+            return Math.round(value).toLocaleString('en-US');
+        }
+        return (Math.round(value * 10) / 10).toLocaleString('en-US');
+    }
+
+    // Products of a ranch Pokémon with the amount per hour (with its current bond and nature)
+    public static ranchProducts(id: number): { loot: ActivityLoot, name: string, image: string, emoji: string, perHour: string }[] {
+        const products = App.game.ranch.products(id);
+        const region = player.highestRegion();
+        return products.map((loot) => ({
+            loot,
+            name: ActivityData.productName(loot),
+            image: ActivityData.lootImage(loot),
+            emoji: ActivityData.lootEmoji(loot),
+            perHour: ActivitiesUI.formatAmount(ActivityData.rate(loot, App.game.ranch.multiplier(id) / products.length, region)),
+        }));
+    }
+
+    // Reward pool of the chosen expedition: chance per roll, amount per roll and the expected total on success
+    public static expeditionPool = ko.pureComputed(() => {
+        const destination = App.game.expeditions.destination();
+        const loot = ActivityData.lootFor(destination);
+        const total = loot.reduce((sum, l) => sum + l.weight, 0);
+        const rolls = App.game.expeditions.hours() * 2;
+        // Same loot can appear twice (e.g. a stone in the common pool and the destination pool)
+        const entries: { key: string, name: string, image: string, emoji: string, chance: number, amount: number, expected: number }[] = [];
+        loot.forEach((l) => {
+            const key = ActivityData.lootKey(l);
+            const chance = l.weight / total;
+            const amount = ActivityData.amount(l, 1, destination.region);
+            const entry = entries.find((e) => e.key === key);
+            if (entry) {
+                entry.chance += chance;
+                entry.expected += rolls * chance * amount;
+                return;
+            }
+            entries.push({ key, name: ActivityData.productName(l), image: ActivityData.lootImage(l), emoji: ActivityData.lootEmoji(l), chance, amount, expected: rolls * chance * amount });
+        });
+        return entries.sort((a, b) => b.chance - a.chance);
     });
 
     public static productText(id: number): string {
