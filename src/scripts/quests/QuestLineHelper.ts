@@ -160,6 +160,24 @@ class QuestLineHelper {
         App.game.quests.questLines.push(fusionQuestLine);
     }
 
+    // Postman Dratini line, after the Kanto Champion
+    public static createAirMailQuestLine() {
+        const airMail = new QuestLine('The Air Mail', 'Help Mail Carrier Paula in Vermilion City deliver the mail.', new GymBadgeRequirement(BadgeEnums.Elite_KantoChampion), GameConstants.BulletinBoards.Kanto);
+        airMail.addQuest(new TalkToNPCQuest(AirMailCarrier1, 'Mail Carrier Paula in Vermilion City needs help. Talk to her.'));
+        airMail.addQuest(new MultipleQuestsQuest([
+            new TalkToNPCQuest(AirMailPewter, 'Deliver the letter to Hiker Ben in Pewter City.'),
+            new TalkToNPCQuest(AirMailCerulean, 'Deliver the letter to Fisherman Kai in Cerulean City.'),
+            new TalkToNPCQuest(AirMailLavender, 'Deliver the letter to Old Lady Rosa in Lavender Town.'),
+        ], 'Deliver the three letters in Pewter City, Cerulean City and Lavender Town.'));
+        const flyingDefeated = () => pokemonMap.filter(p => p.type.includes(PokemonType.Flying)).map(p => App.game.statistics.pokemonDefeated[p.id]()).reduce((a, b) => a + b, 0);
+        airMail.addQuest(new CustomQuest(100, 0, 'Bird Pokémon snatched some letters on the way! Defeat 100 Flying-type Pokémon to get them back.', flyingDefeated));
+        const reward = () => {
+            App.game.party.gainPokemonByName('Dratini (Postman)', PokemonFactory.generateShiny(GameConstants.SHINY_CHANCE_REWARD));
+        };
+        airMail.addQuest(new TalkToNPCQuest(AirMailCarrier2, 'Bring the rescued letters back to Mail Carrier Paula in Vermilion City.').withCustomReward(reward));
+        App.game.quests.questLines.push(airMail);
+    }
+
     // Available upon talking with Bill's Grandpa.
     public static createBillsGrandpaQuestLine() {
         const BillsGrandpaQuestLine = new QuestLine('Bill\'s Grandpa Treasure Hunt', 'Check the hints and bring Bill\'s Grandpa the Pokémon he wants to see.', new RouteKillRequirement(10, GameConstants.Region.kanto, 25), GameConstants.BulletinBoards.Kanto);
@@ -4541,6 +4559,7 @@ class QuestLineHelper {
         this.createRocketKantoQuestLine();
         this.createBillsGrandpaQuestLine();
         this.createFusionExperimentQuestLine();
+        this.createAirMailQuestLine();
         this.createUndergroundQuestLine();
         this.createBillSeviiQuestLine();
         this.createPersonsofInterestQuestLine();

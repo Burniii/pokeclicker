@@ -3,6 +3,16 @@
 // [[pokemon::Name]] inserts the translated Pokémon name.
 
 export const bundledQuestlinesDe: Record<string, string> = {
+    // The Air Mail
+    'The Air Mail': 'Die Luftpost',
+    'Help Mail Carrier Paula in Vermilion City deliver the mail.': 'Hilf Postbotin Paula aus Vermilion City, die Post auszutragen.',
+    'Mail Carrier Paula in Vermilion City needs help. Talk to her.': 'Postbotin Paula in Vermilion City braucht Hilfe. Sprich mit ihr.',
+    'Deliver the three letters in Pewter City, Cerulean City and Lavender Town.': 'Stelle die drei Briefe in Pewter City, Cerulean City und Lavender Town zu.',
+    'Deliver the letter to Hiker Ben in Pewter City.': 'Bring den Brief zu Wanderer Ben in Pewter City.',
+    'Deliver the letter to Fisherman Kai in Cerulean City.': 'Bring den Brief zu Angler Kai in Cerulean City.',
+    'Deliver the letter to Old Lady Rosa in Lavender Town.': 'Bring den Brief zu Oma Rosa in Lavender Town.',
+    'Bird Pokémon snatched some letters on the way! Defeat 100 Flying-type Pokémon to get them back.': 'Vogel-Pokémon haben unterwegs Briefe stibitzt! Besiege 100 Pokémon vom Typ Flug, um sie zurückzuholen.',
+    'Bring the rescued letters back to Mail Carrier Paula in Vermilion City.': 'Bring die geretteten Briefe zu Postbotin Paula in Vermilion City zurück.',
     // Base game quest lines: texts that are missing in the official German translation
     'Team Rocket': 'Team Rocket',
     'Catch the desired Pokémon.': 'Fange das gesuchte Pokémon.',
@@ -510,3 +520,10 @@ for (let region = 0; region < 10; region++) {
     bundledCutscenesDe[`cutscene.champion-${region}.0`] = 'Du hast den Champ von {region} besiegt! Dein Name wird in die Ruhmeshalle eingetragen.';
     bundledCutscenesDe[`cutscene.champion-${region}.1`] = 'Deine Partner standen dir die ganze Zeit zur Seite.';
 }
+
+// German names of Pokémon forms added by this fork
+export const bundledPokemonDe: Record<string, string> = {
+    'Dratini (Postman)': 'Postbote-Dratini',
+    'Dragonair (Postman)': 'Postbote-Dragonir',
+    'Dragonite (Postman)': 'Postbote-Dragoran',
+};

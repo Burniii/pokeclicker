@@ -12,6 +12,7 @@ export type QuestLineNameType
     | 'Team Rocket'
     | 'Bill\'s Grandpa Treasure Hunt'
     | 'The Fusion Experiment'
+    | 'The Air Mail'
     | 'Mining Expedition'
     | 'Bill\'s Errand'
     | 'Persons of Interest'

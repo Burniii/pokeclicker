@@ -3,6 +3,16 @@
 // [[pokemon::Name]] inserts the translated Pokémon name.
 
 export const bundledNpcDialogsDe: Record<string, string> = {
+    // The Air Mail
+    'Oh no, oh no... Champion! You came at just the right time!': 'Oje, oje ... Champ! Du kommst genau richtig!',
+    'Our delivery Pokémon caught a cold and the mail for Pewter City, Cerulean City and Lavender Town is piling up.': 'Unser Liefer-Pokémon hat sich erkältet, und die Post für Pewter City, Cerulean City und Lavender Town stapelt sich.',
+    'Could you deliver these three letters for me? I would be so grateful!': 'Könntest du diese drei Briefe für mich zustellen? Ich wäre dir so dankbar!',
+    'A letter for me? From my brother in Vermilion City! Thank you, that was quick!': 'Ein Brief für mich? Von meinem Bruder aus Vermilion City! Danke, das ging aber schnell!',
+    'Is that the fishing magazine I ordered? Finally! Now I know where the big ones bite.': 'Ist das die Angelzeitschrift, die ich bestellt habe? Endlich! Jetzt weiß ich, wo die Großen beißen.',
+    'A postcard from my grandson... He writes that his Dratini learned to fly. Dratini can\'t fly, can it? Hohoho!': 'Eine Postkarte von meinem Enkel ... Er schreibt, sein [[pokemon::Dratini]] hat fliegen gelernt. [[pokemon::Dratini]] kann doch gar nicht fliegen, oder? Hohoho!',
+    'You delivered everything and even got the stolen letters back from those bird Pokémon? Amazing!': 'Du hast alles zugestellt und sogar die gestohlenen Briefe von den Vogel-Pokémon zurückgeholt? Großartig!',
+    'Look, this little one hatched at our office. It has been wearing my old cap ever since and follows every mail bag around.': 'Schau mal, dieser Kleine ist bei uns im Büro geschlüpft. Seitdem trägt er meine alte Mütze und folgt jeder Posttasche.',
+    'I think it wants to deliver mail with you. Please take good care of our little postman Dratini!': 'Ich glaube, er will mit dir Post austragen. Pass gut auf unseren kleinen [[pokemon::Dratini (Postman)]] auf!',
     'Good of you to come see me. I need you to pick up something for me. A special kind of Poké Ball, found by Professor Ivy. She lives on one of the Sevii Islands, east of Three Island.': 'Schön, dass du vorbeischaust. Ich möchte dich bitten, etwas für mich abzuholen. Eine besondere Art Pokéball, gefunden von Professor Ivy. Sie lebt auf einer der Sevii Islands, östlich von Three Island.',
     'I don\'t know who else to trust with this. It\'s very important and very valuable.': 'Ich wüsste nicht, wem ich das sonst anvertrauen könnte. Es ist sehr wichtig und sehr wertvoll.',
     'Feel free to take your time, but please don\'t get distracted for the duration of an entire filler anime season.': 'Lass dir ruhig Zeit, aber bitte lass dich nicht eine ganze Filler-Staffel lang ablenken.',
@@ -1802,6 +1812,10 @@ export const bundledNpcDialogsDe: Record<string, string> = {
 };
 
 export const bundledNpcNamesDe: Record<string, string> = {
+    'Mail Carrier Paula': 'Postbotin Paula',
+    'Hiker Ben': 'Wanderer Ben',
+    'Fisherman Kai': 'Angler Kai',
+    'Old Lady Rosa': 'Oma Rosa',
     'Ace Trainer Quinn': 'Ass-Trainer Quinn',
     'Actor Meredith': 'Schauspielerin Meredith',
     'Aether Branch Chief Faba': 'Aether-Zweigleiter Fabian',

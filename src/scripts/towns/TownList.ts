@@ -412,6 +412,33 @@ const BillFusion2 = new NPC('Bill', [
     requirement: new MultiRequirement([new QuestLineStepCompletedRequirement('The Fusion Experiment', 1), new QuestLineStepCompletedRequirement('The Fusion Experiment', 2, GameConstants.AchievementOption.less)]),
 });
 
+// The Air Mail (Postman Dratini line)
+const airMailStep = (step: number) => new MultiRequirement([
+    new QuestLineStepCompletedRequirement('The Air Mail', step - 1),
+    new QuestLineStepCompletedRequirement('The Air Mail', step, GameConstants.AchievementOption.less),
+]);
+const AirMailCarrier1 = new NPC('Mail Carrier Paula', [
+    'Oh no, oh no... Champion! You came at just the right time!',
+    'Our delivery Pokémon caught a cold and the mail for Pewter City, Cerulean City and Lavender Town is piling up.',
+    'Could you deliver these three letters for me? I would be so grateful!',
+], {image: 'assets/images/npcs/Worker (female).png',
+    requirement: new MultiRequirement([new QuestLineStartedRequirement('The Air Mail'), new QuestLineStepCompletedRequirement('The Air Mail', 0, GameConstants.AchievementOption.less)]),
+});
+const AirMailPewter = new NPC('Hiker Ben', [
+    'A letter for me? From my brother in Vermilion City! Thank you, that was quick!',
+], {image: 'assets/images/npcs/Hiker.png', requirement: airMailStep(1)});
+const AirMailCerulean = new NPC('Fisherman Kai', [
+    'Is that the fishing magazine I ordered? Finally! Now I know where the big ones bite.',
+], {image: 'assets/images/npcs/Fisherman.png', requirement: airMailStep(1)});
+const AirMailLavender = new NPC('Old Lady Rosa', [
+    'A postcard from my grandson... He writes that his Dratini learned to fly. Dratini can\'t fly, can it? Hohoho!',
+], {image: 'assets/images/npcs/Old Lady.png', requirement: airMailStep(1)});
+const AirMailCarrier2 = new NPC('Mail Carrier Paula', [
+    'You delivered everything and even got the stolen letters back from those bird Pokémon? Amazing!',
+    'Look, this little one hatched at our office. It has been wearing my old cap ever since and follows every mail bag around.',
+    'I think it wants to deliver mail with you. Please take good care of our little postman Dratini!',
+], {image: 'assets/images/npcs/Worker (female).png', requirement: airMailStep(3)});
+
 const BillsGrandpa1 = new NPC('Bill\'s Grandpa', [
     'Hm? You know Bill? He\'s my grandson. He\'s not here right now. He does something with PCs, so I\'m house-sitting.',
     'I like Pokémon but I\'m not as knowledgeable as my grandson. My grandson Bill told me about a Pokémon that is pink and like a balloon.',
@@ -1021,7 +1048,7 @@ TownList['Pewter City'] = new Town(
             new RouteKillRequirement(10, GameConstants.Region.kanto, 2),
             new ClearDungeonRequirement(1, GameConstants.getDungeonIndex('Viridian Forest')),
         ],
-        npcs: [PewterBattleItemRival, Route3CenterHint, PewterScientist],
+        npcs: [AirMailPewter, PewterBattleItemRival, Route3CenterHint, PewterScientist],
     }
 );
 TownList['Route 4 Pokémon Center'] = new Town(
@@ -1044,7 +1071,7 @@ TownList['Cerulean City'] = new Town(
     [CeruleanCityShop, new ShardTraderShop(GameConstants.ShardTraderLocations['Cerulean City']), KantoExclusiveBerryShop, new MoveToDungeon(dungeonList['Cerulean Cave'])],
     {
         requirements: [new RouteKillRequirement(10, GameConstants.Region.kanto, 4)],
-        npcs: [CeruleanKantoBerryMaster, CeruleanFarmApprentice, CeruleanSuperNerd, Mewtwo1, Mewtwo2, DetectiveRaichu],
+        npcs: [AirMailCerulean, CeruleanKantoBerryMaster, CeruleanFarmApprentice, CeruleanSuperNerd, Mewtwo1, Mewtwo2, DetectiveRaichu],
     }
 );
 TownList['Bill\'s House'] = new Town(
@@ -1070,7 +1097,7 @@ TownList['Vermilion City'] = new Town(
     [VermilionCityShop, new ShardTraderShop(GameConstants.ShardTraderLocations['Vermilion City'])],
     {
         requirements: [new RouteKillRequirement(10, GameConstants.Region.kanto, 6)],
-        npcs: [VermilionFanClubChairman, VermilionShardApprentice, SquirtleJenny, VermilionEusine],
+        npcs: [AirMailCarrier1, AirMailCarrier2, VermilionFanClubChairman, VermilionShardApprentice, SquirtleJenny, VermilionEusine],
     }
 );
 TownList['Lavender Town'] = new Town(
@@ -1080,7 +1107,7 @@ TownList['Lavender Town'] = new Town(
     [LavenderTownShop, new ShardTraderShop(GameConstants.ShardTraderLocations['Lavender Town']), new MoveToDungeon(dungeonList['Pokémon Tower'])],
     {
         requirements: [new ClearDungeonRequirement(1, GameConstants.getDungeonIndex('Rock Tunnel'))],
-        npcs: [LavenderMrFuji, LavenderChanneler, LavenderShopper],
+        npcs: [AirMailLavender, LavenderMrFuji, LavenderChanneler, LavenderShopper],
     }
 );
 TownList['Celadon City'] = new Town(

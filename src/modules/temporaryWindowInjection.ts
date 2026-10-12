@@ -193,7 +193,7 @@ import Music from './audio/Music';
 import BattleEffects from './battles/BattleEffects';
 import MapEffects from './worldmap/MapEffects';
 import TrainerCardFrames from './profile/TrainerCardFrames';
-import { bundledCutscenesDe, bundledQuestlinesDe, bundledSettingsDe } from './translation/bundled/de';
+import { bundledCutscenesDe, bundledPokemonDe, bundledQuestlinesDe, bundledSettingsDe } from './translation/bundled/de';
 import { bundledNpcDialogsDe, bundledNpcNamesDe } from './translation/bundled/npcsDe';
 import { pokemonBabyPrevolutionMap, pokemonList, pokemonMap } from './pokemons/PokemonList';
 import * as PokemonHelper from './pokemons/PokemonHelper';
@@ -461,6 +461,7 @@ Object.assign(<any>window, {
     bundledQuestlinesDe,
     bundledNpcDialogsDe,
     bundledNpcNamesDe,
+    bundledPokemonDe,
     bundledSettingsDe,
     bundledCutscenesDe,
     beforeEvolve,
