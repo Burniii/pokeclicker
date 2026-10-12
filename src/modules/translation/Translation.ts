@@ -118,8 +118,9 @@ export default class Translate {
 
     private applyBundledResources() {
         this.bundledResources.forEach(({ lng, ns, resources }) => {
-            // Never overwrite entries from the translation files
-            i18next.addResourceBundle(lng, ns, resources, true, false);
+            // Never overwrite entries from the translation files, but fill the ones left empty there
+            const filled = Object.fromEntries(Object.entries(resources).filter(([key]) => !i18next.getResource(lng, ns, key)));
+            i18next.addResourceBundle(lng, ns, filled, true, true);
         });
         GameHelper.incrementObservable(this.languageUpdated);
     }
