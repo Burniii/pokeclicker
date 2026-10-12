@@ -10,11 +10,15 @@ The map is assembled from real 16px tiles of src/assets/images/kanto-kanto.png:
 Usage: python3 tools/event/festival_map.py src/assets/images/festival-archipelago.png
 Copied from tools/fusion/island_map.py with a different layout.
 """
+import os
 import random
 import sys
 from collections import Counter, defaultdict, deque
 
 from PIL import Image
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import festival_props as fp  # noqa: E402
 
 T = 16
 W, H = 100, 60
@@ -130,16 +134,16 @@ def island(x0, y0, x1, y1):
 
 # Festival plaza in the middle and nine stage islands around it (clockwise from the west)
 ISLANDS = {
-    'plaza': (39, 17, 61, 37),
-    's1': (6, 23, 22, 37),    # after the Kanto Champion
-    's2': (6, 3, 23, 14),     # Johto
-    's3': (31, 2, 47, 12),    # Hoenn
-    's4': (55, 2, 71, 12),    # Sinnoh
-    's5': (79, 4, 95, 16),    # Unova
-    's6': (80, 25, 95, 37),   # Kalos
-    's7': (78, 45, 94, 57),   # Alola
-    's8': (52, 45, 68, 57),   # Galar
-    's9': (24, 45, 40, 57),   # Paldea
+    'plaza': (35, 15, 65, 41),
+    's1': (4, 22, 22, 38),     # Kanto: party
+    's2': (4, 2, 22, 14),      # Johto: lantern festival
+    's3': (27, 1, 46, 12),     # Hoenn: Jirachi's Millennium festival (circus tent)
+    's4': (52, 1, 71, 12),     # Sinnoh: contest stage and stalls
+    's5': (77, 1, 96, 17),     # Unova: amusement park (Nimbasa)
+    's6': (79, 24, 96, 38),    # Kalos: Halloween
+    's7': (76, 45, 96, 58),    # Alola: summer beach
+    's8': (50, 46, 69, 58),    # Galar: party
+    's9': (22, 46, 41, 58),    # Paldea: crowns
 }
 for box in ISLANDS.values():
     island(*box)
@@ -165,22 +169,26 @@ def block(kx, ky, w, h, x, y):
             target[y + dy][x + dx] = kl(kx + dx, ky + dy)
 
 
-# Routes on the islands (sand paths, 3 tiles wide like the Kanto routes); they end at the sea routes
-path(22 - 13, 28, 22, 31)     # s1: west-east
-path(9, 14 - 8, 12, 14)       # s2: down to s1
-path(9, 6, 23, 9)             # s2: east-west
-path(31, 6, 47, 9)            # s3
-path(55, 6, 71, 9)            # s4
-path(79, 6, 85, 9)            # s5 west
-path(86, 9, 89, 16)           # s5 down
-path(86, 25, 89, 37)          # s6
-path(84, 45, 87, 52)          # s7 down
-path(78, 50, 87, 53)          # s7 west
-path(52, 50, 68, 53)          # s8
-path(28, 50, 40, 53)          # s9
-path(39, 28, 46, 31)          # plaza: west exit
+# Routes on the islands (sand paths, 3 tiles wide like the Kanto routes); they meet the sea routes
+PATHS = [
+    (8, 28, 22, 31), (11, 22, 14, 28),            # s1
+    (11, 6, 22, 9), (11, 9, 14, 14),              # s2
+    (27, 6, 46, 9),                               # s3
+    (52, 6, 71, 9),                               # s4
+    (77, 6, 89, 9), (86, 9, 89, 17),              # s5
+    (86, 24, 89, 38),                             # s6
+    (86, 45, 89, 51), (76, 50, 89, 53),           # s7
+    (50, 50, 69, 53),                             # s8
+    (22, 50, 37, 53),                             # s9
+    (35, 28, 38, 31),                             # plaza entrance
+]
+for p in PATHS:
+    path(*p)
+# The festival plaza itself (sand ring, paved inside after the synthesis)
+PLAZA = (37, 20, 63, 39)
+path(*PLAZA)
 # Beaches
-for bx0, by0, bx1, by1 in ((6, 33, 12, 37), (35, 2, 41, 4), (90, 4, 95, 8), (88, 53, 94, 57), (24, 54, 31, 57), (56, 33, 61, 37)):
+for bx0, by0, bx1, by1 in ((4, 34, 10, 38), (76, 54, 96, 58), (88, 13, 96, 17), (22, 55, 28, 58)):
     for y in range(by0, by1):
         for x in range(bx0, bx1):
             if land[y][x] and target[y][x] == 'G':
@@ -207,44 +215,52 @@ for y in range(H):
             target[y][x] = 'W1' if dist[y][x] <= 1 else 'W2'
 
 # Blocks copied from Kanto
-block(2, 0, 13, 12, 43, 19)   # Indigo Plateau with statues -> Festival plaza
-TOWNS = {
-    's1': ('pc', 9, 24), 's2': ('house', 15, 3), 's3': ('house', 41, 2), 's4': ('pc', 64, 2),
-    's5': ('cave', 89, 10), 's6': ('house', 89, 27), 's7': ('pc', 88, 46), 's8': ('cave', 63, 47), 's9': ('pc', 24, 46),
-}
-for key, (kind, x, y) in TOWNS.items():
-    if kind == 'pc':
-        block(22, 10, 6, 4, x, y)     # Pokémon Center with plaza (Viridian City)
-    elif kind == 'house':
-        block(22, 36, 5, 5, x, y)     # House with red roof (Pallet Town)
-    else:
-        block(27, 14, 3, 3, x, y)     # Rock mound with a cave entrance
-block(34, 51, 7, 7, 30, 37)   # Seafoam rocks -> secret cave of stage 9 (Armored Mewtwo)
+HOUSE, PC, CAVE = (22, 36, 5, 5), (22, 10, 6, 4), (27, 14, 3, 3)
+BLOCKS = [
+    (HOUSE, 39, 15), (PC, 47, 16), (HOUSE, 57, 15),       # houses and Pokémon Center at the top of the plaza
+    (PC, 5, 23),                                           # s1
+    (HOUSE, 15, 9),                                        # s2
+    (PC, 64, 2),                                           # s4
+    (HOUSE, 91, 26),                                       # s6
+    (PC, 89, 46),                                          # s7
+    (CAVE, 64, 47),                                        # s8 (dungeon)
+    (PC, 25, 46),                                          # s9
+    (CAVE, 78, 12),                                        # s5 (dungeon below the coaster)
+]
+for (kx, ky, w, h), x, y in BLOCKS:
+    block(kx, ky, w, h, x, y)
+block(34, 51, 7, 7, 8, 45)   # Seafoam rocks -> secret cave of stage 9 (Armored Mewtwo)
+# plain water tiles of the copied block are synthesised so they match the surrounding sea
+for y in range(45, 52):
+    for x in range(8, 15):
+        if target[y][x].startswith('W'):
+            del fixed[x, y]
+            target[y][x] = 'W1' if dist[y][x] <= 1 else 'W2'
 
 
 # Sea routes with the white Kanto markings: horizontal = 1x3 column repeated, vertical = 3x1 row repeated
 def sea_h(x0, x1, y):
     for x in range(x0, x1):
-        if not land[y + 1][x]:
+        if not any(land[y + k][x] for k in range(3)):
             block(32, 54, 1, 3, x, y)
 
 
 def sea_v(x, y0, y1):
     for y in range(y0, y1):
-        if not land[y][x + 1]:
+        if not any(land[y][x + k] for k in range(3)):
             block(23, 45, 3, 1, x, y)
 
 
-sea_h(23, 38, 28)     # plaza -> s1
-sea_v(9, 15, 22)      # s1 -> s2
-sea_h(24, 30, 6)      # s2 -> s3
-sea_h(48, 54, 6)      # s3 -> s4
-sea_h(72, 78, 6)      # s4 -> s5
+sea_h(22, 35, 28)     # plaza -> s1
+sea_v(11, 14, 22)     # s1 -> s2
+sea_h(22, 27, 6)      # s2 -> s3
+sea_h(46, 52, 6)      # s3 -> s4
+sea_h(71, 77, 6)      # s4 -> s5
 sea_v(86, 17, 24)     # s5 -> s6
-sea_v(84, 38, 44)     # s6 -> s7
-sea_h(69, 77, 50)     # s7 -> s8
-sea_h(41, 51, 50)     # s8 -> s9
-sea_v(33, 44, 44)     # s9 -> secret cave (no line, short hop)
+sea_v(86, 38, 45)     # s6 -> s7
+sea_h(69, 76, 50)     # s7 -> s8
+sea_h(41, 50, 50)     # s8 -> s9
+sea_h(15, 22, 48)     # s9 -> secret cave
 
 # ---------------------------------------------------------------------------------------------
 # Tile synthesis
@@ -358,17 +374,137 @@ def forest(x0, y0, x1, y1, density=0.8):
                 place(BUSH, x + random.randint(0, 1), y + random.randint(0, 1), 1, 1)
 
 
+# ---------------------------------------------------------------------------------------------
+# Festival decoration (tools/event/festival_props.py)
+# ---------------------------------------------------------------------------------------------
+
+# The plaza is paved with pink festival tiles inside its sand border
+paving = [fp.pink_paving(T, seed=k) for k in range(4)]
+for y in range(PLAZA[1] + 1, PLAZA[3] - 1):
+    for x in range(PLAZA[0] + 1, PLAZA[2] - 1):
+        out.paste(paving[(x * 7 + y * 3) % 4], (x * T, y * T))
+out_rgba = out.convert('RGBA')
+out = out_rgba
+
+
+def prop(img, cx, by, reserve=True):
+    """Paste a prop centred on map pixel cx with its bottom on map pixel by and reserve its tiles."""
+    x, y = int(cx - img.width / 2), int(by - img.height)
+    out.paste(img, (x, y), img)
+    if reserve:
+        for ty in range(y // T, (y + img.height - 1) // T + 1):
+            for tx in range(x // T, (x + img.width - 1) // T + 1):
+                used.add((tx, ty))
+
+
+def at(tx, ty):
+    """Map pixel of tile coordinates (fractions allowed)."""
+    return tx * T, ty * T
+
+
+def stalls(row, ty, colors):
+    for tx, c in zip(row, colors):
+        prop(fp.stall(c), *at(tx, ty))
+
+
+ROW_COLS = [fp.RED, fp.BLUE, fp.YELLOW, fp.GREEN, fp.PINK, fp.ORANGE, fp.PURPLE, fp.TEAL, fp.SKY]
+
+# --- Festival plaza: round stage in the middle, screen behind it, a ring of stalls, bunting and lamps
+ring = fp.stage_ring()
+out.paste(ring, (50 * T - ring.width // 2, int(29.6 * T) - ring.height // 2), ring)
+fp.bunting(out, [at(38, 21.6), at(44, 24.4), at(50, 24.6), at(56, 24.4), at(62, 21.6)])
+fp.bunting(out, [at(38, 37.2), at(44, 35.0), at(50, 35.3), at(56, 35.0), at(62, 37.2)], (fp.YELLOW, fp.RED, fp.SKY, fp.PURPLE))
+prop(fp.screen(), *at(50, 25.2))
+prop(fp.stage(), *at(50, 30.6))
+fp.stage_emblem(out, 50 * T, int(28.9 * T))
+stalls([40, 42.5, 45, 55, 57.5, 60], 23.2, ROW_COLS)
+stalls([40, 42.5, 45, 47.5, 52.5, 55, 57.5, 60], 38, ROW_COLS[3:] + ROW_COLS)
+for ty, c in ((27.5, fp.ORANGE), (31.5, fp.SKY), (35, fp.PINK)):
+    prop(fp.stall(c), *at(39.8, ty))
+for ty, c in ((27.5, fp.TEAL), (31.5, fp.RED), (35, fp.YELLOW)):
+    prop(fp.stall(c), *at(60.2, ty))
+for tx, ty in ((44, 27), (56, 27), (44, 33.5), (56, 33.5), (38.6, 24.5), (61.4, 24.5)):
+    prop(fp.lamp_post(), *at(tx, ty))
+for tx, ty in ((46, 27.4), (54, 27.4), (47, 34.5), (53, 34.5)):
+    prop(fp.balloon_bunch(), *at(tx, ty))
+
+# --- s1 Kanto party: stalls along the route, balloons
+stalls([15.5, 19], 27.6, [fp.RED, fp.BLUE])
+stalls([7, 9.5], 34, [fp.YELLOW, fp.SKY])
+stalls([15.5, 19], 34, [fp.GREEN, fp.PINK])
+for tx, ty in ((11.5, 35), (12.5, 27.5), (18, 36.5)):
+    prop(fp.balloon_bunch(), *at(tx, ty))
+fp.bunting(out, [at(14, 28.2), at(17, 27.9), at(21.5, 28.2)], (fp.RED, fp.WHITE, fp.BLUE))
+
+# --- s2 Johto lantern festival
+stalls([17, 20], 5.6, [fp.RED, fp.ORANGE])
+stalls([6.5, 9], 13, [fp.RED, fp.YELLOW])
+fp.lantern_string(out, [at(5, 5.2), at(10, 5.8), at(14, 5.4)])
+fp.lantern_string(out, [at(4.5, 9.6), at(8, 10.0), at(10.8, 9.6)])
+
+# --- s3 Hoenn: Millennium festival of the Wishmaker movie with the big circus tent
+prop(fp.big_tent(fp.RED, 76, 66), *at(36.5, 6.2))
+stalls([29.5, 44], 5.8, [fp.YELLOW, fp.BLUE])
+stalls([31, 41.5, 44], 11.5, [fp.PURPLE, fp.PINK, fp.TEAL])
+for tx, ty in ((29, 10.5), (33, 11.2), (40, 11.0)):
+    prop(fp.star_balloon(), *at(tx, ty))
+prop(fp.blimp(), *at(48.6, 14.2), reserve=False)
+# fireworks over the sea (Millennium night of the Wishmaker movie)
+for tx, ty, c in ((24.5, 2.5, fp.PINK), (48.5, 2.2, fp.YELLOW), (74, 2.6, fp.SKY), (31, 43.5, fp.PURPLE), (73, 41.5, fp.ORANGE), (2, 42, fp.GREEN)):
+    prop(fp.firework(c), *at(tx, ty), reserve=False)
+fp.bunting(out, [at(27.5, 6.1), at(32, 5.6)], (fp.YELLOW, fp.SKY))
+
+# --- s4 Sinnoh: contest hall stage and stalls
+prop(fp.stage(), *at(58, 5.8))
+stalls([53.5, 62], 5.6, [fp.BLUE, fp.PINK])
+stalls([54, 57, 60, 63], 11.6, [fp.SKY, fp.WHITE, fp.PURPLE, fp.YELLOW])
+fp.bunting(out, [at(52.5, 9.2), at(60, 9.6), at(70.5, 9.2)], (fp.BLUE, fp.WHITE, fp.PINK))
+
+# --- s5 Unova: Nimbasa-like amusement park, ferris wheel and roller coaster
+prop(fp.ferris_wheel(), *at(91.8, 9.4))
+prop(fp.roller_coaster(), *at(81.8, 5.8))
+stalls([79.5, 82.5], 12.2, [fp.YELLOW, fp.RED])
+for tx, ty in ((84, 11), (90, 16), (94.5, 16)):
+    prop(fp.balloon_bunch(), *at(tx, ty))
+
+# --- s6 Kalos Halloween: purple tent, pumpkins, lamps
+prop(fp.big_tent(fp.PURPLE), *at(83, 31))
+stalls([92, 94.5], 37.4, [fp.ORANGE, fp.PURPLE])
+for tx, ty in ((81, 33), (82.5, 34), (84.5, 33), (90.5, 33), (92, 34.2), (94.5, 33.6), (82, 36.5)):
+    prop(fp.pumpkin(), *at(tx, ty))
+for tx, ty in ((85.4, 27), (85.4, 35), (89.6, 31)):
+    prop(fp.lamp_post(), *at(tx, ty))
+
+# --- s7 Alola beach: parasols and a snack stall
+for k, (tx, ty) in enumerate(((78, 56.4), (81.5, 57.4), (85, 56.2), (89, 57.6), (92.5, 56.4), (95, 57.6))):
+    prop(fp.parasol([fp.RED, fp.YELLOW, fp.SKY, fp.PINK, fp.GREEN, fp.ORANGE][k]), *at(tx, ty))
+stalls([80, 83], 49.6, [fp.TEAL, fp.ORANGE])
+
+# --- s8 Galar: party with stalls and bunting
+stalls([52, 55, 58, 61], 49.6, [fp.RED, fp.WHITE, fp.BLUE, fp.YELLOW])
+stalls([54, 58], 56.4, [fp.PINK, fp.GREEN])
+fp.bunting(out, [at(50.5, 53.4), at(56, 53.9), at(62, 53.4)], (fp.RED, fp.WHITE, fp.BLUE))
+
+# --- s9 Paldea: crown festival
+stalls([32, 35, 38], 49.6, [fp.PURPLE, fp.YELLOW, fp.TEAL])
+stalls([31, 35], 56.4, [fp.ORANGE, fp.PINK])
+prop(fp.balloon_bunch(), *at(39.5, 56.5))
+fp.bunting(out, [at(30, 53.4), at(37, 53.8)], (fp.PURPLE, fp.YELLOW, fp.ORANGE))
+
+# ---------------------------------------------------------------------------------------------
+# Vegetation around the festival
+# ---------------------------------------------------------------------------------------------
 for key, (x0, y0, x1, y1) in ISLANDS.items():
     if key != 'plaza':
-        forest(x0 + 1, y0 + 1, x1 - 1, y1 - 1, 0.35)
-forest(39, 17, 43, 37, 0.5)
-forest(57, 17, 61, 37, 0.5)
+        forest(x0 + 1, y0 + 1, x1 - 1, y1 - 1, 0.3)
+forest(35, 15, 38, 41, 0.6)
+forest(62, 15, 65, 41, 0.6)
 for _ in range(900):
     x, y = random.randrange(W), random.randrange(H)
     r = random.random()
     if r < 0.3:
         place(BUSH, x, y, 1, 1)
-    elif r < 0.4:
+    elif r < 0.45:
         place(random.choice([FLOWER, FLOWERS]), x, y, 1, 1)
 
-out.save(sys.argv[1] if len(sys.argv) > 1 else 'festival-archipelago.png', optimize=True)
+out.convert('RGB').save(sys.argv[1] if len(sys.argv) > 1 else 'festival-archipelago.png', optimize=True)
