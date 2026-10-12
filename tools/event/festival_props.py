@@ -337,3 +337,54 @@ def firework(color, r=12):
         d.point((c + math.cos(a) * (r + 1), c + math.sin(a) * (r + 1)), fill=light)
     d.ellipse((c - 1, c - 1, c + 1, c + 1), fill=(255, 255, 255, 255))
     return im
+
+
+def pole(h=14, color=(120, 88, 56)):
+    """Thin wooden pole that holds bunting or lantern strings."""
+    im = Image.new('RGBA', (4, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rectangle((1, 2, 2, h - 1), fill=color + (255,))
+    d.rectangle((0, 0, 3, 2), fill=(248, 200, 56, 255))
+    return outline(im)
+
+
+def torii(w=44, h=40):
+    """Red shrine gate for the Johto lantern festival."""
+    im = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    red, dark = (220, 56, 48, 255), (160, 32, 32, 255)
+    d.rectangle((0, 3, w - 1, 7), fill=(56, 48, 56, 255))
+    d.polygon([(0, 3), (4, 0), (w - 5, 0), (w - 1, 3)], fill=(56, 48, 56, 255))
+    d.rectangle((3, 8, w - 4, 11), fill=red)
+    d.rectangle((3, 15, w - 4, 17), fill=red)
+    d.rectangle((8, 8, 12, h - 1), fill=red)
+    d.rectangle((w - 13, 8, w - 9, h - 1), fill=red)
+    d.rectangle((11, 8, 12, h - 1), fill=dark)
+    d.rectangle((w - 10, 8, w - 9, h - 1), fill=dark)
+    d.rectangle((w // 2 - 3, 11, w // 2 + 2, 15), fill=(248, 216, 120, 255))
+    return shadow(outline(im), 3)
+
+
+def flag_pole(color):
+    """Tall pennant flag at a plaza entrance."""
+    im = Image.new('RGBA', (16, 34), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rectangle((2, 2, 3, 33), fill=(200, 200, 210, 255))
+    dark, base, light = shades(color)
+    d.polygon([(4, 3), (15, 7), (4, 12)], fill=base)
+    d.line((4, 4, 12, 7), fill=light)
+    return outline(im)
+
+
+def fountain(w=40, h=30):
+    """Round festival fountain."""
+    im = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.ellipse((0, 6, w - 1, h - 1), fill=(200, 200, 216, 255))
+    d.ellipse((3, 8, w - 4, h - 5), fill=(96, 176, 232, 255))
+    d.ellipse((7, 11, w - 8, h - 8), fill=(136, 200, 240, 255))
+    d.rectangle((w // 2 - 2, 2, w // 2 + 1, 16), fill=(220, 220, 232, 255))
+    d.ellipse((w // 2 - 6, 0, w // 2 + 5, 6), fill=(200, 232, 248, 255))
+    for k in (-8, 8):
+        d.point((w // 2 + k, 12), fill=(255, 255, 255, 255))
+    return shadow(outline(im), 2)
