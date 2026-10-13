@@ -17,7 +17,7 @@
                                 <button style="position: relative;" class='btn btn-block btn-success ship-modal-region-button'
                                     data-dismiss='modal'
                                     data-bind='click: () => { player.region = GameConstants.Region[$data]; player.subregion = 0; MapHelper.moveToTown(GameConstants.DockTowns[GameConstants.Region[$data]]); $("#ShipModal").modal("hide"); },
-                                    attr: { disabled: player.region == GameConstants.Region[$data] }'>
+                                    attr: { disabled: player.region == GameConstants.Region[$data] && !App.game.festivalWorld.active() }'>
                                     <img style="position:absolute; left: 10px;" data-bind="visible: player.region == GameConstants.Region[$data], attr: { src: `assets/images/profile/trainer-${App.game.profile.trainer() || 0}.png` }"/> <knockout data-bind="text: GameConstants.camelCaseToString($data)">Region</knockout>
                                 </button>
                                 <!-- ko using: Weather.regionalWeather[GameConstants.Region[$data]], as: 'weatherType' -->
@@ -43,6 +43,17 @@
                             </div>
                             <!-- /ko -->
                         <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- Other regions -->
+                    <!-- ko if: App.game.festivalWorld.unlocked() -->
+                    <h6 class="text-light mt-3 mb-1">Sonstige Regionen</h6>
+                    <div class="btn-group w-100 my-1">
+                        <button style="position: relative;" class='btn btn-block btn-info ship-modal-region-button' data-dismiss='modal'
+                            data-bind='click: () => { App.game.festivalWorld.enter(); $("#ShipModal").modal("hide"); }, attr: { disabled: App.game.festivalWorld.active() }'>
+                            <img style="position:absolute; left: 10px;" data-bind="visible: App.game.festivalWorld.active(), attr: { src: `assets/images/profile/trainer-${App.game.profile.trainer() || 0}.png` }"/>
+                            <knockout>🎪 Festival-Archipel</knockout>
+                        </button>
+                    </div>
                     <!-- /ko -->
                 </div>
             </div>

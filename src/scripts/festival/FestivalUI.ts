@@ -24,6 +24,9 @@ class FestivalUI {
     }
 
     public static moveTo(area: FestivalArea) {
+        if (!App.game.festivalWorld.active()) {
+            return;
+        }
         if (!App.game.festivalWorld.areaUnlocked(area)) {
             Notifier.notify({ message: FestivalUI.lockedText(area), type: NotificationConstants.NotificationOption.warning });
             return;

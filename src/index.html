@@ -180,10 +180,13 @@
 
                 <div class="battle-view card-body p-0 justify-content-center no-gutters no-select"
                     data-bind="if: (App.game.gameState === GameConstants.GameState.fighting || App.game.gameState === GameConstants.GameState.dungeon || App.game.gameState === GameConstants.GameState.paused || App.game.gameState === GameConstants.GameState.town || App.game.gameState === GameConstants.GameState.gym || App.game.gameState == GameConstants.GameState.battleFrontier || App.game.gameState == GameConstants.GameState.temporaryBattle),
-                        class: MapHelper.calculateBattleCssClass()">
+                        class: App.game.festivalWorld.active() ? FestivalUI.battleClass() : MapHelper.calculateBattleCssClass()">
+
+                    <!-- Festival Archipelago (other region) -->
+                    @import "festivalBattle.html"
 
                     <!-- Route Battles -->
-                    <div id="routeBattleContainer" class="row justify-content-center no-gutters" data-bind="if: App.game.gameState === GameConstants.GameState.fighting">
+                    <div id="routeBattleContainer" class="row justify-content-center no-gutters" data-bind="if: App.game.gameState === GameConstants.GameState.fighting && !App.game.festivalWorld.active()">
                         <div class="col no-gutters clickable" data-bind="click: function() {Battle.clickAttack()}" style="height: 280px; display: block;">
                             <div class="pageItemTitle d-flex justify-content-center">
                                 <div class="title-left">

@@ -3,16 +3,19 @@
 
 type FestivalEnemy = { name: PokemonNameType, id: number, shiny: boolean, hp: number, maxHp: number };
 
-// The Festival Archipelago runs in its own window next to the base game, like the Fusion world,
-// but it uses the player's party and Poké Balls and every catch goes into the normal Pokédex.
+// The Festival Archipelago is an "other region" of the base game: it is reached by ship (Regional Travel),
+// shows its map in the Town Map and fights in the normal battle view. It uses the player's party and
+// Poké Balls and every catch goes into the normal Pokédex. The base game is paused while you are there.
 class FestivalWorld implements Saveable {
     saveKey = 'festivalWorld';
     defaults: Record<string, any> = {};
 
-    // The festival party gets half of the party attack, so it does not double the main game's progress
-    public static readonly ATTACK_SHARE = 0.5;
+    // The base game is paused on the archipelago, so the festival uses the full party attack
+    public static readonly ATTACK_SHARE = 1;
 
     public area: KnockoutObservable<string> = ko.observable('plaza');
+    // On the archipelago right now (not saved: the game always starts in the main regions)
+    public active: KnockoutObservable<boolean> = ko.observable(false);
     public kills: KnockoutObservable<Record<string, number>> = ko.observable({});
     public announcedStages: KnockoutObservableArray<number> = ko.observableArray([]);
 
@@ -41,8 +44,26 @@ class FestivalWorld implements Saveable {
     }
 
     public currentArea = ko.pureComputed(() => FestivalData.area(this.area()));
-    public inTown = ko.pureComputed(() => this.currentArea()?.kind === 'town');
-    public inBattle = ko.pureComputed(() => this.unlocked() && !this.inTown());
+    public inTown = ko.pureComputed(() => this.active() && this.currentArea()?.kind === 'town');
+    public inBattle = ko.pureComputed(() => this.active() && this.unlocked() && this.currentArea()?.kind !== 'town');
+
+    // Travel by ship from a harbour of the main regions
+    public enter() {
+        if (!this.unlocked()) {
+            return;
+        }
+        App.game.gameState = GameConstants.GameState.paused;
+        this.active(true);
+        this.goTo('plaza');
+    }
+
+    // Back to the harbour of the current main region
+    public leave() {
+        this.active(false);
+        this.enemy(null);
+        this.catching(false);
+        MapHelper.moveToTown(GameConstants.DockTowns[player.region]);
+    }
 
     public killsOn(id: string): number {
         return this.kills()[id] ?? 0;
@@ -181,12 +202,18 @@ class FestivalWorld implements Saveable {
                 Notifier.notify({
                     title: '🎪 Festival-Archipel',
                     message: n === 1
-                        ? 'Die Fähre zum Festival-Archipel legt ab! Unter der Town Map gibt es jetzt die Festivalkarte und das Festivalfenster.'
+                        ? 'Die Fähre zum Festival-Archipel legt ab! Reise an einem Hafen (Regional Travel) unter „Sonstige Regionen“ dorthin.'
                         : `${FestivalData.stage(n).island} ist jetzt geöffnet!`,
                     type: NotificationConstants.NotificationOption.info,
                     timeout: 30 * 1000,
                 });
             }
+        }
+        // Leaving the paused state (e.g. travelling from a menu) ends the visit
+        if (this.active() && App.game.gameState !== GameConstants.GameState.paused) {
+            this.active(false);
+            this.enemy(null);
+            this.catching(false);
         }
         if (!this.inBattle()) {
             return;

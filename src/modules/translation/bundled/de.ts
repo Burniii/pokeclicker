@@ -40,7 +40,7 @@ export const bundledQuestlinesDe: Record<string, string> = {
     'A new island of the Festival Archipelago is opening: Kronen-Insel.': 'Eine neue Insel des Festival-Archipels öffnet: Kronen-Insel.',
     'Talk to the festival herald in Mesagoza.': 'Sprich mit dem Festival-Boten in Mesagoza.',
     'Catch 5 different costume Pokémon of the Kronen-Insel.': 'Fange 5 verschiedene Kostüm-Pokémon auf der Kronen-Insel.',
-    'Take the ferry: open the Festival map below the Town Map and defeat 10 Pokémon on the Party Island.': 'Nimm die Fähre: Öffne die Festivalkarte unter der Town Map und besiege 10 Pokémon auf der Party-Insel.',
+    'Take the ferry: travel to the Festival Archipelago from a harbour (Regional Travel, Other regions) and defeat 10 Pokémon on the Party Island.': 'Nimm die Fähre: Reise an einem Hafen (Regional Travel, Sonstige Regionen) zum Festival-Archipel und besiege 10 Pokémon auf der Party-Insel.',
     // The Air Mail
     'The Air Mail': 'Die Luftpost',
     'Help Mail Carrier Paula in Vermilion City deliver the mail.': 'Hilf Postbotin Paula aus Vermilion City, die Post auszutragen.',

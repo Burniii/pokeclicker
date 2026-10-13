@@ -172,7 +172,7 @@ class QuestLineHelper {
             line.addQuest(new TalkToNPCQuest(herald, `Talk to the festival herald in ${stage.town}.`));
             if (n === 1) {
                 const festivalKills = () => Object.values(App.game.festivalWorld.kills()).reduce((a, b) => a + b, 0);
-                line.addQuest(new CustomQuest(10, 0, 'Take the ferry: open the Festival map below the Town Map and defeat 10 Pokémon on the Party Island.', festivalKills));
+                line.addQuest(new CustomQuest(10, 0, 'Take the ferry: travel to the Festival Archipelago from a harbour (Regional Travel, Other regions) and defeat 10 Pokémon on the Party Island.', festivalKills));
             }
             const reward = () => {
                 App.game.pokeballs.gainPokeballs(GameConstants.Pokeball.Ultraball, 10 * n, false);

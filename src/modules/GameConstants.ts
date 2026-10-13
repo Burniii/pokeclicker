@@ -2702,8 +2702,6 @@ export const ModalCollapseList = [
     'fusionBattleBody',
     'fusionMapBody',
     'fusionTeamBody',
-    'festivalBattleBody',
-    'festivalMapBody',
 ];
 
 export enum ConsumableType {

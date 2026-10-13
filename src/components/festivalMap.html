@@ -1,32 +1,15 @@
-<div id="festivalMap" class="card sortable border-secondary mb-3" data-bind="visible: App.game.festivalWorld.unlocked()">
-    <div class="card-header p-0" data-toggle="collapse" href="#festivalMapBody">
-        <span>Festivalkarte</span>
-    </div>
-    <button class="btn btn-sm" style="position: absolute; left: 0px; top: 0px; width: auto; height: 41px;" data-toggle="popover" data-trigger="hover" data-html="true" data-title="Kartenlegende:"
-        data-placement="bottom" data-content="<div class='row map-legend'>
-            <div class='col-10'>Gesperrt</div><div class='col-2'><span class='float-right px-4 bg-locked'>&nbsp;</span></div>
-            <div class='col-10'>Unter 10 Siegen</div><div class='col-2'><span class='float-right px-4 bg-incomplete'>&nbsp;</span></div>
-            <div class='col-10'>Ungefangene Pokémon</div><div class='col-2'><span class='float-right px-4 bg-uncaughtPokemon'>&nbsp;</span></div>
-            <div class='col-10'>Abgeschlossen</div><div class='col-2'><span class='float-right px-4 bg-completed'>&nbsp;</span></div>
-            <div class='col-12'><i>Nach jedem Champion öffnet eine Questreihe die nächste Insel.</i></div>
-        </div>">ⓘ</button>
-    <button class="btn btn-sm" style="position: absolute; right: 0px; top: 0px; width: auto; height: 41px; cursor: default;" title="Gefangene Kostüm-Pokémon"
-        data-bind="text: `🎪 ${FestivalUI.caughtCount()}/${FestivalData.allPokemon().length}`"></button>
-    <div id="festivalMapBody" class="card-body p-0 show">
-        <p id="festivalMapTooltip" class="btn btn-secondary" style="visibility: hidden;"></p>
-        <!-- ko if: App.game.festivalWorld.unlocked() -->
-        <svg id="festivalMapSvg" class="region-map" viewBox="0 0 1600 960" preserveAspectRatio="xMaxYMax meet">
-            <image width="1600" height="960" href="assets/images/festival-archipelago.png?v=$VERSION" xlink:href="assets/images/festival-archipelago.png?v=$VERSION"></image>
-            <!-- ko foreach: FestivalData.areas -->
-            <g data-bind="click: () => FestivalUI.moveTo($data),
-                event: { mouseenter: () => FestivalUI.showTooltip(FestivalUI.areaTooltip($data)), mouseleave: FestivalUI.hideTooltip }">
-                <rect data-bind="attr: { x: map.x * 16, y: map.y * 16, width: map.w * 16, height: map.h * 16,
-                    class: `${kind !== 'route' ? 'city ' : ''}${FestivalUI.areaCss($data)}` }"></rect>
-                <image width="48" height="48" class="iconLocation" data-bind="visible: App.game.festivalWorld.area() === id,
-                    attr: { x: map.x * 16 + map.w * 8 - 24, y: map.y * 16 + map.h * 8 - 24, href: `assets/images/profile/trainer-${App.game.profile.trainer() || 0}.png` }"></image>
-            </g>
-            <!-- /ko -->
-        </svg>
-        <!-- /ko -->
-    </div>
-</div>
+<!-- ko if: App.game.festivalWorld.active() -->
+<p id="festivalMapTooltip" class="btn btn-secondary" style="visibility: hidden;"></p>
+<svg id="festivalMapSvg" class="region-map" viewBox="0 0 1600 960" preserveAspectRatio="xMaxYMax meet">
+    <image width="1600" height="960" href="assets/images/festival-archipelago.png?v=$VERSION" xlink:href="assets/images/festival-archipelago.png?v=$VERSION"></image>
+    <!-- ko foreach: FestivalData.areas -->
+    <g data-bind="click: () => FestivalUI.moveTo($data),
+        event: { mouseenter: () => FestivalUI.showTooltip(FestivalUI.areaTooltip($data)), mouseleave: FestivalUI.hideTooltip }">
+        <rect data-bind="attr: { x: map.x * 16, y: map.y * 16, width: map.w * 16, height: map.h * 16,
+            class: `${kind !== 'route' ? 'city ' : ''}${FestivalUI.areaCss($data)}` }"></rect>
+        <image width="48" height="48" class="iconLocation" data-bind="visible: App.game.festivalWorld.area() === id,
+            attr: { x: map.x * 16 + map.w * 8 - 24, y: map.y * 16 + map.h * 8 - 24, href: `assets/images/profile/trainer-${App.game.profile.trainer() || 0}.png` }"></image>
+    </g>
+    <!-- /ko -->
+</svg>
+<!-- /ko -->
