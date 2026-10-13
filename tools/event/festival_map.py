@@ -17,6 +17,7 @@ from PIL import Image, ImageDraw, ImageFilter
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import alola_assets as aa  # noqa: E402
+import magiscarf_assets as ma  # noqa: E402
 import festival_props as fp  # noqa: E402
 
 T = 16
@@ -191,7 +192,7 @@ STONES = [
     (35, 16, 65, 20),     # forecourt of the buildings on the plaza island
     (6, 33, 20, 37),      # s1 party square
     (55, 2, 64, 6),       # s4 contest stage square
-    (57, 8, 62, 11),      # s4 fountain square
+    (56, 8, 63, 13),      # s4 fountain square
     (54, 55, 66, 57),     # s8 square
     (26, 55, 38, 57),     # s9 square
 ]
@@ -502,6 +503,10 @@ for d, cells, pier in bridge_cells:
 # Objects (painted in y order) and occupancy for the vegetation
 # ---------------------------------------------------------------------------------------------
 SP = aa.sprites()
+# seasonal trees and park objects from Magiscarf's free tileset (see resources/CREDITS.md)
+for name, ids in ma.CATALOG.items():
+    for k in range(len(ids)):
+        SP[f'{name}{k}'] = ma.pick(name, k)
 kanto = Image.open('src/assets/images/kanto-kanto.png').convert('RGBA')
 
 
@@ -661,9 +666,9 @@ put(SP['pc'], 68, 6)
 stall(C.SKY, 54, 6)
 stall(C.PINK, 65, 6)
 string_line('bunting', [(55.2, 2.6), (59.5, 2.4), (63.8, 2.6)], (C.BLUE, C.WHITE, C.PINK))
-put(fp.fountain(), 59.5, 10.4)
-for cx in (56.4, 62.6):
-    put(SP['planter_tall'], cx, 10.8)
+put(SP['fountain0'], 59.5, 12.6)
+for cx in (55.4, 63.6):
+    put(SP['planter_tall'], cx, 12.6)
 
 # --- s5 Unova amusement park ---------------------------------------------------------------------
 put(fp.roller_coaster(), 82, 6)
@@ -727,17 +732,17 @@ for cx, by, c in ((24.5, 2.6, C.PINK), (49, 2.6, C.YELLOW), (74.4, 2.8, C.SKY), 
 # Vegetation per island
 # ---------------------------------------------------------------------------------------------
 FLORA = {
-    'plaza': ['palm', 'palm', 'tree_round'],
-    's1': ['tree_round', 'tree_round', 'palm'],
-    's2': ['tree_conifer', 'tree_round', 'tree_conifer_big'],
-    's3': ['palm', 'tree_round'],
-    's4': ['tree_conifer', 'tree_conifer_big'],
-    's5': ['tree_round', 'palm'],
-    's6': ['tree_conifer_big', 'tree_conifer'],
+    'plaza': ['palm', 'palm', 'tree_green0', 'round_green0'],
+    's1': ['tree_green0', 'tree_green1', 'round_green1', 'tree_round'],
+    's2': ['tree_sakura0', 'tree_sakura1', 'round_sakura0', 'tree_sakura2'],      # Johto: cherry blossoms
+    's3': ['palm', 'tree_teal0', 'tree_teal1'],
+    's4': ['tree_teal0', 'round_teal0', 'tree_conifer_big'],
+    's5': ['tree_green0', 'round_green0', 'palm'],
+    's6': ['tree_red0', 'tree_autumn0', 'round_red0', 'tree_red1', 'tree_autumn1'],  # Kalos: autumn and Halloween
     's7': ['palm'],
-    's8': ['tree_round', 'tree_conifer'],
-    's9': ['palm', 'tree_round'],
-    'secret': ['tree_conifer_big', 'tree_conifer'],
+    's8': ['tree_olive0', 'tree_olive1', 'round_olive0'],
+    's9': ['tree_autumn0', 'round_autumn0', 'palm'],
+    'secret': ['tree_olive0', 'tree_conifer_big'],
 }
 veg = np.zeros((H, W), bool)       # tiles covered by tree crowns or plants
 
@@ -791,7 +796,9 @@ for key, (x0, y0, x1, y1) in ISLANDS.items():
 GROVES = [  # explicit groves in otherwise empty corners (palms on the plaza island)
     ('plaza', (41, 38, 66, 44), ['palm', 'tree_round', 'palm']),
     ('s7', (75, 45, 86, 50), ['palm']),
-    ('s1', (2, 19, 10, 25), ['tree_round', 'tree_conifer']),
+    ('s1', (2, 19, 10, 25), ['tree_green0', 'tree_green1']),
+    ('s2', (2, 8, 10, 15), ['tree_sakura0', 'tree_sakura1', 'round_sakura0']),
+    ('s6', (91, 32, 99, 41), ['tree_red0', 'tree_autumn0', 'tree_red1']),
     ('s3', (26, 9, 47, 14), ['palm', 'tree_round']),
     ('s9', (35, 46, 43, 51), ['palm']),
 ]
