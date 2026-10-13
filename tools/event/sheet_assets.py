@@ -159,7 +159,12 @@ if __name__ == '__main__':
 # Named landmarks for the Festival Archipelago (sheet, pixel box or object index, optional sub-split)
 def landmark(name):
     if name == 'bell_tower':
-        return region('cherry', (124, 760, 172, 847))
+        # the sheet's drop shadow is a semi-transparent box; keep only opaque pixels
+        o = region('cherry', (124, 760, 172, 847))
+        a = np.array(o)
+        a[..., 3] = np.where(a[..., 3] == 255, 255, 0)
+        o = Image.fromarray(a, 'RGBA')
+        return o.crop(o.getbbox())
     if name == 'contest_hall':
         return region('saurav_b', (12, 11, 99, 80))
     if name == 'stadium':

@@ -33,13 +33,13 @@ kind = np.zeros((H, W), np.uint8)
 # Islands: rectangles with jagged, chamfered outlines (stepped at 16px like the Alola coasts)
 # ---------------------------------------------------------------------------------------------
 ISLANDS = {
-    'plaza': (32, 15, 68, 44),
-    's1': (2, 19, 22, 40),     # Kanto: party
-    's2': (2, 1, 22, 14),      # Johto: lantern festival
+    'plaza': (32, 15, 68, 42),
+    's1': (2, 22, 22, 40),     # Kanto: party
+    's2': (2, 1, 22, 19),      # Johto: lantern festival with the bell tower
     's3': (26, 1, 47, 14),     # Hoenn: Millennium festival (Jirachi, circus tent)
     's4': (52, 1, 73, 14),     # Sinnoh: contest stage
     's5': (77, 1, 98, 19),     # Unova: amusement park
-    's6': (77, 23, 98, 40),    # Kalos: Halloween
+    's6': (77, 23, 98, 42),    # Kalos: Halloween, timber-framed houses
     's7': (74, 45, 98, 59),    # Alola: beach
     's8': (48, 47, 71, 59),    # Galar: party
     's9': (21, 47, 43, 59),    # Paldea: crowns
@@ -101,15 +101,15 @@ def organic(x0, y0, x1, y1, seed, amp=2.6, radius=3.5):
 
 # lobes and peninsulas so that the islands are not plain rectangles
 LOBES = {
-    's1': [(1, 34, 9, 41), (15, 18, 21, 23)],
-    's2': [(14, 10, 20, 15), (1, 3, 6, 9)],
+    's1': [(1, 34, 9, 41)],
+    's2': [(14, 10, 21, 18), (1, 3, 6, 9)],
     's3': [(32, 10, 40, 14)],
     's4': [(64, 10, 71, 14), (52, 9, 57, 13), (64, 1, 72, 5)],
     's5': [(76, 12, 81, 20)],
-    's6': [(94, 27, 99, 35), (79, 36, 85, 41)],
-    's7': [(74, 46, 80, 51), (90, 43, 96, 47)],
+    's6': [(94, 27, 99, 35), (78, 36, 86, 43)],
+    's7': [(74, 46, 80, 51)],
     's8': [(64, 56, 70, 60)],
-    's9': [(36, 45, 41, 48), (22, 56, 29, 60)],
+    's9': [(34, 44, 42, 48), (22, 56, 29, 60)],
     'plaza': [(31, 36, 37, 42), (63, 16, 69, 22)],
     'secret': [],
 }
@@ -168,7 +168,7 @@ PATHS = [
     # s1
     (2, 29, 22, 31), (11, 18, 13, 31), (13, 31, 15, 34),
     # s2
-    (4, 6, 22, 8), (11, 6, 13, 15),
+    (4, 6, 22, 8), (11, 6, 13, 19), (13, 16, 19, 18),
     # s3
     (25, 6, 47, 8),
     # s4
@@ -176,7 +176,7 @@ PATHS = [
     # s5
     (76, 6, 89, 8), (87, 6, 89, 19), (89, 11, 92, 13), (79, 16, 87, 18),
     # s6
-    (87, 22, 89, 40), (82, 30, 87, 32), (89, 28, 94, 30),
+    (87, 22, 89, 41), (82, 30, 87, 32), (89, 33, 96, 35), (80, 39, 87, 41),
     # s7
     (87, 44, 89, 54), (74, 52, 95, 54),
     # s8
@@ -509,7 +509,7 @@ for name, ids in ma.CATALOG.items():
     for k in range(len(ids)):
         SP[f'{name}{k}'] = ma.pick(name, k)
 # landmarks and trees from the Pinterest tile sheets (see resources/CREDITS.md)
-for name in ('contest_hall', 'stadium', 'hut', 'lighthouse', 'tree_gold', 'tree_gold2', 'tree_pine', 'tree_pine2', 'tree_pine3'):
+for name in ('contest_hall', 'stadium', 'hut', 'lighthouse', 'bell_tower', 'restaurant', 'kalos_house0', 'kalos_house4', 'tree_gold', 'tree_gold2', 'tree_pine', 'tree_pine2', 'tree_pine3'):
     SP[name] = sa.landmark(name)
 kanto = Image.open('src/assets/images/kanto-kanto.png').convert('RGBA')
 
@@ -651,8 +651,8 @@ stall(C.RED, 15.4, 6)
 stall(C.ORANGE, 18, 6)
 put(fp.torii(), 20.2, 8.2, reserve=False, layer=40)
 string_line('lantern', [(4.6, 9.2), (8.6, 9.2), (10.4, 9.2)])
-string_line('lantern', [(13.6, 9.2), (17, 9.2), (20.4, 9.2)])
-put(SP['house_brown'], 17, 12.6)
+string_line('lantern', [(18.6, 9.2), (20.6, 9.2)])
+put(SP['bell_tower'], 16.6, 16.1)
 
 # --- s3 Hoenn Millennium festival ----------------------------------------------------------------
 put(fp.big_tent(C.RED, 80, 70), 36, 6.1)
@@ -684,11 +684,11 @@ for cx, by in ((90.2, 10.8), (85.8, 10.6), (94.4, 15.8)):
 
 # --- s6 Kalos Halloween --------------------------------------------------------------------------
 put(fp.big_tent(C.PURPLE, 60, 54), 83.6, 30.2)
-put(SP['house_green'], 93.4, 28.2)
-stall(C.ORANGE, 85.7, 36)
-stall(C.PURPLE, 90.3, 36)
+put(SP['kalos_house0'], 92.9, 33)
+put(SP['kalos_house4'], 82.8, 39)
+stall(C.PURPLE, 91.6, 37.8)
 stall(C.TEAL, 90.3, 25.6)
-for cx, by in ((80.6, 32.6), (81.8, 34.2), (84, 33.2), (90.6, 32.4), (95, 32.6), (91.4, 37.4), (80.6, 37.4)):
+for cx, by in ((79.4, 32.6), (86.2, 37.4), (94.6, 37.2), (96.2, 36.4), (95.4, 30.2)):
     put(fp.pumpkin(), cx, by)
 for cx, by in ((86.4, 25), (86.4, 33), (89.6, 37)):
     put(fp.lamp_post(), cx, by)
@@ -710,8 +710,9 @@ string_line('bunting', [(54.4, 54.6), (60, 54.4), (65.6, 54.6)], (C.RED, C.WHITE
 
 # --- s9 Paldea crowns ----------------------------------------------------------------------------
 put(SP['pc'], 26.4, 52)
-for i, cx in enumerate((31.6, 34.2, 36.8, 39.4)):
-    stall((C.PURPLE, C.YELLOW, C.TEAL, C.ORANGE)[i], cx, 52)
+put(SP['restaurant'], 38.2, 52)
+for i, cx in enumerate((31.6, 34.2)):
+    stall((C.PURPLE, C.YELLOW)[i], cx, 52)
 for i, cx in enumerate((28, 30.6, 33.4, 36)):
     stall((C.PINK, C.ORANGE, C.YELLOW, C.PURPLE)[i], cx, 56.6)
 put(fp.balloon_bunch(), 39.6, 56.6)
@@ -797,11 +798,10 @@ for key, (x0, y0, x1, y1) in ISLANDS.items():
 GROVES = [  # explicit groves in otherwise empty corners (palms on the plaza island)
     ('plaza', (41, 38, 66, 44), ['palm', 'tree_round', 'palm']),
     ('s7', (75, 45, 86, 50), ['palm']),
-    ('s1', (2, 19, 10, 25), ['tree_green0', 'tree_green1']),
-    ('s2', (2, 8, 10, 15), ['tree_sakura0', 'tree_sakura1', 'round_sakura0']),
+    ('s1', (2, 22, 10, 27), ['tree_green0', 'tree_green1']),
+    ('s2', (2, 9, 10, 19), ['tree_sakura0', 'tree_sakura1', 'round_sakura0']),
     ('s6', (91, 32, 99, 41), ['tree_red0', 'tree_autumn0', 'tree_red1']),
     ('s3', (26, 9, 47, 14), ['palm', 'tree_round']),
-    ('s9', (35, 46, 43, 51), ['palm']),
 ]
 for key, (x0, y0, x1, y1), kinds in GROVES:
     for row, by in enumerate(frange(y0 + 2, y1 + 0.5, 1.25)):
