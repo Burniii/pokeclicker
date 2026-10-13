@@ -18,6 +18,7 @@ from PIL import Image, ImageDraw, ImageFilter
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import alola_assets as aa  # noqa: E402
 import magiscarf_assets as ma  # noqa: E402
+import sheet_assets as sa  # noqa: E402
 import festival_props as fp  # noqa: E402
 
 T = 16
@@ -507,6 +508,9 @@ SP = aa.sprites()
 for name, ids in ma.CATALOG.items():
     for k in range(len(ids)):
         SP[f'{name}{k}'] = ma.pick(name, k)
+# landmarks and trees from the Pinterest tile sheets (see resources/CREDITS.md)
+for name in ('contest_hall', 'stadium', 'hut', 'lighthouse', 'tree_gold', 'tree_gold2', 'tree_pine', 'tree_pine2', 'tree_pine3'):
+    SP[name] = sa.landmark(name)
 kanto = Image.open('src/assets/images/kanto-kanto.png').convert('RGBA')
 
 
@@ -662,7 +666,7 @@ string_line('bunting', [(37.6, 8.8), (44.4, 8.8)], (C.YELLOW, C.SKY))
 
 # --- s4 Sinnoh contest ---------------------------------------------------------------------------
 put(fp.stage(), 59.5, 5.6)
-put(SP['pc'], 68, 6)
+put(SP['contest_hall'], 68, 6)
 stall(C.SKY, 54, 6)
 stall(C.PINK, 65, 6)
 string_line('bunting', [(55.2, 2.6), (59.5, 2.4), (63.8, 2.6)], (C.BLUE, C.WHITE, C.PINK))
@@ -691,17 +695,14 @@ for cx, by in ((86.4, 25), (86.4, 33), (89.6, 37)):
 
 # --- s7 Alola beach ------------------------------------------------------------------------------
 put(SP['pc'], 93, 52)
-stall(C.TEAL, 80, 52)
-stall(C.ORANGE, 82.6, 52)
+put(SP['hut'], 81.3, 52)
 for i, (cx, by) in enumerate(((78.4, 57.2), (82.6, 57.8), (86.8, 57.2), (91, 57.8), (95, 57.2))):
     put(SP['umbrella_blue' if i % 2 else 'umbrella_red'], cx, by)
 put(SP['sailboat'], 72.5, 58.4, reserve=False)
 put(SP['sailboat'], 98.2, 44.4, reserve=False)
 
 # --- s8 Galar party ------------------------------------------------------------------------------
-put(SP['house_brown'], 53.4, 52)
-stall(C.RED, 58.2, 52)
-stall(C.WHITE, 60.8, 52)
+put(SP['stadium'], 55.6, 52)
 put(fp.cave_mouth(), 66.5, 52.05)
 for i, cx in enumerate((56, 58.6, 61.4, 64)):
     stall((C.BLUE, C.YELLOW, C.RED, C.WHITE)[i], cx, 56.6)
@@ -736,12 +737,12 @@ FLORA = {
     's1': ['tree_green0', 'tree_green1', 'round_green1', 'tree_round'],
     's2': ['tree_sakura0', 'tree_sakura1', 'round_sakura0', 'tree_sakura2'],      # Johto: cherry blossoms
     's3': ['palm', 'tree_teal0', 'tree_teal1'],
-    's4': ['tree_teal0', 'round_teal0', 'tree_conifer_big'],
+    's4': ['tree_pine', 'tree_pine2', 'tree_pine3', 'round_teal0'],
     's5': ['tree_green0', 'round_green0', 'palm'],
     's6': ['tree_red0', 'tree_autumn0', 'round_red0', 'tree_red1', 'tree_autumn1'],  # Kalos: autumn and Halloween
     's7': ['palm'],
-    's8': ['tree_olive0', 'tree_olive1', 'round_olive0'],
-    's9': ['tree_autumn0', 'round_autumn0', 'palm'],
+    's8': ['tree_olive0', 'tree_olive1', 'round_olive0', 'tree_gold2'],
+    's9': ['tree_gold', 'tree_gold2', 'tree_autumn0', 'round_autumn0'],
     'secret': ['tree_olive0', 'tree_conifer_big'],
 }
 veg = np.zeros((H, W), bool)       # tiles covered by tree crowns or plants
