@@ -54,6 +54,7 @@ class Game implements TmpGameType {
     public fishing: Fishing;
     public automation: Automation;
     public fusionWorld: FusionWorld;
+    public festivalWorld: FestivalWorld;
 
     constructor() {
         // Needs to be loaded first so save data can be updated (specifically "player" data)
@@ -73,6 +74,7 @@ class Game implements TmpGameType {
         this.fishing = new Fishing();
         this.automation = new Automation();
         this.fusionWorld = new FusionWorld();
+        this.festivalWorld = new FestivalWorld();
         this.breeding = new Breeding(this.multiplier);
         this.pokeballs = new Pokeballs();
         this.pokeballFilters = new PokeballFilters();
@@ -431,6 +433,7 @@ class Game implements TmpGameType {
     gameTick() {
         this.automation.tick();
         this.fusionWorld.tick();
+        this.festivalWorld.tick();
 
         // Acheivements
         Game.achievementCounter += GameConstants.TICK_TIME;

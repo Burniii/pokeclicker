@@ -76,6 +76,22 @@ class FusionUI {
 
     public static teamList = ko.pureComputed(() => App.game.fusionWorld.caught().slice().sort((a, b) => b.exp - a.exp));
 
+    // Fusions of the current area (or the team of the gym), like the route info of the base game
+    public static openAreaInfo() {
+        const world = App.game.fusionWorld;
+        const area = world.currentArea();
+        const ids = area?.pokemon ?? area?.team?.map((m) => m.id) ?? [];
+        if (!ids.length) {
+            return;
+        }
+        AreaPokemonInfo.open(`${area.name} · ${FusionData.REGION}`, ids.map((id) => ({
+            name: FusionData.speciesById(id).name,
+            image: FusionData.image(id),
+            caught: world.isCaught(id),
+            note: FusionData.partNames(id),
+        })));
+    }
+
     public static openDex() {
         $('#fusionDexModal').modal('show');
     }

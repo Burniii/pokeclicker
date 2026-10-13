@@ -1,9 +1,15 @@
 <div id="fusionBattleContainer" class="card sortable border-secondary mb-3" data-bind="visible: App.game.fusionWorld.unlocked()">
     <div class="card-header p-0" data-toggle="collapse" href="#fusionBattleBody">
-        <span>Fusionswelt</span>
+        <span data-bind="text: `Fusionswelt · ${FusionData.REGION}`">Fusionswelt</span>
     </div>
     <button class="btn btn-sm btn-primary" style="position: absolute; right: 0px; top: 0px; width: auto; height: 41px; cursor: default;" title="Fusionsenergie – nur in der Fusionswelt gültig"
         data-bind="text: `⚡ ${App.game.fusionWorld.energy().toLocaleString('de-DE')}`"></button>
+    <!-- ko if: App.game.fusionWorld.currentArea()?.pokemon || App.game.fusionWorld.currentArea()?.team -->
+    <div class="px-1 clickable" style="position: absolute; left: 0px; top: 4px;"
+        data-bind="tooltip: { title: 'Fangbare Fusionen in diesem Gebiet', trigger: 'hover', placement: 'right' }, click: () => FusionUI.openAreaInfo()">
+        <img src="assets/images/encountersInfo/encountersInfo.png">
+    </div>
+    <!-- /ko -->
     <div id="fusionBattleBody" class="card-body p-0 show">
         <!-- ko if: App.game.fusionWorld.unlocked() -->
         <div class="battle-view fusion-battle-view p-0 justify-content-center no-gutters no-select" data-bind="class: FusionUI.battleClass()">

@@ -1,6 +1,6 @@
 <div id="fusionMap" class="card sortable border-secondary mb-3" data-bind="visible: App.game.fusionWorld.unlocked()">
     <div class="card-header p-0" data-toggle="collapse" href="#fusionMapBody">
-        <span>Fusionskarte</span>
+        <span data-bind="text: `Fusionskarte · ${FusionData.REGION}`">Fusionskarte</span>
     </div>
     <button class="btn btn-sm" style="position: absolute; left: 0px; top: 0px; width: auto; height: 41px;" data-toggle="popover" data-trigger="hover" data-html="true" data-title="Kartenlegende:"
         data-placement="bottom" data-content="<div class='row map-legend'>

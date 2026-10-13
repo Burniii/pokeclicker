@@ -191,7 +191,12 @@ describe('Content reachability', () => {
     it('maps old quest line layouts onto the current steps', () => {
         const problems: string[] = [];
         questLineHelper.split(/new QuestLine\(/).slice(1).forEach((section) => {
-            const questLine = unescapeQuotes(section.match(new RegExp(`^\\s*${STR}`))[1]);
+            // Quest lines built in a loop (Festival Archipelago) have no literal name and no migrations or one-time battles
+            const name = section.match(new RegExp(`^\\s*${STR}`));
+            if (!name) {
+                return;
+            }
+            const questLine = unescapeQuotes(name[1]);
             const body = section.split('App.game.quests.questLines.push(')[0];
             const steps = (body.match(/\.addQuest\(/g) ?? []).length;
             [...body.matchAll(/withStepMigration\((\d+), \[([\d, ]*)\]\)/g)].forEach((m) => {
@@ -211,7 +216,12 @@ describe('Content reachability', () => {
         // otherwise winning the battle before the step begins leaves the quest line stuck forever
         const violations: string[] = [];
         questLineHelper.split(/new QuestLine\(/).slice(1).forEach((section) => {
-            const questLine = unescapeQuotes(section.match(new RegExp(`^\\s*${STR}`))[1]);
+            // Quest lines built in a loop (Festival Archipelago) have no literal name and no migrations or one-time battles
+            const name = section.match(new RegExp(`^\\s*${STR}`));
+            if (!name) {
+                return;
+            }
+            const questLine = unescapeQuotes(name[1]);
             const body = section.split('App.game.quests.questLines.push(')[0];
             [...body.matchAll(new RegExp(`new DefeatTemporaryBattleQuest\\(${STR}`, 'g'))].forEach((m) => {
                 const battle = unescapeQuotes(m[1]);

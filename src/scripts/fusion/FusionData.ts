@@ -28,6 +28,9 @@ type FusionArea = {
 };
 
 class FusionData {
+    // Name of the Fusion region, to tell it apart from the base game regions and the Festival Archipelago
+    public static readonly REGION = 'Helixia';
+
     public static readonly species: FusionSpecies[] = [
         { id: '6.149', name: 'Gluragoran', head: 6, body: 149, artist: 'gnose_' },
         { id: '149.6', name: 'Dragurak', head: 149, body: 6, artist: 'solivmon' },

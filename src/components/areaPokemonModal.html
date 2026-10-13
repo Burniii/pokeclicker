@@ -1,0 +1,25 @@
+<div class="modal fade noselect" id="areaPokemonModal" tabindex="-1" role="dialog" aria-labelledby="areaPokemonModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="justify-content: space-around;">
+                <h4 class="modal-title" id="areaPokemonModalLabel" data-bind="text: AreaPokemonInfo.title()"></h4>
+                <button type="button" class="btn btn-danger position-absolute" data-dismiss="modal" style="right:0; top:0; font-size: 18px; font-weight: 700;">×</button>
+            </div>
+            <div class="modal-body pt-0" style="background-color: inherit;">
+                <div class="bg-primary text-left rounded px-3 py-2 mt-1">
+                    <h5 class="my-0 mx-1 text-light d-inline-block" data-bind="text: `Begegnungen (${AreaPokemonInfo.entries().filter(e => e.caught).length}/${AreaPokemonInfo.entries().length} gefangen)`"></h5>
+                </div>
+                <ul class="row justify-content-center w-100 p-0 m-0" data-bind="foreach: AreaPokemonInfo.entries()">
+                    <li class="col-sm-4 col-md-3 col-lg-2 pokedexEntry text-center">
+                        <img class="pokedex-image" width="96" height="96" style="image-rendering: auto;" data-bind="attr: { src: image }, style: { filter: caught ? '' : 'grayscale(0.85) brightness(0.9)' }">
+                        <div class="small font-weight-bold" data-bind="text: name"></div>
+                        <div class="small" data-bind="text: caught ? '✔ gefangen' : '✘ nicht gefangen', style: { color: caught ? '#2e7d32' : '#b71c1c' }"></div>
+                        <!-- ko if: note -->
+                        <div class="small text-muted" data-bind="text: note"></div>
+                        <!-- /ko -->
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

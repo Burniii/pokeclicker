@@ -3,6 +3,26 @@
 // [[pokemon::Name]] inserts the translated Pokémon name.
 
 export const bundledNpcDialogsDe: Record<string, string> = {
+    // Festival Archipelago
+    'Ahoy, Champion! I am Fenna, herald of the Festival Archipelago.': 'Ahoi, Champ! Ich bin Fenna, die Botin des Festival-Archipels.',
+    'Every year Pokémon from all regions dress up in their festive costumes and gather on our little islands.': 'Jedes Jahr werfen sich Pokémon aus allen Regionen in ihre Festkostüme und treffen sich auf unseren kleinen Inseln.',
+    'Here is your ferry ticket. Our first island, the Party Island, is waiting for you!': 'Hier ist dein Fährticket. Unsere erste Insel, die Party-Insel, wartet auf dich!',
+    'The Champion of Johto! The lanterns of the Festival Archipelago are lit tonight.': 'Der Champ von Johto! Heute Nacht leuchten die Laternen des Festival-Archipels.',
+    'The Lantern Island is open for you now. Rumour has it that two legendary birds in festive feathers were seen there!': 'Die Laternen-Insel ist jetzt für dich geöffnet. Man munkelt, dort seien zwei legendäre Vögel in festlichem Gefieder gesichtet worden!',
+    'Did you see it? The Millennium Comet is shining over the Festival Archipelago!': 'Hast du ihn gesehen? Der Tausendjahrkomet leuchtet über dem Festival-Archipel!',
+    'The circus has opened its big tent on the Comet Island. Go and see who is wishing on the comet!': 'Der Zirkus hat auf der Kometen-Insel sein großes Zelt aufgeschlagen. Schau nach, wer sich dort etwas vom Kometen wünscht!',
+    'Bravo, Champion of Sinnoh! The Contest Gala of the Festival Archipelago is about to start.': 'Bravo, Champ von Sinnoh! Die Wettbewerbsgala des Festival-Archipels beginnt gleich.',
+    'On the Contest Island everyone shows off their most stylish outfit. You will love it!': 'Auf der Wettbewerbs-Insel zeigt jeder sein schickstes Outfit. Das wird dir gefallen!',
+    'Champion of Unova! The ferris wheel and the roller coaster on the Amusement Park Island are running.': 'Champ von Einall! Riesenrad und Achterbahn auf der Freizeitpark-Insel laufen.',
+    'Some Eevee in explorer hats disappeared into the cave under the roller coaster. Find them!': 'Ein paar [[pokemon::Eevee]] mit Entdeckerhüten sind in der Höhle unter der Achterbahn verschwunden. Finde sie!',
+    'Bonsoir, Champion of Kalos. The Spooky Night has begun on the Festival Archipelago...': 'Bonsoir, Champ von Kalos. Auf dem Festival-Archipel hat die Gruselnacht begonnen ...',
+    'Pumpkins, witch hats and ghosts are waiting on the Spooky Island. Do not be afraid!': 'Kürbisse, Hexenhüte und Geister warten auf der Grusel-Insel. Keine Angst!',
+    'Alola, Champion! The Beach Party of the Festival Archipelago has started.': 'Alola, Champ! Die Strandparty des Festival-Archipels hat begonnen.',
+    'Grab a sun hat and head to the Beach Island. The Pokémon there are dressed for summer!': 'Schnapp dir einen Sonnenhut und ab zur Strand-Insel. Die Pokémon dort sind sommerlich gekleidet!',
+    'Champion of Galar! The new stadium on the Festival Archipelago is opening tonight.': 'Champ von Galar! Heute Abend eröffnet das neue Stadion auf dem Festival-Archipel.',
+    'Pokémon in party hats and world championship caps are cheering in the stands. Do not miss it!': 'Pokémon mit Partyhüten und WM-Kappen jubeln auf den Rängen. Das darfst du nicht verpassen!',
+    'Champion of Paldea! The Crown Parade is the grand finale of the Festival Archipelago.': 'Champ von Paldea! Die Kronenparade ist das große Finale des Festival-Archipels.',
+    'Pikachu with crystal crowns are marching on the Crown Island, and something armored was seen in the secret cave...': 'Auf der Kronen-Insel marschieren [[pokemon::Pikachu]] mit Kristallkronen, und in der Geheimhöhle wurde etwas Gepanzertes gesichtet ...',
     // The Air Mail
     'Oh no, oh no... Champion! You came at just the right time!': 'Oje, oje ... Champ! Du kommst genau richtig!',
     'Our delivery Pokémon caught a cold and the mail for Pewter City, Cerulean City and Lavender Town is piling up.': 'Unser Liefer-Pokémon hat sich erkältet, und die Post für Pewter City, Cerulean City und Lavender Town stapelt sich.',
@@ -1813,6 +1833,15 @@ export const bundledNpcDialogsDe: Record<string, string> = {
 
 export const bundledNpcNamesDe: Record<string, string> = {
     'Mail Carrier Paula': 'Postbotin Paula',
+    'Festival Herald Fenna': 'Festival-Botin Fenna',
+    'Festival Herald Kenji': 'Festival-Bote Kenji',
+    'Festival Herald Mira': 'Festival-Botin Mira',
+    'Festival Herald Lucie': 'Festival-Botin Lucie',
+    'Festival Herald Leo': 'Festival-Bote Leo',
+    'Festival Herald Margot': 'Festival-Botin Margot',
+    'Festival Herald Kai': 'Festival-Bote Kai',
+    'Festival Herald Rhys': 'Festival-Bote Rhys',
+    'Festival Herald Aurora': 'Festival-Botin Aurora',
     'Hiker Ben': 'Wanderer Ben',
     'Fisherman Kai': 'Angler Kai',
     'Old Lady Rosa': 'Oma Rosa',

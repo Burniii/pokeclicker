@@ -412,6 +412,46 @@ const BillFusion2 = new NPC('Bill', [
     requirement: new MultiRequirement([new QuestLineStepCompletedRequirement('The Fusion Experiment', 1), new QuestLineStepCompletedRequirement('The Fusion Experiment', 2, GameConstants.AchievementOption.less)]),
 });
 
+// Festival Archipelago: one herald per island, met after the Champion of the region
+const festivalHerald = (questLine: QuestLineNameType) => new MultiRequirement([new QuestLineStartedRequirement(questLine), new QuestLineStepCompletedRequirement(questLine, 0, GameConstants.AchievementOption.less)]);
+const FestivalHerald1 = new NPC('Festival Herald Fenna', [
+    'Ahoy, Champion! I am Fenna, herald of the Festival Archipelago.',
+    'Every year Pokémon from all regions dress up in their festive costumes and gather on our little islands.',
+    'Here is your ferry ticket. Our first island, the Party Island, is waiting for you!',
+], {image: 'assets/images/npcs/Dancer (female).png', requirement: festivalHerald('The Festival Archipelago')});
+const FestivalHerald2 = new NPC('Festival Herald Kenji', [
+    'The Champion of Johto! The lanterns of the Festival Archipelago are lit tonight.',
+    'The Lantern Island is open for you now. Rumour has it that two legendary birds in festive feathers were seen there!',
+], {image: 'assets/images/npcs/Kimono Girl.png', requirement: festivalHerald('Festival: Lantern Night')});
+const FestivalHerald3 = new NPC('Festival Herald Mira', [
+    'Did you see it? The Millennium Comet is shining over the Festival Archipelago!',
+    'The circus has opened its big tent on the Comet Island. Go and see who is wishing on the comet!',
+], {image: 'assets/images/npcs/Street Performer.png', requirement: festivalHerald('Festival: Millennium Comet')});
+const FestivalHerald4 = new NPC('Festival Herald Lucie', [
+    'Bravo, Champion of Sinnoh! The Contest Gala of the Festival Archipelago is about to start.',
+    'On the Contest Island everyone shows off their most stylish outfit. You will love it!',
+], {image: 'assets/images/npcs/Beauty.png', requirement: festivalHerald('Festival: Contest Gala')});
+const FestivalHerald5 = new NPC('Festival Herald Leo', [
+    'Champion of Unova! The ferris wheel and the roller coaster on the Amusement Park Island are running.',
+    'Some Eevee in explorer hats disappeared into the cave under the roller coaster. Find them!',
+], {image: 'assets/images/npcs/Guitarist (male).png', requirement: festivalHerald('Festival: Amusement Park')});
+const FestivalHerald6 = new NPC('Festival Herald Margot', [
+    'Bonsoir, Champion of Kalos. The Spooky Night has begun on the Festival Archipelago...',
+    'Pumpkins, witch hats and ghosts are waiting on the Spooky Island. Do not be afraid!',
+], {image: 'assets/images/npcs/Artist (Gen 8).png', requirement: festivalHerald('Festival: Spooky Night')});
+const FestivalHerald7 = new NPC('Festival Herald Kai', [
+    'Alola, Champion! The Beach Party of the Festival Archipelago has started.',
+    'Grab a sun hat and head to the Beach Island. The Pokémon there are dressed for summer!',
+], {image: 'assets/images/npcs/Guitarist (female).png', requirement: festivalHerald('Festival: Beach Party')});
+const FestivalHerald8 = new NPC('Festival Herald Rhys', [
+    'Champion of Galar! The new stadium on the Festival Archipelago is opening tonight.',
+    'Pokémon in party hats and world championship caps are cheering in the stands. Do not miss it!',
+], {image: 'assets/images/npcs/Musician.png', requirement: festivalHerald('Festival: Stadium Party')});
+const FestivalHerald9 = new NPC('Festival Herald Aurora', [
+    'Champion of Paldea! The Crown Parade is the grand finale of the Festival Archipelago.',
+    'Pikachu with crystal crowns are marching on the Crown Island, and something armored was seen in the secret cave...',
+], {image: 'assets/images/npcs/Lass.png', requirement: festivalHerald('Festival: Crown Parade')});
+
 // The Air Mail (Postman Dratini line)
 const airMailStep = (step: number) => new MultiRequirement([
     new QuestLineStepCompletedRequirement('The Air Mail', step - 1),
@@ -10812,3 +10852,14 @@ TownList['Final Region Town'] = new Town(
         requirements: [new GymBadgeRequirement(BadgeEnums.Elite_PaldeaChampion)],
     }
 );
+
+// Festival Archipelago heralds
+TownList['Vermilion City'].npcs = [FestivalHerald1].concat(TownList['Vermilion City'].npcs || []);
+TownList['Olivine City'].npcs = [FestivalHerald2].concat(TownList['Olivine City'].npcs || []);
+TownList['Slateport City'].npcs = [FestivalHerald3].concat(TownList['Slateport City'].npcs || []);
+TownList['Hearthome City'].npcs = [FestivalHerald4].concat(TownList['Hearthome City'].npcs || []);
+TownList['Castelia City'].npcs = [FestivalHerald5].concat(TownList['Castelia City'].npcs || []);
+TownList['Lumiose City'].npcs = [FestivalHerald6].concat(TownList['Lumiose City'].npcs || []);
+TownList['Hau\'oli City'].npcs = [FestivalHerald7].concat(TownList['Hau\'oli City'].npcs || []);
+TownList.Hulbury.npcs = [FestivalHerald8].concat(TownList.Hulbury.npcs || []);
+TownList.Mesagoza.npcs = [FestivalHerald9].concat(TownList.Mesagoza.npcs || []);

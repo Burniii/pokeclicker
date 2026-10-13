@@ -160,6 +160,30 @@ class QuestLineHelper {
         App.game.quests.questLines.push(fusionQuestLine);
     }
 
+    // Festival Archipelago: the intro and one quest line per island, each after the Champion of a main region
+    public static createFestivalQuestLines() {
+        FestivalData.STAGES.forEach((stage, i) => {
+            const n = i + 1;
+            const requirement = n === 1
+                ? new GymBadgeRequirement(stage.badge)
+                : new MultiRequirement([new GymBadgeRequirement(stage.badge), new QuestLineCompletedRequirement(FestivalData.stage(n - 1).questLine)]);
+            const line = new QuestLine(stage.questLine, `A new island of the Festival Archipelago is opening: ${stage.island}.`, requirement, stage.board);
+            const herald = [FestivalHerald1, FestivalHerald2, FestivalHerald3, FestivalHerald4, FestivalHerald5, FestivalHerald6, FestivalHerald7, FestivalHerald8, FestivalHerald9][i];
+            line.addQuest(new TalkToNPCQuest(herald, `Talk to the festival herald in ${stage.town}.`));
+            if (n === 1) {
+                const festivalKills = () => Object.values(App.game.festivalWorld.kills()).reduce((a, b) => a + b, 0);
+                line.addQuest(new CustomQuest(10, 0, 'Take the ferry: open the Festival map below the Town Map and defeat 10 Pokémon on the Party Island.', festivalKills));
+            }
+            const reward = () => {
+                App.game.pokeballs.gainPokeballs(GameConstants.Pokeball.Ultraball, 10 * n, false);
+                Notifier.notify({ title: stage.questLine, message: `You received ${10 * n} Ultra Balls!`, type: NotificationConstants.NotificationOption.success });
+            };
+            line.addQuest(new CustomQuest(FestivalData.CATCH_GOAL, 0, `Catch ${FestivalData.CATCH_GOAL} different costume Pokémon of the ${stage.island}.`,
+                () => App.game.festivalWorld.caughtOnStage(n)).withCustomReward(reward));
+            App.game.quests.questLines.push(line);
+        });
+    }
+
     // Postman Dratini line, after the Kanto Champion
     public static createAirMailQuestLine() {
         const airMail = new QuestLine('The Air Mail', 'Help Mail Carrier Paula in Vermilion City deliver the mail.', new GymBadgeRequirement(BadgeEnums.Elite_KantoChampion), GameConstants.BulletinBoards.Kanto);
@@ -4560,6 +4584,7 @@ class QuestLineHelper {
         this.createBillsGrandpaQuestLine();
         this.createFusionExperimentQuestLine();
         this.createAirMailQuestLine();
+        this.createFestivalQuestLines();
         this.createUndergroundQuestLine();
         this.createBillSeviiQuestLine();
         this.createPersonsofInterestQuestLine();

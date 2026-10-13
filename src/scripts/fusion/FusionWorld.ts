@@ -319,7 +319,7 @@ class FusionWorld implements Saveable {
             this.announced = true;
             Notifier.notify({
                 title: '🧬 Fusionswelt freigeschaltet',
-                message: 'Bills Experiment ist geglückt! Unter der Town Map gibt es jetzt die Fusionskarte und das Fusionsfenster. Wähle dort im Fusionslabor deinen ersten Fusionspartner.',
+                message: 'Bills Experiment ist geglückt – willkommen in der Fusionsregion Helixia! Unter der Town Map gibt es jetzt die Fusionskarte und das Fusionsfenster. Wähle dort im Fusionslabor deinen ersten Fusionspartner.',
                 type: NotificationConstants.NotificationOption.info,
                 timeout: 60 * 1000,
             });
