@@ -276,7 +276,7 @@ for x0, y0, x1, y1 in BEACHES:
                 kind[y, x] = SAND
 
 # Plateaus (higher ground with a rock face to the south); dungeons are caves in their faces
-PLATEAUS = [(76, 9, 85, 16), (61, 46, 72, 52), (3, 45, 14, 52), (91, 33, 99, 41), (2, 9, 8, 15)]
+PLATEAUS = []   # replaced by the tileset plateaus placed as objects (CLIFFS below)
 high = np.zeros((H, W), bool)
 for i, (x0, y0, x1, y1) in enumerate(PLATEAUS):
     high |= organic(x0, y0, x1, y1, seed=900 + i, amp=1.6, radius=1.5)
@@ -677,7 +677,6 @@ for cx in (55.4, 63.6):
 # --- s5 Unova amusement park ---------------------------------------------------------------------
 put(fp.roller_coaster(), 82, 6)
 put(fp.ferris_wheel(), 93.6, 12.4)
-put(fp.cave_mouth(), 80.5, 16.05)
 put(fp.balloon_bunch(), 91, 6.4)
 for cx, by in ((90.2, 10.8), (85.8, 10.6), (94.4, 15.8)):
     put(fp.balloon_bunch(), cx, by)
@@ -703,7 +702,6 @@ put(SP['sailboat'], 98.2, 44.4, reserve=False)
 
 # --- s8 Galar party ------------------------------------------------------------------------------
 put(SP['stadium'], 55.6, 52)
-put(fp.cave_mouth(), 66.5, 52.05)
 for i, cx in enumerate((56, 58.6, 61.4, 64)):
     stall((C.BLUE, C.YELLOW, C.RED, C.WHITE)[i], cx, 56.6)
 string_line('bunting', [(54.4, 54.6), (60, 54.4), (65.6, 54.6)], (C.RED, C.WHITE, C.BLUE))
@@ -718,7 +716,27 @@ for i, cx in enumerate((28, 30.6, 33.4, 36)):
 put(fp.balloon_bunch(), 39.6, 56.6)
 
 # --- secret islet --------------------------------------------------------------------------------
-put(fp.cave_mouth(26, 22), 9.5, 52.05)
+
+# --- raised plateaus with rock faces (Magiscarf's hill piece as a 9-slice); dungeons are caves in them
+CLIFFS = [  # (x0, y0, x1, y1) in tiles, cave column or None
+    ((77, 10, 85, 16), 80.5),      # s5: dungeon below the roller coaster
+    ((62, 48, 70, 52), 66.0),      # s8: dungeon
+    ((6, 49, 13, 52), 9.5),        # secret cave
+    ((3, 13, 9, 17), None),        # s2: cherry hill
+]
+for (x0, y0, x1, y1), cave in CLIFFS:
+    pl = ma.plateau((x1 - x0) * T, (y1 - y0) * T)
+    if cave is not None:
+        ce = ma.cave_entrance()
+        pl.alpha_composite(ce, (int((cave - x0) * T - ce.width / 2), pl.height - ce.height - 1))
+    put(pl, (x0 + x1) / 2, y1)
+# vegetation on the plateau tops (sorted in front of the plateau they stand on)
+for name, cx, by in (('tree_green0', 78.4, 13.6), ('round_green0', 83.4, 13.2), ('fern', 80.5, 11.6), ('fern', 81.5, 11.6),
+                     ('shrub', 82.5, 13.6), ('fern', 63.5, 50.2), ('fern', 64.5, 50.2), ('shrub', 68.6, 50.2),
+                     ('fern', 7.5, 51.0), ('flowers_red', 11.5, 51.0)):
+    put(SP[name], cx, by, reserve=False, layer=6 * T)
+put(SP['tree_sakura0'], 5, 15.2, reserve=False, layer=3 * T)
+put(SP['round_sakura0'], 7.4, 15.6, reserve=False, layer=3 * T)
 
 # --- sea decoration ------------------------------------------------------------------------------
 for cx, by in ((1.5, 16), (2.5, 18), (98, 21), (97.5, 40.5), (47.5, 44.5), (71.5, 15), (73, 30.5), (30.5, 14.5), (20.5, 46.5)):

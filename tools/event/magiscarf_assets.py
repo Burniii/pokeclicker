@@ -152,3 +152,37 @@ CATALOG = {
 def pick(name, k=0):
     ids = CATALOG[name]
     return sprite(ids[k % len(ids)])
+
+
+def _cliff_block():
+    img, objs = objects()
+    b = objs[231]
+    return img.crop(b)
+
+
+def plateau(w, h):
+    """Raised grass plateau with a rocky front face, built as a 9-slice from Magiscarf's hill piece.
+
+    The corners and edges keep their original pixels, the centre column and row are repeated (not scaled),
+    so a plateau of any size keeps the rounded rim, the grass top and the rock face of the tileset."""
+    src = np.array(_cliff_block().crop((113, 149, 159, 212)))      # the green hill, 46 x 63 px
+    sh, sw = src.shape[:2]
+    L, R, MW = 12, 12, sw - 24
+    TOP, BOT = 14, 33
+    MH = sh - TOP - BOT
+    xs = np.array([x if x < L else sw - (w - x) if x >= w - R else L + (x - L) % MW for x in range(w)])
+    ys = np.array([y if y < TOP else sh - (h - y) if y >= h - BOT else TOP + (y - TOP) % MH for y in range(h)])
+    out = src[ys[:, None], xs[None, :]].copy()
+    # grass of the tileset is yellow-green; use the mint grass of the Alola maps instead
+    rgb = out[..., :3].astype(int)
+    green = (rgb[..., 1] > rgb[..., 0] + 30) & (rgb[..., 1] > rgb[..., 2] + 30) & (out[..., 3] > 0)
+    lum = rgb.sum(axis=2)
+    mint = np.where((lum < 400)[..., None], np.array((65, 178, 140)), np.array((112, 199, 159)))
+    out[..., :3] = np.where(green[..., None], mint, rgb).astype(np.uint8)
+    return Image.fromarray(out, 'RGBA')
+
+
+def cave_entrance():
+    """Cave opening with its rock arch, to be pasted onto a plateau's front face."""
+    o = _cliff_block().crop((123, 114, 150, 147))
+    return o.crop(o.getbbox())
