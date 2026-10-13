@@ -10,6 +10,8 @@ import Routes from '../routes/Routes';
 import OakItemType from '../enums/OakItemType';
 import Rand from '../utilities/Rand';
 import Amount from '../wallet/Amount';
+import BattleSounds from '../audio/BattleSounds';
+import BattleEffects from './BattleEffects';
 import type BattlePokemon from './BattlePokemon';
 import type { Observable as KnockoutObservable, PureComputed } from 'knockout';
 
@@ -25,6 +27,9 @@ export default class Battle {
     static pokeball: KnockoutObservable<GameConstants.Pokeball> = ko.observable(GameConstants.Pokeball.Pokeball);
     static lastPokemonAttack = Date.now();
     static lastClickAttack = Date.now();
+    // Set by the click automation, only every few automated clicks play sounds and effects
+    static autoClicking = false;
+    static autoClickCounter = 0;
     static route;
 
     /**
@@ -67,7 +72,12 @@ export default class Battle {
             return;
         }
         GameHelper.incrementObservable(App.game.statistics.clickAttacks);
-        this.enemyPokemon().damage(App.game.party.calculateClickAttack(true));
+        const damage = App.game.party.calculateClickAttack(true);
+        this.enemyPokemon().damage(damage);
+        if (!Battle.autoClicking || Battle.autoClickCounter++ % 5 === 0) {
+            BattleSounds.play('hit');
+            BattleEffects.clickHit(damage, this.enemyPokemon().type1);
+        }
         if (!this.enemyPokemon().isAlive()) {
             this.defeatPokemon();
         }
@@ -156,6 +166,7 @@ export default class Battle {
         this.catching(true);
         this.catchRateActual(this.calculateActualCatchRate(enemyPokemon, pokeBall));
         App.game.pokeballs.usePokeball(pokeBall);
+        BattleSounds.catchAttempt(App.game.pokeballs.calculateCatchTime(pokeBall));
     }
 
     protected static attemptCatch(enemyPokemon: BattlePokemon, route: number, region: GameConstants.Region) {
@@ -163,7 +174,9 @@ export default class Battle {
             this.catching(false);
             return;
         }
-        if (Rand.chance(this.catchRateActual() / 100)) { // Caught
+        const caught = Rand.chance(this.catchRateActual() / 100);
+        BattleSounds.play(caught ? 'caught' : 'escape');
+        if (caught) { // Caught
             this.catchPokemon(enemyPokemon, route, region);
         } else if (enemyPokemon.shiny) { // Failed to catch, Shiny
             App.game.logbook.newLog(

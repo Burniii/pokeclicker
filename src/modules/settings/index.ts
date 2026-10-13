@@ -199,6 +199,18 @@ Settings.add(new Setting<string>('playerSafariSprite', 'Player safari sprite',
     ],
     'male'));
 Settings.add(new BooleanSetting('hideCompletedQuestLineTasks', 'Hide completed quest line step tasks', false));
+Settings.add(new BooleanSetting('mapHighlightQuestLineTargets', 'Highlight quest line targets on the map', true));
+Settings.add(new BooleanSetting('mapQuestTargetsFirst', 'Quest targets override other map colors (except locked)', true));
+Settings.add(new BooleanSetting('showQuestBlockers', 'Show missing requirements for locked quest targets', true));
+Settings.add(new Setting<string>('notificationDoNotDisturb', 'Do not disturb (game event notifications)',
+    [
+        new SettingOption('Off', 'off'),
+        new SettingOption('While idle (2 min without input)', 'idle'),
+        new SettingOption('Always', 'always'),
+    ],
+    'off'));
+Settings.add(new BooleanSetting('notificationGrouping', 'Group identical notifications (×N) instead of stacking them', true));
+Settings.add(new BooleanSetting('notificationHistory', 'Keep a notification history (current session)', true));
 
 // CSS variable settings
 Settings.add(new CssVariableSetting('locked', 'Locked Location', [], '#000000'));
@@ -484,6 +496,38 @@ Settings.add(new Setting('saveFilename', 'Save file name', [], '[v{version}] Pok
 
 // Mute toggle
 Settings.add(new BooleanSetting('sound.muted', 'Mute All Sounds', false));
+Settings.add(new RangeSetting('audio.sfxVolume', 'Battle sound effects volume', 0, 100, 1, 60));
+Settings.add(new RangeSetting('audio.musicVolume', 'Music volume', 0, 100, 1, 40));
+Settings.add(new BooleanSetting('battleEffects.damageNumbers', 'Battle effects: damage numbers on click attacks', true));
+Settings.add(new BooleanSetting('battleEffects.particles', 'Battle effects: type colored hit particles', true));
+Settings.add(new BooleanSetting('battleEffects.shiny', 'Battle effects: shiny sparkle', true));
+Settings.add(new BooleanSetting('battleEffects.banner', 'Battle effects: banner when a gym, boss or special battle starts', true));
+Settings.add(new BooleanSetting('battleEffects.respectReducedMotion', 'Battle effects: turn off when the system prefers reduced motion', true));
+Settings.add(new BooleanSetting('mapEffects.dayNight', 'Map: day and night tint', true));
+Settings.add(new BooleanSetting('mapEffects.weather', 'Map: weather animation', true));
+Settings.add(new BooleanSetting('mapEffects.water', 'Map: shimmering water routes', true));
+Settings.add(new BooleanSetting('mapEffects.questPulse', 'Map: pulsing quest targets', true));
+Settings.add(new BooleanSetting('cutscenes.enabled', 'Play cutscenes at big story moments', true));
+Settings.add(new BooleanSetting('music.enabled', 'Play music', true));
+Settings.add(new BooleanSetting('music.region', 'Region music (towns and routes)', true));
+Settings.add(new BooleanSetting('music.battle', 'Battle music (gyms, dungeons, bosses, special battles)', true));
+Settings.add(new Setting<string>('battleSound.style', 'Battle sound style',
+    [
+        new SettingOption('Recorded sounds (Kenney, CC0)', 'samples'),
+        new SettingOption('Synthesized sounds', 'synth'),
+    ],
+    'samples'));
+Settings.add(new BooleanSetting('battleSound.quietWhenIdle', 'Battle sounds only while you are active (1 min without input = quiet)', true));
+[
+    ['hit', 'Click attack hit'],
+    ['defeat', 'Pokémon defeated'],
+    ['throw', 'Poké Ball thrown'],
+    ['shake', 'Poké Ball shakes'],
+    ['caught', 'Pokémon caught'],
+    ['escape', 'Pokémon broke free'],
+    ['victory', 'Gym or battle won'],
+    ['badge', 'New badge earned'],
+].forEach(([key, name]) => Settings.add(new BooleanSetting(`battleSound.${key}`, name, true)));
 
 // Hotkeys
 Settings.add(new HotkeySetting('hotkey.farm', 'Farm', 'F'));

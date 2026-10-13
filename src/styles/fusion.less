@@ -1,0 +1,58 @@
+// Fusion world modules (separate game): battle/town view, map and team list
+#fusionBattleContainer {
+  .fusion-battle-view {
+    position: relative;
+  }
+
+  .fusion-town {
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fusion-panel {
+    color: whitesmoke;
+    background-color: rgba(0, 0, 0, 60%);
+    border-radius: 4px;
+  }
+
+  .fusion-starter {
+    width: 30%;
+    padding: 4px;
+
+    img {
+      image-rendering: pixelated;
+    }
+  }
+
+  .fusion-enemy {
+    width: 96px;
+    image-rendering: pixelated;
+  }
+}
+
+#fusionMapSvg {
+  .fusion-map-path {
+    pointer-events: none;
+  }
+}
+
+#fusionTeamContainer {
+  .fusion-team-list {
+    max-height: 320px;
+    overflow-y: auto;
+
+    img {
+      image-rendering: pixelated;
+    }
+  }
+
+  .fusion-log {
+    max-height: 96px;
+    overflow-y: auto;
+  }
+}
+
+#fusionDexModal .pokedex-pokemon-sprite {
+  image-rendering: pixelated;
+}

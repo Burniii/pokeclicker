@@ -1,0 +1,39 @@
+<div class="modal noselect fade" id="cutsceneModal" tabindex="-1" role="dialog" aria-labelledby="cutsceneModalLabel" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content cutscene" data-bind="with: App.game.cutscenes.frame">
+      <div class="cutscene-stage clickable" data-bind="style: { background: $data.background ?? '#222' }, click: () => App.game.cutscenes.next()">
+        <!-- ko foreach: { data: $data.sprites ?? [], as: 'sprite' } -->
+        <img class="cutscene-sprite" src="" data-bind="
+          attr: { src: sprite.image },
+          css: `cutscene-${sprite.position} cutscene-enter-${sprite.enter ?? 'fade'}`,
+          style: { width: `${sprite.size ?? 120}px`, filter: sprite.glow ? `drop-shadow(0 0 12px ${sprite.glow})` : '', animationDelay: `${$index() * 0.25}s` }" />
+        <!-- /ko -->
+        <button type="button" class="btn btn-sm btn-dark cutscene-skip" data-bind="click: (_, e) => { e.stopPropagation(); App.game.cutscenes.close(); }">Skip ⏭</button>
+      </div>
+      <div class="cutscene-text text-left">
+        <strong class="d-block" data-bind="visible: $data.speaker, text: $data.speaker"></strong>
+        <span data-bind="text: $data.text"></span>
+        <button type="button" class="btn btn-sm btn-primary float-right mt-2" data-bind="click: () => App.game.cutscenes.next()">▶</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal noselect fade" id="cutsceneGalleryModal" tabindex="-1" role="dialog" aria-labelledby="cutsceneGalleryModalLabel">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cutsceneGalleryModalLabel">Cutscenes</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <!-- ko if: App.game.cutscenes.gallery().length === 0 -->
+        <p class="text-muted">No cutscenes seen yet. They play at big story moments: reaching a new region, becoming Champion and special battles.</p>
+        <!-- /ko -->
+        <div class="list-group" data-bind="foreach: App.game.cutscenes.gallery()">
+          <button type="button" class="list-group-item list-group-item-action" data-bind="text: `▶ ${$data.title}`, click: () => { $('#cutsceneGalleryModal').modal('hide'); App.game.cutscenes.play($data.id); }"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

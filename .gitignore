@@ -13,3 +13,4 @@ report.*.json
 docs/
 coverage/
 .stylelintcache
+tools/event/.sprite-cache/

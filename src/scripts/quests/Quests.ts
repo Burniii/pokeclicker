@@ -342,6 +342,11 @@ class Quests implements Saveable {
                     return;
                 }
                 const ql = this.getQuestLine(questLine.name as QuestLineNameType);
+                const migratedStep = ql?.migratedStep(questLine.quest, questLine.steps);
+                if (migratedStep != undefined && questLine.state != QuestLineState.ended) {
+                    // The quest line got new steps, already finished ones complete themselves again
+                    questLine = { ...questLine, quest: migratedStep, initial: [] };
+                }
                 if (ql) {
                     ql.state(questLine.state);
                     if (questLine.state == QuestLineState.started || questLine.state == QuestLineState.suspended) {
@@ -351,10 +356,11 @@ class Quests implements Saveable {
                                 if (questLine?.initial[i] === true) {
                                     return q.complete(true);
                                 }
-                                q.initial(questLine?.initial[i] ?? 0);
+                                const savedInitial = questLine?.initial[i] ?? 0;
+                                q.initial(q.initialValue != undefined ? Math.min(savedInitial, q.initialValue) : savedInitial);
                             });
                         } else {
-                            ql.resumeAt(questLine.quest, questLine.initial);
+                            ql.resumeAt(questLine.quest, Array.isArray(questLine.initial) ? 0 : questLine.initial);
                         }
                         if (questLine.state == QuestLineState.suspended) {
                             ql.suspendQuest(true);

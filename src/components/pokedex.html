@@ -283,6 +283,9 @@ aria-labelledby="pokedexModalLabel">
                                             css: PokedexHelper.filtersActive() ? 'btn-primary' : 'btn-secondary disabled',
                                             enable: PokedexHelper.filtersActive
                                         ">Reset All Filters</button>
+                                        <button class="btn btn-block btn-sm btn-info mt-1" data-toggle="modal" data-target="#missingPokemonModal">What am I missing?</button>
+                                        <button class="btn btn-block btn-sm btn-secondary mt-1" data-toggle="modal" data-target="#bulkActionsModal"
+                                            data-bind="text: `Bulk actions (${BulkActions.selectionCount().toLocaleString('en-US')})`">Bulk actions</button>
                                     </div>
 
                                     <div class="col-12">

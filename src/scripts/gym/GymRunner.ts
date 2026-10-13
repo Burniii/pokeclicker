@@ -105,6 +105,10 @@ class GymRunner {
                 type: NotificationConstants.NotificationOption.success,
                 setting: NotificationConstants.NotificationSetting.General.gym_won,
             });
+            BattleSounds.play(App.game.badgeCase.hasBadge(gym.badgeReward) ? 'victory' : 'badge');
+            if (!App.game.badgeCase.hasBadge(gym.badgeReward) && /Champion/.test(gym.town)) {
+                App.game.cutscenes.trigger(`champion-${GameConstants.getGymRegion(gym.town)}`);
+            }
             // If this is the first time defeating this gym
             if (!App.game.badgeCase.hasBadge(gym.badgeReward)) {
                 gym.firstWinReward();

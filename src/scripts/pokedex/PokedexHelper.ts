@@ -250,6 +250,62 @@ class PokedexHelper {
         return genderObject;
     }
 
+    // Evolution details for the Pokédex statistics modal
+    public static getEvolutionRows(id: number): Array<{
+        direction: 'from' | 'into',
+        name: PokemonNameType,
+        id: number,
+        method: string,
+        unmet: string[],
+        note: string,
+        done: boolean,
+    }> {
+        const pokemon = pokemonMap[id];
+        if (!pokemon || id <= 0) {
+            return [];
+        }
+        const toRow = (evo: EvoData, direction: 'from' | 'into') => {
+            const other = direction === 'from' ? evo.basePokemon : evo.evolvedPokemon;
+            const level = EvolutionInfo.requiredLevel(evo);
+            const stone = (evo as StoneEvoData).stone;
+            const method = evo.trigger === EvoTrigger.STONE
+                ? `Use ${ItemList[GameConstants.StoneType[stone]]?.displayName ?? GameConstants.humanifyString(GameConstants.StoneType[stone])}`
+                : (level ? `Level ${level}` : 'Level up');
+            const done = App.game.party.alreadyCaughtPokemonByName(evo.evolvedPokemon);
+            const unmet = done ? [] : EvolutionInfo.conditions(evo).filter((r) => !r.isCompleted()).map((r) => r.hint());
+            let note = '';
+            if (!done) {
+                const base = App.game.party.getPokemonByName(evo.basePokemon);
+                if (!base) {
+                    note = `Catch ${PokemonHelper.displayName(evo.basePokemon)} first.`;
+                } else if (evo.trigger === EvoTrigger.LEVEL) {
+                    if (level && base.level < level) {
+                        note = `Level up ${PokemonHelper.displayName(evo.basePokemon)} (currently level ${base.level}).`;
+                    } else if (unmet.length) {
+                        note = 'Level evolutions are only checked on level-up. Once the conditions are met, level up or use a Rare Candy.';
+                    } else {
+                        note = 'Ready! Gain a level or use a Rare Candy to evolve.';
+                    }
+                } else if (evo.trigger === EvoTrigger.STONE && !unmet.length) {
+                    note = 'Ready! Use the item from your Item Bag.';
+                }
+            }
+            return {
+                direction,
+                name: other,
+                id: pokemonMap[other].id,
+                method,
+                unmet,
+                note,
+                done,
+            };
+        };
+        return [
+            ...EvolutionInfo.prevolutionsOf(pokemon.name, pokemonList).map((evo) => toRow(evo, 'from')),
+            ...EvolutionInfo.evolutionsFrom(pokemon.evolutions).map((evo) => toRow(evo, 'into')),
+        ];
+    }
+
     private static isPureType(pokemon: PokemonListData, type: (PokemonType | null)): boolean {
         return (pokemon.type.length === 1 && (type == null || pokemon.type[0] === type));
     }

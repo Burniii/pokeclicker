@@ -185,6 +185,16 @@ import {
     beforeEvolve, EvoTrigger, LevelEvolution, StoneEvolution,
 } from './pokemons/evolutions/Base';
 import * as OtherEvos from './pokemons/evolutions/Methods';
+import EvolutionInfo from './pokemons/EvolutionInfo';
+import './pokemons/ExtraEvolutions';
+import AudioEngine from './audio/AudioEngine';
+import BattleSounds from './audio/BattleSounds';
+import Music from './audio/Music';
+import BattleEffects from './battles/BattleEffects';
+import MapEffects from './worldmap/MapEffects';
+import TrainerCardFrames from './profile/TrainerCardFrames';
+import { bundledCutscenesDe, bundledPokemonDe, bundledQuestlinesDe, bundledSettingsDe } from './translation/bundled/de';
+import { bundledNpcDialogsDe, bundledNpcNamesDe } from './translation/bundled/npcsDe';
 import { pokemonBabyPrevolutionMap, pokemonList, pokemonMap } from './pokemons/PokemonList';
 import * as PokemonHelper from './pokemons/PokemonHelper';
 import { createLogContent } from './logbook/helpers';
@@ -192,6 +202,7 @@ import { ItemList } from './items/ItemList';
 import Item from './items/Item';
 import { MultiplierDecreaser } from './items/types';
 import EnergyRestore from './items/EnergyRestore';
+import BattleItem from './items/BattleItem';
 import EffectEngineRunner from './effectEngine/effectEngineRunner';
 import ItemHandler from './items/ItemHandler';
 import CaughtIndicatingItem from './items/CaughtIndicatingItem';
@@ -440,6 +451,19 @@ Object.assign(<any>window, {
     LevelEvolution,
     StoneEvolution,
     EvoTrigger,
+    EvolutionInfo,
+    AudioEngine,
+    BattleSounds,
+    Music,
+    BattleEffects,
+    MapEffects,
+    TrainerCardFrames,
+    bundledQuestlinesDe,
+    bundledNpcDialogsDe,
+    bundledNpcNamesDe,
+    bundledPokemonDe,
+    bundledSettingsDe,
+    bundledCutscenesDe,
     beforeEvolve,
     ...OtherEvos,
     pokemonList,
@@ -450,6 +474,7 @@ Object.assign(<any>window, {
     Item,
     MultiplierDecreaser,
     EnergyRestore,
+    BattleItem,
     EffectEngineRunner,
     ItemHandler,
     CaughtIndicatingItem,

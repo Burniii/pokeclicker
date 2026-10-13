@@ -7,7 +7,7 @@ export default class InGymRequirement extends Requirement {
     }
 
     public getProgress() {
-        return Number(GymRunner.gymObservable().town === this.gymTown);
+        return Number(GymRunner.gymObservable()?.town === this.gymTown);
     }
 
     public hint(): string {

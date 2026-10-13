@@ -1,0 +1,65 @@
+<div class="modal noselect fade" id="bulkActionsModal" tabindex="-1" role="dialog" aria-labelledby="bulkActionsModalLabel">
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bulkActionsModalLabel" data-bind="text: `Bulk actions (${BulkActions.selectionCount().toLocaleString('en-US')} Pokémon)`">Bulk actions</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-left">
+        <p class="small text-muted">Applies to all caught Pokémon that match the current Pokédex filters. Change the filters to change the selection.</p>
+
+        <h6>Category</h6>
+        <div class="form-row mb-3">
+          <div class="col">
+            <select class="form-control form-control-sm" data-bind="
+              options: PokemonCategories.categories(),
+              optionsText: (c) => c.name(),
+              optionsValue: 'id',
+              optionsCaption: 'Choose a category…',
+              value: BulkActions.category"></select>
+          </div>
+          <div class="col-auto">
+            <button class="btn btn-sm btn-success" data-bind="enable: BulkActions.category() != undefined, click: () => BulkActions.setCategory(true)">Add</button>
+            <button class="btn btn-sm btn-danger" data-bind="enable: BulkActions.category() != undefined, click: () => BulkActions.setCategory(false)">Remove</button>
+          </div>
+        </div>
+
+        <!-- ko ifnot: App.game.challenges.list.disableVitamins.active() -->
+        <h6>Vitamins <small class="text-muted">(target amount per Pokémon, empty = unchanged)</small></h6>
+        <div class="form-row mb-3 align-items-end">
+          <!-- ko foreach: GameHelper.enumNumbers(GameConstants.VitaminType) -->
+          <div class="col">
+            <label class="small mb-0" data-bind="text: `${GameConstants.VitaminType[$data]} (${player.itemList[GameConstants.VitaminType[$data]]().toLocaleString('en-US')})`"></label>
+            <input type="number" min="0" class="form-control form-control-sm" data-bind="textInput: BulkActions.vitaminTargets[$data]">
+          </div>
+          <!-- /ko -->
+          <div class="col-auto">
+            <button class="btn btn-sm btn-primary" data-bind="click: () => BulkActions.applyVitamins()">Apply</button>
+          </div>
+        </div>
+        <!-- /ko -->
+
+        <h6>Held item</h6>
+        <div class="form-row mb-1">
+          <div class="col">
+            <select class="form-control form-control-sm" data-bind="
+              options: BulkActions.heldItems(),
+              optionsText: (i) => `${i.displayName} (${player.amountOfItem(i.name).toLocaleString('en-US')})`,
+              optionsValue: 'name',
+              optionsCaption: 'Choose a held item…',
+              value: BulkActions.heldItemName"></select>
+          </div>
+          <div class="col-auto">
+            <button class="btn btn-sm btn-success" data-bind="enable: BulkActions.heldItemName(), click: () => BulkActions.giveHeldItem()">Give</button>
+          </div>
+        </div>
+        <label class="small mb-2"><input type="checkbox" data-bind="checked: BulkActions.onlyWithoutHeldItem"> Only Pokémon without a held item (otherwise their current item is lost)</label>
+        <div>
+          <button class="btn btn-sm btn-outline-danger" data-bind="click: () => BulkActions.removeHeldItems()">Remove all held items</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

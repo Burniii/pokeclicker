@@ -183,6 +183,12 @@ enum BadgeEnums {
     // The Way Home
     'Scarlet',
     'Violet',
+    // Blueberry League
+    'Elite_Crispin',
+    'Elite_Amarys',
+    'Elite_Lacey',
+    'Elite_Drayton',
+    'Elite_BlueberryChampion',
 }
 
 export default BadgeEnums;

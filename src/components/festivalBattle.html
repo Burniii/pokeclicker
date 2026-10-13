@@ -1,0 +1,74 @@
+<!-- ko if: App.game.festivalWorld.active() -->
+<div class="festival-battle-view w-100">
+    <!-- Festival plaza -->
+    <!-- ko if: App.game.festivalWorld.inTown() -->
+    <div class="festival-town">
+        <div class="pageItemTitle d-flex justify-content-center"><span style="font-size: 1.8rem;">Festplatz</span></div>
+        <div class="row no-gutters">
+            <div class="col-4">
+                <button class="btn btn-secondary btn-block mt-0" data-bind="click: () => App.game.festivalWorld.leave()">⛴ Zurück zum Hafen</button>
+            </div>
+            <div class="col-8"></div>
+        </div>
+        <div class="festival-panel small text-left m-2 p-2">
+            Willkommen auf dem Festival-Archipel! Wähle auf der Town Map eine Insel. Du wirfst deine normalen Pokébälle (nach deinen Ballfiltern),
+            und jedes gefangene Kostüm-Pokémon landet in deinem Pokédex. Zurück geht es mit der Fähre am Festplatz.
+        </div>
+        <div class="festival-panel small text-left mx-2 mb-2 p-2">
+            <div class="font-weight-bold mb-1" data-bind="text: `Inseln · ${FestivalUI.caughtCount()}/${FestivalData.allPokemon().length} Kostüm-Pokémon gefangen`"></div>
+            <!-- ko foreach: FestivalData.STAGES -->
+            <div class="d-flex justify-content-between" data-bind="let: { n: $index() + 1 }">
+                <span data-bind="text: `${App.game.festivalWorld.stageUnlocked(n) ? '🎪' : '🔒'} ${island}`"></span>
+                <span data-bind="text: App.game.festivalWorld.stageUnlocked(n)
+                    ? `${App.game.festivalWorld.caughtOnStage(n)}/${FestivalData.stagePokemon(n).length} gefangen`
+                    : `nach dem Champion von ${GameConstants.camelCaseToString(GameConstants.Region[region])}`"></span>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- Battles -->
+    <!-- ko if: App.game.festivalWorld.inBattle() && App.game.festivalWorld.enemy() -->
+    <div class="row justify-content-center no-gutters" data-bind="with: App.game.festivalWorld.enemy()">
+        <div class="col no-gutters clickable" style="height: 280px; display: block;" data-bind="click: () => App.game.festivalWorld.click()">
+            <div class="pageItemTitle d-flex justify-content-center">
+                <div class="title-left"></div>
+                <div class="d-flex align-items-center px-2">
+                    <span style="font-size: 1.6rem;" data-bind="text: PokemonHelper.displayName(name)"></span>
+                    <knockout class="ml-2" data-bind="template: { name: 'caughtStatusTemplate', data: {'status': PartyController.getCaughtStatus(id)}}"></knockout>
+                </div>
+                <div class="title-right">
+                    <div class="px-1 clickable" data-bind="tooltip: { title: 'Fangbare Pokémon in diesem Gebiet', trigger: 'hover', placement: 'left' },
+                        click: (_, e) => { e.stopPropagation(); FestivalUI.openAreaInfo(); }, clickBubble: false">
+                        <img src="assets/images/encountersInfo/encountersInfo.png">
+                    </div>
+                </div>
+            </div>
+            <div data-bind="visible: !App.game.festivalWorld.catching()">
+                <img class="enemy festival-enemy" src="" data-bind="attr: { src: PokemonHelper.getImage(id, shiny) }"/>
+            </div>
+            <div class="catchChance" data-bind="visible: App.game.festivalWorld.catching()">
+                <img class="pokeball-animated" src="" data-bind="attr: { src: `assets/images/pokeball/${GameConstants.Pokeball[App.game.festivalWorld.ball()]}.svg` }"/>
+                <br>
+                Fangchance:
+                <span data-bind="text: `${Math.floor(App.game.festivalWorld.catchChance() * 100)}%`"></span>
+            </div>
+            <div class="progress hitpoints" style="height: 20px;">
+                <div class="progress-bar bg-danger" role="progressbar" data-bind="style: { width: `${FestivalUI.hpPercent()}%` }">
+                    <span style="font-size: 12px;" data-bind="text: `${hp.toLocaleString('de-DE')} / ${maxHp.toLocaleString('de-DE')}`"></span>
+                </div>
+            </div>
+            <h2 class="pageItemFooter" style="display: block; font-size: 1rem;">
+                <table width="100%">
+                    <tr>
+                        <td width="50%" data-bind="text: `${App.game.festivalWorld.currentArea().name} (Festival-Archipel)`"></td>
+                        <td width="50%" data-bind="text: `${App.game.festivalWorld.killsOn(App.game.festivalWorld.area()).toLocaleString('de-DE')} Pokémon besiegt`"></td>
+                    </tr>
+                </table>
+            </h2>
+        </div>
+    </div>
+    <!-- /ko -->
+</div>
+<!-- /ko -->

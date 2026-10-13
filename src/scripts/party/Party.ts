@@ -207,13 +207,22 @@ class Party implements Feature, TmpPartyType {
             }
         }
 
-        // Check if the Pokemon is currently breeding (no attack)
-        if (includeBreeding || !pokemon.breeding) {
+        // Check if the Pokemon is currently breeding, on an expedition or on the ranch (no attack)
+        const traits = App.game.pokemonTraits;
+        if (includeBreeding || (!pokemon.breeding && !Activities.isAway(pokemon.id))) {
             if (type1 == PokemonType.None) {
                 attack = pAttack * multiplier;
             } else {
-                attack = pAttack * TypeHelper.getAttackModifier(dataPokemon.type1, dataPokemon.type2, type1, type2) * multiplier;
+                let typeModifier = TypeHelper.getAttackModifier(dataPokemon.type1, dataPokemon.type2, type1, type2);
+                // A Tera type is used when it is more effective
+                const tera = PokemonTraits.teraUnlocked() ? traits.teraType(pokemon.id) : undefined;
+                if (tera !== undefined) {
+                    typeModifier = Math.max(typeModifier, TypeHelper.getAttackModifier(tera, PokemonType.None, type1, type2));
+                }
+                attack = pAttack * typeModifier * multiplier;
             }
+            // Bond, nature and research bonuses
+            attack *= traits.attackMultiplier(pokemon.id);
         }
 
         // Weather boost

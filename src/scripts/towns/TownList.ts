@@ -396,6 +396,89 @@ const CeruleanSuperNerd = new NPC('Super Nerd Jovan', [
     'That day I learned that I should frequently download a save.',
 ], {image: 'assets/images/npcs/Super Nerd.png'});
 
+const BillFusion1 = new NPC('Bill', [
+    'Oh, a visitor! Come in, come in. You won\'t believe what I found while working on my PC system.',
+    'When I transferred a Ditto, its DNA got mixed with another Pokémon in the transfer stream. For a moment there was a creature that was both at once!',
+    'I think I can rebuild that by accident on purpose. I need fresh Ditto DNA and a lot of energy - the strange energy deep inside Cerulean Cave should do.',
+], {image: 'assets/images/npcs/Bill.png',
+    requirement: new MultiRequirement([new QuestLineStartedRequirement('The Fusion Experiment'), new QuestLineStepCompletedRequirement('The Fusion Experiment', 0, GameConstants.AchievementOption.less)]),
+});
+
+const BillFusion2 = new NPC('Bill', [
+    'You did it! Ditto DNA and Cerulean Cave energy... let me just plug this in... and...',
+    'It worked! The fusions are stable - but they can only exist inside the fusion space I opened. It is a whole little world of its own!',
+    'I prepared three fusion partners for you. Pick one and explore the Fusion Island. Everything you do there stays there.',
+], {image: 'assets/images/npcs/Bill.png',
+    requirement: new MultiRequirement([new QuestLineStepCompletedRequirement('The Fusion Experiment', 1), new QuestLineStepCompletedRequirement('The Fusion Experiment', 2, GameConstants.AchievementOption.less)]),
+});
+
+// Festival Archipelago: one herald per island, met after the Champion of the region
+const festivalHerald = (questLine: QuestLineNameType) => new MultiRequirement([new QuestLineStartedRequirement(questLine), new QuestLineStepCompletedRequirement(questLine, 0, GameConstants.AchievementOption.less)]);
+const FestivalHerald1 = new NPC('Festival Herald Fenna', [
+    'Ahoy, Champion! I am Fenna, herald of the Festival Archipelago.',
+    'Every year Pokémon from all regions dress up in their festive costumes and gather on our little islands.',
+    'Here is your ferry ticket. Our first island, the Party Island, is waiting for you!',
+], {image: 'assets/images/npcs/Dancer (female).png', requirement: festivalHerald('The Festival Archipelago')});
+const FestivalHerald2 = new NPC('Festival Herald Kenji', [
+    'The Champion of Johto! The lanterns of the Festival Archipelago are lit tonight.',
+    'The Lantern Island is open for you now. Rumour has it that two legendary birds in festive feathers were seen there!',
+], {image: 'assets/images/npcs/Kimono Girl.png', requirement: festivalHerald('Festival: Lantern Night')});
+const FestivalHerald3 = new NPC('Festival Herald Mira', [
+    'Did you see it? The Millennium Comet is shining over the Festival Archipelago!',
+    'The circus has opened its big tent on the Comet Island. Go and see who is wishing on the comet!',
+], {image: 'assets/images/npcs/Street Performer.png', requirement: festivalHerald('Festival: Millennium Comet')});
+const FestivalHerald4 = new NPC('Festival Herald Lucie', [
+    'Bravo, Champion of Sinnoh! The Contest Gala of the Festival Archipelago is about to start.',
+    'On the Contest Island everyone shows off their most stylish outfit. You will love it!',
+], {image: 'assets/images/npcs/Beauty.png', requirement: festivalHerald('Festival: Contest Gala')});
+const FestivalHerald5 = new NPC('Festival Herald Leo', [
+    'Champion of Unova! The ferris wheel and the roller coaster on the Amusement Park Island are running.',
+    'Some Eevee in explorer hats disappeared into the cave under the roller coaster. Find them!',
+], {image: 'assets/images/npcs/Guitarist (male).png', requirement: festivalHerald('Festival: Amusement Park')});
+const FestivalHerald6 = new NPC('Festival Herald Margot', [
+    'Bonsoir, Champion of Kalos. The Spooky Night has begun on the Festival Archipelago...',
+    'Pumpkins, witch hats and ghosts are waiting on the Spooky Island. Do not be afraid!',
+], {image: 'assets/images/npcs/Artist (Gen 8).png', requirement: festivalHerald('Festival: Spooky Night')});
+const FestivalHerald7 = new NPC('Festival Herald Kai', [
+    'Alola, Champion! The Beach Party of the Festival Archipelago has started.',
+    'Grab a sun hat and head to the Beach Island. The Pokémon there are dressed for summer!',
+], {image: 'assets/images/npcs/Guitarist (female).png', requirement: festivalHerald('Festival: Beach Party')});
+const FestivalHerald8 = new NPC('Festival Herald Rhys', [
+    'Champion of Galar! The new stadium on the Festival Archipelago is opening tonight.',
+    'Pokémon in party hats and world championship caps are cheering in the stands. Do not miss it!',
+], {image: 'assets/images/npcs/Musician.png', requirement: festivalHerald('Festival: Stadium Party')});
+const FestivalHerald9 = new NPC('Festival Herald Aurora', [
+    'Champion of Paldea! The Crown Parade is the grand finale of the Festival Archipelago.',
+    'Pikachu with crystal crowns are marching on the Crown Island, and something armored was seen in the secret cave...',
+], {image: 'assets/images/npcs/Lass.png', requirement: festivalHerald('Festival: Crown Parade')});
+
+// The Air Mail (Postman Dratini line)
+const airMailStep = (step: number) => new MultiRequirement([
+    new QuestLineStepCompletedRequirement('The Air Mail', step - 1),
+    new QuestLineStepCompletedRequirement('The Air Mail', step, GameConstants.AchievementOption.less),
+]);
+const AirMailCarrier1 = new NPC('Mail Carrier Paula', [
+    'Oh no, oh no... Champion! You came at just the right time!',
+    'Our delivery Pokémon caught a cold and the mail for Pewter City, Cerulean City and Lavender Town is piling up.',
+    'Could you deliver these three letters for me? I would be so grateful!',
+], {image: 'assets/images/npcs/Worker (female).png',
+    requirement: new MultiRequirement([new QuestLineStartedRequirement('The Air Mail'), new QuestLineStepCompletedRequirement('The Air Mail', 0, GameConstants.AchievementOption.less)]),
+});
+const AirMailPewter = new NPC('Hiker Ben', [
+    'A letter for me? From my brother in Vermilion City! Thank you, that was quick!',
+], {image: 'assets/images/npcs/Hiker.png', requirement: airMailStep(1)});
+const AirMailCerulean = new NPC('Fisherman Kai', [
+    'Is that the fishing magazine I ordered? Finally! Now I know where the big ones bite.',
+], {image: 'assets/images/npcs/Fisherman.png', requirement: airMailStep(1)});
+const AirMailLavender = new NPC('Old Lady Rosa', [
+    'A postcard from my grandson... He writes that his Dratini learned to fly. Dratini can\'t fly, can it? Hohoho!',
+], {image: 'assets/images/npcs/Old Lady.png', requirement: airMailStep(1)});
+const AirMailCarrier2 = new NPC('Mail Carrier Paula', [
+    'You delivered everything and even got the stolen letters back from those bird Pokémon? Amazing!',
+    'Look, this little one hatched at our office. It has been wearing my old cap ever since and follows every mail bag around.',
+    'I think it wants to deliver mail with you. Please take good care of our little postman Dratini!',
+], {image: 'assets/images/npcs/Worker (female).png', requirement: airMailStep(3)});
+
 const BillsGrandpa1 = new NPC('Bill\'s Grandpa', [
     'Hm? You know Bill? He\'s my grandson. He\'s not here right now. He does something with PCs, so I\'m house-sitting.',
     'I like Pokémon but I\'m not as knowledgeable as my grandson. My grandson Bill told me about a Pokémon that is pink and like a balloon.',
@@ -1005,7 +1088,7 @@ TownList['Pewter City'] = new Town(
             new RouteKillRequirement(10, GameConstants.Region.kanto, 2),
             new ClearDungeonRequirement(1, GameConstants.getDungeonIndex('Viridian Forest')),
         ],
-        npcs: [PewterBattleItemRival, Route3CenterHint, PewterScientist],
+        npcs: [AirMailPewter, PewterBattleItemRival, Route3CenterHint, PewterScientist],
     }
 );
 TownList['Route 4 Pokémon Center'] = new Town(
@@ -1028,7 +1111,7 @@ TownList['Cerulean City'] = new Town(
     [CeruleanCityShop, new ShardTraderShop(GameConstants.ShardTraderLocations['Cerulean City']), KantoExclusiveBerryShop, new MoveToDungeon(dungeonList['Cerulean Cave'])],
     {
         requirements: [new RouteKillRequirement(10, GameConstants.Region.kanto, 4)],
-        npcs: [CeruleanKantoBerryMaster, CeruleanFarmApprentice, CeruleanSuperNerd, Mewtwo1, Mewtwo2, DetectiveRaichu],
+        npcs: [AirMailCerulean, CeruleanKantoBerryMaster, CeruleanFarmApprentice, CeruleanSuperNerd, Mewtwo1, Mewtwo2, DetectiveRaichu],
     }
 );
 TownList['Bill\'s House'] = new Town(
@@ -1044,7 +1127,7 @@ TownList['Bill\'s House'] = new Town(
     ],
     {
         requirements: [new RouteKillRequirement(10, GameConstants.Region.kanto, 25)],
-        npcs: [BillsGrandpa1, BillsGrandpa2, BillsGrandpa3, BillsGrandpa4, BillsGrandpa5, BillsGrandpa6, BillsGrandpa7, BillsGrandpa8, BillsHouseEusine, BillGrandpaChristmas],
+        npcs: [BillFusion1, BillFusion2, BillsGrandpa1, BillsGrandpa2, BillsGrandpa3, BillsGrandpa4, BillsGrandpa5, BillsGrandpa6, BillsGrandpa7, BillsGrandpa8, BillsHouseEusine, BillGrandpaChristmas],
     }
 );
 TownList['Vermilion City'] = new Town(
@@ -1054,7 +1137,7 @@ TownList['Vermilion City'] = new Town(
     [VermilionCityShop, new ShardTraderShop(GameConstants.ShardTraderLocations['Vermilion City'])],
     {
         requirements: [new RouteKillRequirement(10, GameConstants.Region.kanto, 6)],
-        npcs: [VermilionFanClubChairman, VermilionShardApprentice, SquirtleJenny, VermilionEusine],
+        npcs: [AirMailCarrier1, AirMailCarrier2, VermilionFanClubChairman, VermilionShardApprentice, SquirtleJenny, VermilionEusine],
     }
 );
 TownList['Lavender Town'] = new Town(
@@ -1064,7 +1147,7 @@ TownList['Lavender Town'] = new Town(
     [LavenderTownShop, new ShardTraderShop(GameConstants.ShardTraderLocations['Lavender Town']), new MoveToDungeon(dungeonList['Pokémon Tower'])],
     {
         requirements: [new ClearDungeonRequirement(1, GameConstants.getDungeonIndex('Rock Tunnel'))],
-        npcs: [LavenderMrFuji, LavenderChanneler, LavenderShopper],
+        npcs: [AirMailLavender, LavenderMrFuji, LavenderChanneler, LavenderShopper],
     }
 );
 TownList['Celadon City'] = new Town(
@@ -9349,8 +9432,7 @@ const MaxLairScientist = new NPC ('Scientist', [
 const ProfMagnolia = new ProfNPC('Prof. Magnolia',
     GameConstants.Region.galar,
     'Ahhh, how incredible. Look how far you have come, dear trainer. Congratulations on another complete Pokédex.',
-    'I hear word of an exotic region on the horizon, but there has been no word yet when the blimp will be able to reach such faraway lands.',
-    //*TODO*: Change second line to this text when Paldea is available: 'Now be on your way, the illustrious Paldea region awaits over the horizons.',
+    'Strange tears in space and time have been sighted over the sea. Those who pass through speak of Hisui, the land of old Sinnoh, long before Poké Balls were common. Be on your way, trainer!',
     'assets/images/npcs/Professor Magnolia.png');
 
 const magearnaGiftReq = new MultiRequirement([
@@ -9793,6 +9875,35 @@ const ForcesCogita3 = new NPC('Cogita', [
 ], {
     requirement: new MultiRequirement([new QuestLineStepCompletedRequirement('Incarnate Forces of Hisui', 4), new QuestLineCompletedRequirement('Incarnate Forces of Hisui', GameConstants.AchievementOption.less)]),
 });
+const ProfLaventon = new ProfNPC('Prof. Laventon',
+    GameConstants.Region.hisui,
+    'Splendid! Simply splendid! A complete Pokédex of Hisui... I shall have to write a dozen papers on the back of your research alone!',
+    'I\'ve heard whispers that the rift is opening once more, this time towards a sunny land far in the future called Paldea. It seems your journey isn\'t over yet!',
+    'assets/images/npcs/Laventon.png');
+
+const ArceusCogita1 = new NPC('Cogita', [
+    'So Volo finally showed his hand. He sought the Plates so that he might stand before Arceus and remake the world to his liking. Giratina was merely his tool.',
+    'I knew him long before he called himself a merchant of the Ginkgo Guild. I fear I did little to temper that ambition of his.',
+    'But you... You were brought to Hisui for a reason, and I suspect Arceus wishes to meet the one it summoned.',
+    'Legend says the deity split its power into eighteen Plates and scattered them across the land. Many now lie buried deep beneath the earth.',
+    'Dig them up, all eighteen of them, the Blank Plate included. Then come back to me.',
+], {
+    requirement: new MultiRequirement([new QuestLineStepCompletedRequirement('Arceus: The Deified Pokémon', 0), new QuestLineStepCompletedRequirement('Arceus: The Deified Pokémon', 1, GameConstants.AchievementOption.less)]),
+});
+const ArceusCogita2 = new NPC('Cogita', [
+    'All eighteen Plates... I can feel them humming in your bag. Even the stones of this retreat seem to lean towards you.',
+    'Take them to the Temple of Sinnoh. Climb to where Dialga and Palkia raged, and lay the Plates before the altar.',
+    'If Arceus deems you worthy, it will descend. Whether it means to test you or to thank you, I cannot say.',
+], {
+    requirement: new MultiRequirement([new QuestLineStepCompletedRequirement('Arceus: The Deified Pokémon', 2), new QuestLineStepCompletedRequirement('Arceus: The Deified Pokémon', 3, GameConstants.AchievementOption.less)]),
+});
+const ArceusCogita3 = new NPC('Cogita', [
+    'You met the Original One and it shared a part of itself with you. I have waited a very long time to hear that.',
+    'Hisui will change, as all lands do. The clans, the Galaxy Team, the Pokémon... they will learn to live side by side.',
+    'Whatever world you return to, remember that its foundations were laid here, by people who once feared the Pokémon they now call partners.',
+], {
+    requirement: new QuestLineStepCompletedRequirement('Arceus: The Deified Pokémon', 4),
+});
 
 //Hisui Towns
 TownList['Prelude Beach'] = new Town(
@@ -9801,7 +9912,7 @@ TownList['Prelude Beach'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['The Galaxy Team\'s Kamado']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new GymBadgeRequirement(BadgeEnums.Elite_GalarChampion)],
     }
 );
 TownList['Jubilife Village'] = new Town(
@@ -9810,7 +9921,8 @@ TownList['Jubilife Village'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [JubilifeVillageShop, new ShardTraderShop(GameConstants.ShardTraderLocations['Jubilife Village']), TemporaryBattleList['Volo 1'], TemporaryBattleList['Akari 1'], TemporaryBattleList['Akari 2'], TemporaryBattleList['Adaman 1']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new GymBadgeRequirement(BadgeEnums.Elite_GalarChampion)],
+        npcs: [ProfLaventon],
     }
 );
 TownList['Galaxy Hall'] = new Town(
@@ -9819,7 +9931,7 @@ TownList['Galaxy Hall'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [new BulletinBoard(GameConstants.BulletinBoards.Hisui)],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new GymBadgeRequirement(BadgeEnums.Elite_GalarChampion)],
         npcs: [ForcesCogita1],
     }
 );
@@ -9829,7 +9941,7 @@ TownList['Fieldlands Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Warden Mai']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 2)],
     }
 );
 TownList['Heights Camp'] = new Town(
@@ -9838,7 +9950,7 @@ TownList['Heights Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Alpha Kricketune']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 5)],
     }
 );
 TownList['Grandtree Arena'] = new Town(
@@ -9847,7 +9959,10 @@ TownList['Grandtree Arena'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Warden Lian'], TemporaryBattleList['Irida 1'], TemporaryBattleList['Lord of the Woods: Kleavor']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [
+            new RouteKillRequirement(10, GameConstants.Region.hisui, 9),
+            new TemporaryBattleRequirement('Warden Mai'),
+        ],
     }
 );
 TownList['Mirelands Camp'] = new Town(
@@ -9856,7 +9971,7 @@ TownList['Mirelands Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Coin 1']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new TemporaryBattleRequirement('Lord of the Woods: Kleavor')],
     }
 );
 TownList['Bogbound Camp'] = new Town(
@@ -9865,7 +9980,7 @@ TownList['Bogbound Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 16)],
     }
 );
 TownList['Sludge Mound'] = new Town(
@@ -9874,7 +9989,7 @@ TownList['Sludge Mound'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList.Ursaluna],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 20)],
     }
 );
 TownList['Diamond Settlement'] = new Town(
@@ -9883,7 +9998,7 @@ TownList['Diamond Settlement'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 17)],
     }
 );
 TownList['Brava Arena'] = new Town(
@@ -9892,7 +10007,7 @@ TownList['Brava Arena'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Lady of the Ridge: Lilligant']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 22)],
     }
 );
 TownList['Beachside Camp'] = new Town(
@@ -9901,7 +10016,7 @@ TownList['Beachside Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Irida 2']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new TemporaryBattleRequirement('Lady of the Ridge: Lilligant')],
     }
 );
 TownList['Coastlands Camp'] = new Town(
@@ -9910,7 +10025,7 @@ TownList['Coastlands Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 26)],
     }
 );
 TownList['Iscan\'s Cabin'] = new Town(
@@ -9919,7 +10034,7 @@ TownList['Iscan\'s Cabin'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 30)],
     }
 );
 TownList['Molten Arena'] = new Town(
@@ -9937,7 +10052,7 @@ TownList['Highlands Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new TemporaryBattleRequirement('Lord of the Isles: Arcanine')],
     }
 );
 TownList['Mountain Camp'] = new Town(
@@ -9946,7 +10061,7 @@ TownList['Mountain Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 41)],
     }
 );
 TownList['Summit Camp'] = new Town(
@@ -9955,7 +10070,7 @@ TownList['Summit Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 44)],
     }
 );
 TownList['Moonview Arena'] = new Town(
@@ -9964,7 +10079,7 @@ TownList['Moonview Arena'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Melli 2'], TemporaryBattleList['Lord of the Hollow: Electrode']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 46)],
     }
 );
 TownList['Snowfields Camp'] = new Town(
@@ -9973,7 +10088,7 @@ TownList['Snowfields Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new TemporaryBattleRequirement('Lord of the Hollow: Electrode')],
     }
 );
 TownList['Icepeak Camp'] = new Town(
@@ -9982,7 +10097,7 @@ TownList['Icepeak Camp'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 50)],
     }
 );
 TownList['Pearl Settlement'] = new Town(
@@ -9991,7 +10106,7 @@ TownList['Pearl Settlement'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Irida 3']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 48)],
     }
 );
 TownList['Icepeak Arena'] = new Town(
@@ -10000,7 +10115,7 @@ TownList['Icepeak Arena'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList['Lord of the Tundra: Avalugg']],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.hisui, 54)],
     }
 );
 TownList['Ancient Retreat'] = new Town(
@@ -10009,8 +10124,8 @@ TownList['Ancient Retreat'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [],
     {
-        requirements: [new DevelopmentRequirement()],
-        npcs: [ForcesCogita2, ForcesCogita3],
+        requirements: [new GymBadgeRequirement(BadgeEnums.Azure)],
+        npcs: [ForcesCogita2, ForcesCogita3, ArceusCogita1, ArceusCogita2, ArceusCogita3],
     }
 );
 TownList['Stone Portal'] = new Town(
@@ -10019,7 +10134,7 @@ TownList['Stone Portal'] = new Town(
     GameConstants.HisuiSubRegions.Hisui,
     [TemporaryBattleList.Beni],
     {
-        requirements: [new DevelopmentRequirement()],
+        requirements: [new TemporaryBattleRequirement('Lord of the Tundra: Avalugg')],
     }
 );
 
@@ -10028,19 +10143,19 @@ TownList['Floaro Gardens'] = new DungeonTown(
     'Floaro Gardens',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 6)]
 );
 TownList['Oreburrow Tunnel'] = new DungeonTown(
     'Oreburrow Tunnel',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 11)]
 );
 TownList.Heartwood = new DungeonTown(
     'Heartwood',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 10)],
     undefined,
     {
         npcs: [MossRock],
@@ -10050,85 +10165,85 @@ TownList['Ancient Solaceon Ruins'] = new DungeonTown(
     'Ancient Solaceon Ruins',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 13)],
     [TemporaryBattleList['Volo 2']]
 );
 TownList['Shrouded Ruins'] = new DungeonTown(
     'Shrouded Ruins',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 16)]
 );
 TownList['Veilstone Cape'] = new DungeonTown(
     'Veilstone Cape',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 31)]
 );
 TownList['Firespit Island'] = new DungeonTown(
     'Firespit Island',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 36)],
     [new MoveToTown('Molten Arena')]
 );
 TownList['Ancient Wayward Cave'] = new DungeonTown(
     'Ancient Wayward Cave',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 38)],
     [TemporaryBattleList['Melli 1']]
 );
 TownList['Ancient Quarry'] = new DungeonTown(
     'Ancient Quarry',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 39)]
 );
 TownList['Primeval Grotto'] = new DungeonTown(
     'Primeval Grotto',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 42)],
     [TemporaryBattleList['Charm 2']]
 );
 TownList['Clamberclaw Cliffs'] = new DungeonTown(
     'Clamberclaw Cliffs',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 40)],
     [TemporaryBattleList['Warden Ingo']]
 );
 TownList['Celestica Ruins'] = new DungeonTown(
     'Celestica Ruins',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 42)]
 );
 TownList['Sacred Plaza'] = new DungeonTown(
     'Sacred Plaza',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 45)]
 );
 TownList['Avalugg\'s Legacy'] = new DungeonTown(
     'Avalugg\'s Legacy',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 48)],
     [TemporaryBattleList['Warden Gaeric']]
 );
 TownList['Ice Column Chamber'] = new DungeonTown(
     'Ice Column Chamber',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 51)]
 );
 TownList['Icepeak Cavern'] = new DungeonTown(
     'Icepeak Cavern',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 49)],
     undefined,
     {
         npcs: [IceRock],
@@ -10138,7 +10253,7 @@ TownList['Ancient Snowpoint Temple'] = new DungeonTown(
     'Ancient Snowpoint Temple',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new RouteKillRequirement(10, GameConstants.Region.hisui, 54)],
     [TemporaryBattleList['Warden Sabi'], TemporaryBattleList['Hisuian Braviary']]
 );
 TownList['Seaside Hollow'] = new DungeonTown(
@@ -10146,7 +10261,7 @@ TownList['Seaside Hollow'] = new DungeonTown(
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
     [
-        new DevelopmentRequirement(),
+        new RouteKillRequirement(10, GameConstants.Region.hisui, 36),
         new ObtainedPokemonRequirement('Overqwil'),
     ]
 );
@@ -10154,36 +10269,62 @@ TownList['Ancient Lake Verity'] = new DungeonTown(
     'Ancient Lake Verity',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new TemporaryBattleRequirement('Lord of the Tundra: Avalugg')]
 );
 TownList['Ancient Lake Valor'] = new DungeonTown(
     'Ancient Lake Valor',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('Lord of the Tundra: Avalugg')],
     [TemporaryBattleList['Adaman 2']]
 );
 TownList['Ancient Lake Acuity'] = new DungeonTown(
     'Ancient Lake Acuity',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new TemporaryBattleRequirement('Lord of the Tundra: Avalugg')]
 );
 TownList['Temple of Sinnoh'] = new DungeonTown(
     'Temple of Sinnoh',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()],
+    [new TemporaryBattleRequirement('The Galaxy Team\'s Kamado')],
     [TemporaryBattleList['Dialga (Origin)'], TemporaryBattleList['Palkia (Origin)'], TemporaryBattleList['Volo 3'], TemporaryBattleList.Arceus]
 );
 TownList['Turnback Cave'] = new DungeonTown(
     'Turnback Cave',
     GameConstants.Region.hisui,
     GameConstants.HisuiSubRegions.Hisui,
-    [new DevelopmentRequirement()]
+    [new GymBadgeRequirement(BadgeEnums.Azure)]
 );
 
 //Paldea Shops
+const MesagozaShop = new Shop([
+    ItemList.Pokeball,
+    ItemList.Greatball,
+    ItemList.Ultraball,
+    ItemList.SmallRestore,
+    ItemList.MediumRestore,
+    ItemList.LargeRestore,
+    ItemList.xAttack,
+    ItemList.xClick,
+    ItemList.Lucky_incense,
+    ItemList.Cyclizar,
+]);
+const ArtazonShop = new Shop([
+    ItemList.Pokeball,
+    ItemList.Greatball,
+    ItemList.Grass_egg,
+    ItemList.Leaf_stone,
+    ItemList['Maushold (Family of Three)'],
+]);
+const LevinciaShop = new Shop([
+    ItemList.Pokeball,
+    ItemList.Greatball,
+    ItemList.Ultraball,
+    ItemList.Electric_egg,
+    ItemList.Thunder_stone,
+]);
 const ZapapicoShop = new Shop([
     ItemList.Pokeball,
     ItemList.Greatball,
@@ -10191,20 +10332,157 @@ const ZapapicoShop = new Shop([
     ItemList.Auspicious_armor,
     ItemList.Malicious_armor,
 ]);
+const CascarrafaShop = new Shop([
+    ItemList.Pokeball,
+    ItemList.Greatball,
+    ItemList.Ultraball,
+    ItemList.Water_egg,
+    ItemList.Water_stone,
+    ItemList['Paldean Tauros (Blaze)'],
+    ItemList['Paldean Tauros (Aqua)'],
+]);
+const PortoMarinadaShop = new Shop([
+    ItemList.Pokeball,
+    ItemList.Greatball,
+    ItemList.Ultraball,
+    ItemList.Lucky_egg,
+    ItemList.Token_collector,
+    ItemList.Dowsing_machine,
+]);
+const MonteneveraShop = new Shop([
+    ItemList.Pokeball,
+    ItemList.Greatball,
+    ItemList.Ultraball,
+    ItemList.Dusk_stone,
+    ItemList.Reaper_cloth,
+]);
+const MossuiTownShop = new Shop([
+    ItemList.Pokeball,
+    ItemList.Greatball,
+    ItemList.Ultraball,
+    ItemList.Syrupy_apple,
+    ItemList.Unremarkable_teacup,
+]);
+const BlueberryAcademyShop = new Shop([
+    ItemList.Pokeball,
+    ItemList.Greatball,
+    ItemList.Ultraball,
+    ItemList.LargeRestore,
+    ItemList.Metal_alloy,
+    ItemList.Lucky_egg,
+    ItemList.Lucky_incense,
+]);
 
 // Paldea NPCs
 const PaldeaRoamerNPC = new RoamerNPC('Student Emily', [
     'Hey, hey, did you hear? A group of students saw some super rare Pokémon on {ROUTE_NAME}!',
 ], GameConstants.Region.paldea, RoamingPokemonList.findGroup(GameConstants.Region.paldea, GameConstants.PaldeaSubRegions.Paldea));
+const PaldeaNemona1 = new NPC('Nemona', [
+    'Oh, hey! You\'re the new transfer student, right? Welcome to Paldea!',
+    'Naranja and Uva Academies are starting their Treasure Hunt, and every student gets to explore the region however they want.',
+    'I\'m going to challenge all eight Gyms again... and I want you to do it too! Beat all eight, then the Elite Four, and we\'ll battle as Champions. Deal?',
+], {
+    image: 'assets/images/npcs/Nemona.png',
+    requirement: new MultiRequirement([new QuestLineStartedRequirement('Victory Road'), new QuestLineStepCompletedRequirement('Victory Road', 0, GameConstants.AchievementOption.less)]),
+});
+const PaldeaArven1 = new NPC('Arven', [
+    'You\'re a student too? Then listen up, I need a hand.',
+    'There are five Herba Mystica hidden around Paldea, each guarded by a Titan Pokémon. They\'re the only thing that might heal my partner, Mabosstiff.',
+    'Help me take down the Titans and I\'ll make sure you eat well. Deal?',
+], {
+    image: 'assets/images/npcs/Arven.png',
+    requirement: new MultiRequirement([new QuestLineStartedRequirement('Path of Legends'), new QuestLineStepCompletedRequirement('Path of Legends', 0, GameConstants.AchievementOption.less)]),
+});
+const PaldeaCassiopeia1 = new NPC('Cassiopeia', [
+    '<i>A message pops up on your phone from someone calling themselves Cassiopeia.</i>',
+    'Team Star started as a group of kids who were bullied at this academy. Now they\'re the ones scaring everyone away.',
+    'Operation Starfall: take down all five Team Star bosses at their bases. I\'ll back you up with everything I\'ve got.',
+], {
+    requirement: new MultiRequirement([new QuestLineStartedRequirement('Starfall Street'), new QuestLineStepCompletedRequirement('Starfall Street', 0, GameConstants.AchievementOption.less)]),
+});
+const PaldeaZeroGateProfessor = new NPC('The Professor', [
+    '<i>A voice crackles over the intercom at the Zero Gate.</i>',
+    'You\'ve come a long way, all of you. Nemona, Arven, Penny... and you.',
+    'I need you to come down to the Zero Lab at the very bottom of Area Zero. There is something only you can stop. Please hurry.',
+], {
+    image: 'assets/images/npcs/AI Sada.png',
+    requirement: new MultiRequirement([new QuestLineStartedRequirement('The Way Home'), new QuestLineStepCompletedRequirement('The Way Home', 0, GameConstants.AchievementOption.less)]),
+});
+
+// Kitakami NPCs
+const KitakamiCarmine1 = new NPC('Carmine', [
+    'So you\'re the hotshot from Naranja and Uva. Welcome to Kitakami, I guess.',
+    'Folks here tell an old story about the Loyal Three, heroes who protected the village from a terrible ogre. There\'s a festival for them and everything.',
+    'My little brother Kieran\'s obsessed with that ogre. Don\'t encourage him. Now, how about you prove you\'re actually any good?',
+], {
+    image: 'assets/images/npcs/Carmine.png',
+    requirement: new MultiRequirement([new QuestLineStartedRequirement('Kitakami: The Teal Mask'), new QuestLineStepCompletedRequirement('Kitakami: The Teal Mask', 0, GameConstants.AchievementOption.less)]),
+});
+const KitakamiKieran1 = new NPC('Kieran', [
+    'The Loyal Three... they weren\'t heroes at all. They stole the masks and blamed the ogre. The ogre is Ogerpon, and it was only trying to protect its family.',
+    'Everyone has had it backwards for hundreds of years.',
+    'With the Loyal Three gone, Ogerpon can finally rest. I... I want to catch it. But maybe it wants to go with you.',
+], {
+    image: 'assets/images/npcs/Kieran.png',
+    requirement: new MultiRequirement([new QuestLineStepCompletedRequirement('Kitakami: The Teal Mask', 5), new QuestLineStepCompletedRequirement('Kitakami: The Teal Mask', 6, GameConstants.AchievementOption.less)]),
+});
+const KitakamiCarmine2 = new NPC('Carmine', [
+    'So Ogerpon chose you, huh. Kieran\'s taking it hard... but he\'ll get over it. Probably.',
+    'Hey, our school is Blueberry Academy, out in Unova. If you ever visit, I\'ll show you around. Kieran too, once he stops sulking.',
+], {
+    image: 'assets/images/npcs/Carmine.png',
+    requirement: new MultiRequirement([new QuestLineStepCompletedRequirement('Kitakami: The Teal Mask', 7), new QuestLineCompletedRequirement('Kitakami: The Teal Mask', GameConstants.AchievementOption.less)]),
+});
+const MochiCarmine1 = new NPC('Carmine', [
+    'Something weird is going on in Kitakami. Everybody\'s eating these strange mochi and acting like puppets!',
+    'Even the Loyal Three are back, and they look... possessed. Can you go catch them before they cause real trouble?',
+], {
+    image: 'assets/images/npcs/Carmine.png',
+    requirement: new MultiRequirement([new QuestLineStartedRequirement('Kitakami: Mochi Mayhem'), new QuestLineStepCompletedRequirement('Kitakami: Mochi Mayhem', 0, GameConstants.AchievementOption.less)]),
+});
+const MochiCarmine2 = new NPC('Carmine', [
+    'The mochi spell is broken! Everyone\'s back to normal, and that little troublemaker Pecharunt is with you now.',
+    'Guess even poison peaches deserve a second chance. Thanks for saving the village... again.',
+], {
+    image: 'assets/images/npcs/Carmine.png',
+    requirement: new QuestLineStepCompletedRequirement('Kitakami: Mochi Mayhem', 2),
+});
+
+// Blueberry Academy NPCs
+const BlueberryCarmine1 = new NPC('Carmine', [
+    'Welcome to Blueberry Academy! Our school is all about the Terarium, a giant dome with four biomes full of Pokémon.',
+    'And this is the League Club. Students battle all day to climb the BB League ranks. Kieran is the Champion now... he\'s changed a lot since Kitakami.',
+    'If you want to get to him, you\'ll have to beat the Elite Four first: Crispin, Amarys, Lacey and Drayton.',
+], {
+    image: 'assets/images/npcs/Carmine.png',
+    requirement: new MultiRequirement([new QuestLineStartedRequirement('Blueberry: The Indigo Disk'), new QuestLineStepCompletedRequirement('Blueberry: The Indigo Disk', 0, GameConstants.AchievementOption.less)]),
+});
+const BlueberryBriar1 = new NPC('Briar', [
+    'Oh my! You beat Kieran! You must be the one I\'ve been waiting for!',
+    'I\'m Briar, a descendant of Heath, who wrote the Scarlet and Violet Books. There\'s a place even deeper than the Zero Lab: the Area Zero Underdepths.',
+    'Legend says the Terastal phenomenon begins there, with a Pokémon called Terapagos. Will you join my expedition?',
+], {
+    image: 'assets/images/npcs/Briar.png',
+    requirement: new MultiRequirement([new QuestLineStepCompletedRequirement('Blueberry: The Indigo Disk', 5), new QuestLineStepCompletedRequirement('Blueberry: The Indigo Disk', 6, GameConstants.AchievementOption.less)]),
+});
+const BlueberryBriar2 = new NPC('Briar', [
+    'Terapagos... the Stellar form... I can hardly believe I saw it with my own eyes!',
+    'Heath\'s book was right all along. Thank you for helping me finish what my ancestor started.',
+    'And Kieran... I think he finally found something more important than winning.',
+], {
+    image: 'assets/images/npcs/Briar.png',
+    requirement: new QuestLineStepCompletedRequirement('Blueberry: The Indigo Disk', 10),
+});
 
 //Paldea Towns
 TownList['Cabo Poco'] = new Town(
     'Cabo Poco',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    [new BulletinBoard(GameConstants.BulletinBoards.Paldea)],
+    [new BulletinBoard(GameConstants.BulletinBoards.Paldea), TemporaryBattleList['Nemona 1']],
     {
         requirements: [new GymBadgeRequirement(BadgeEnums.Azure)],
+        npcs: [PaldeaNemona1],
     }
 );
 TownList['Poco Path Lighthouse'] = new Town(
@@ -10213,14 +10491,15 @@ TownList['Poco Path Lighthouse'] = new Town(
     GameConstants.PaldeaSubRegions.Paldea,
     [GymList['Pokémon Trainer Arven']],
     {
-        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 1)],
+        npcs: [PaldeaArven1],
     }
 );
 TownList['Los Platos'] = new Town(
     'Los Platos',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    [],
+    [TemporaryBattleList['Arven 1'], GymList['Stony Cliff Titan']],
     {
         requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
     }
@@ -10229,12 +10508,11 @@ TownList.Mesagoza = new Town(
     'Mesagoza',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    [GymList['Champion Nemona']],
+    [MesagozaShop, GymList['Champion Nemona']],
     {
         requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
     }
 );
-//Dunno what do about Naranja and Uva Academy's names. For now I've merged them.
 TownList['Naranjuva Academy'] = new Town(
     'Naranjuva Academy',
     GameConstants.Region.paldea,
@@ -10242,61 +10520,61 @@ TownList['Naranjuva Academy'] = new Town(
     [GymList['Director Clavell'], GymList['Penny of Team Star']],
     {
         requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
-        npcs: [PaldeaRoamerNPC],
+        npcs: [PaldeaRoamerNPC, PaldeaCassiopeia1],
     }
 );
 TownList.Cortondo = new Town(
     'Cortondo',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    [],
+    [GymList['Open Sky Titan']],
     {
-        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 3)],
     }
 );
 TownList.Artazon = new Town(
     'Artazon',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    [],
+    [ArtazonShop, TemporaryBattleList['Nemona 2']],
     {
-        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 5)],
     }
 );
 TownList.Levincia = new Town(
     'Levincia',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    [],
+    [LevinciaShop, TemporaryBattleList['Nemona 3']],
     {
-        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 9)],
     }
 );
-TownList.Alfornada = new Town(
-    'Alfornada',
+TownList.Zapapico = new Town(
+    'Zapapico',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    [],
+    [ZapapicoShop, GymList['Lurking Steel Titan']],
     {
-        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 10)],
     }
 );
 TownList.Cascarrafa = new Town(
     'Cascarrafa',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    [],
+    [CascarrafaShop, GymList['Asado Desert']],
     {
-        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 11)],
     }
 );
 TownList['Porto Marinada'] = new Town(
     'Porto Marinada',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    [],
+    [PortoMarinadaShop],
     {
-        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 11)],
     }
 );
 TownList.Medali = new Town(
@@ -10305,25 +10583,25 @@ TownList.Medali = new Town(
     GameConstants.PaldeaSubRegions.Paldea,
     [],
     {
-        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 12)],
     }
 );
-TownList.Zapapico = new Town(
-    'Zapapico',
+TownList.Alfornada = new Town(
+    'Alfornada',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    [ZapapicoShop],
+    [],
     {
-        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 15)],
     }
 );
 TownList.Montenevera = new Town(
     'Montenevera',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    [],
+    [MonteneveraShop],
     {
-        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 16)],
     }
 );
 TownList['Pokémon League Paldea'] = new Town(
@@ -10332,7 +10610,7 @@ TownList['Pokémon League Paldea'] = new Town(
     GameConstants.PaldeaSubRegions.Paldea,
     [GymList['Elite Rika'], GymList['Elite Poppy'], GymList['Elite Larry'], GymList['Elite Hassel'], GymList['Top Champion Geeta'], pokeLeagueShop()],
     {
-        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
+        requirements: [new GymBadgeRequirement(BadgeEnums.Ice_Gym)],
     }
 );
 TownList['Segin Squad\'s Base'] = new Town(
@@ -10341,7 +10619,7 @@ TownList['Segin Squad\'s Base'] = new Town(
     GameConstants.PaldeaSubRegions.Paldea,
     [],
     {
-        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 6)],
     }
 );
 TownList['Schedar Squad\'s Base'] = new Town(
@@ -10350,7 +10628,7 @@ TownList['Schedar Squad\'s Base'] = new Town(
     GameConstants.PaldeaSubRegions.Paldea,
     [],
     {
-        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 8)],
     }
 );
 TownList['Navi Squad\'s Base'] = new Town(
@@ -10359,7 +10637,7 @@ TownList['Navi Squad\'s Base'] = new Town(
     GameConstants.PaldeaSubRegions.Paldea,
     [],
     {
-        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 13)],
     }
 );
 TownList['Ruchbah Squad\'s Base'] = new Town(
@@ -10368,7 +10646,7 @@ TownList['Ruchbah Squad\'s Base'] = new Town(
     GameConstants.PaldeaSubRegions.Paldea,
     [],
     {
-        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 14)],
     }
 );
 TownList['Caph Squad\'s Base'] = new Town(
@@ -10377,7 +10655,7 @@ TownList['Caph Squad\'s Base'] = new Town(
     GameConstants.PaldeaSubRegions.Paldea,
     [],
     {
-        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 17)],
     }
 );
 TownList['Zero Gate'] = new Town(
@@ -10386,7 +10664,12 @@ TownList['Zero Gate'] = new Town(
     GameConstants.PaldeaSubRegions.Paldea,
     [],
     {
-        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 2)],
+        requirements: [
+            new QuestLineCompletedRequirement('Victory Road'),
+            new QuestLineCompletedRequirement('Path of Legends'),
+            new QuestLineCompletedRequirement('Starfall Street'),
+        ],
+        npcs: [PaldeaZeroGateProfessor],
     }
 );
 TownList['Zero Lab'] = new Town(
@@ -10399,53 +10682,116 @@ TownList['Zero Lab'] = new Town(
     }
 );
 
+// Kitakami Towns
+TownList['Mossui Town'] = new Town(
+    'Mossui Town',
+    GameConstants.Region.paldea,
+    GameConstants.PaldeaSubRegions.Kitakami,
+    [MossuiTownShop, TemporaryBattleList['Carmine 1'], TemporaryBattleList['Kieran 1']],
+    {
+        requirements: [new GymBadgeRequirement(BadgeEnums.Elite_Nemona)],
+        npcs: [KitakamiCarmine1, KitakamiCarmine2],
+    }
+);
+TownList['Kitakami Hall'] = new Town(
+    'Kitakami Hall',
+    GameConstants.Region.paldea,
+    GameConstants.PaldeaSubRegions.Kitakami,
+    [new BulletinBoard(GameConstants.BulletinBoards.Kitakami), TemporaryBattleList['Kieran 2'], TemporaryBattleList.Pecharunt],
+    {
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 22)],
+        npcs: [KitakamiKieran1, MochiCarmine1, MochiCarmine2],
+    }
+);
+TownList['Loyalty Plaza'] = new Town(
+    'Loyalty Plaza',
+    GameConstants.Region.paldea,
+    GameConstants.PaldeaSubRegions.Kitakami,
+    [TemporaryBattleList.Okidogi, TemporaryBattleList.Munkidori, TemporaryBattleList.Fezandipiti],
+    {
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 23)],
+    }
+);
+
+// Blueberry Academy Towns
+TownList['Blueberry Academy'] = new Town(
+    'Blueberry Academy',
+    GameConstants.Region.paldea,
+    GameConstants.PaldeaSubRegions.BlueberryAcademy,
+    [
+        new BulletinBoard(GameConstants.BulletinBoards.Blueberry),
+        BlueberryAcademyShop,
+        GymList['Elite Crispin'],
+        GymList['Elite Amarys'],
+        GymList['Elite Lacey'],
+        GymList['Elite Drayton'],
+        GymList['Champion Kieran'],
+        TemporaryBattleList['Carmine 2'],
+    ],
+    {
+        requirements: [new QuestLineCompletedRequirement('Kitakami: The Teal Mask')],
+        npcs: [BlueberryCarmine1, BlueberryBriar1, BlueberryBriar2],
+    }
+);
+TownList['Central Plaza'] = new Town(
+    'Central Plaza',
+    GameConstants.Region.paldea,
+    GameConstants.PaldeaSubRegions.BlueberryAcademy,
+    [pokeLeagueShop()],
+    {
+        requirements: [new RouteKillRequirement(10, GameConstants.Region.paldea, 35)],
+    }
+);
+
 // Paldea Dungeons
 TownList['Inlet Grotto'] = new DungeonTown(
     'Inlet Grotto',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    [new RouteKillRequirement(10, GameConstants.Region.paldea, 1)]
+    [new RouteKillRequirement(10, GameConstants.Region.paldea, 7)]
 );
 TownList['Glaseado Mountain'] = new DungeonTown(
     'Glaseado Mountain',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    [new RouteKillRequirement(10, GameConstants.Region.paldea, 1)]
+    [new RouteKillRequirement(10, GameConstants.Region.paldea, 17)],
+    [GymList['Casseroya Lake']]
+);
+TownList['Alfornada Cavern'] = new DungeonTown(
+    'Alfornada Cavern',
+    GameConstants.Region.paldea,
+    GameConstants.PaldeaSubRegions.Paldea,
+    [new RouteKillRequirement(10, GameConstants.Region.paldea, 15)]
 );
 TownList['Grasswither Shrine'] = new DungeonTown(
     'Grasswither Shrine',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    [new RouteKillRequirement(10, GameConstants.Region.paldea, 1)]
+    [new GymBadgeRequirement(BadgeEnums.Elite_Nemona), new RouteKillRequirement(10, GameConstants.Region.paldea, 14)]
 );
 TownList['Icerend Shrine'] = new DungeonTown(
     'Icerend Shrine',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    [new RouteKillRequirement(10, GameConstants.Region.paldea, 1)]
+    [new GymBadgeRequirement(BadgeEnums.Elite_Nemona), new RouteKillRequirement(10, GameConstants.Region.paldea, 18)]
 );
 TownList['Groundblight Shrine'] = new DungeonTown(
     'Groundblight Shrine',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    [new RouteKillRequirement(10, GameConstants.Region.paldea, 1)]
+    [new GymBadgeRequirement(BadgeEnums.Elite_Nemona), new RouteKillRequirement(10, GameConstants.Region.paldea, 11)]
 );
 TownList['Firescourge Shrine'] = new DungeonTown(
     'Firescourge Shrine',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    [new RouteKillRequirement(10, GameConstants.Region.paldea, 1)]
+    [new GymBadgeRequirement(BadgeEnums.Elite_Nemona), new RouteKillRequirement(10, GameConstants.Region.paldea, 21)]
 );
 TownList['Area Zero'] = new DungeonTown(
     'Area Zero',
     GameConstants.Region.paldea,
     GameConstants.PaldeaSubRegions.Paldea,
-    /*[new MultiRequirement([
-        new QuestLineCompletedRequirement('Path of Legends'),
-        new QuestLineCompletedRequirement('Victory Road'),
-        new QuestLineCompletedRequirement('Starfall Street'),
-    ])]*/
-    [new ClearDungeonRequirement(1, GameConstants.getDungeonIndex('Inlet Grotto'))]
+    [new QuestLineStepCompletedRequirement('The Way Home', 0)]
 );
 TownList['Area Zero Depths'] = new DungeonTown(
     'Area Zero Depths',
@@ -10453,6 +10799,48 @@ TownList['Area Zero Depths'] = new DungeonTown(
     GameConstants.PaldeaSubRegions.Paldea,
     [new ClearDungeonRequirement(1, GameConstants.getDungeonIndex('Area Zero'))]
 );
+
+// Kitakami Dungeons
+TownList['Oni\'s Maw'] = new DungeonTown(
+    'Oni\'s Maw',
+    GameConstants.Region.paldea,
+    GameConstants.PaldeaSubRegions.Kitakami,
+    [new RouteKillRequirement(10, GameConstants.Region.paldea, 25)]
+);
+TownList['Dreaded Den'] = new DungeonTown(
+    'Dreaded Den',
+    GameConstants.Region.paldea,
+    GameConstants.PaldeaSubRegions.Kitakami,
+    [new RouteKillRequirement(10, GameConstants.Region.paldea, 32)],
+    [TemporaryBattleList.Ogerpon]
+);
+
+// Blueberry Academy Dungeons
+TownList['Area Zero Underdepths'] = new DungeonTown(
+    'Area Zero Underdepths',
+    GameConstants.Region.paldea,
+    GameConstants.PaldeaSubRegions.BlueberryAcademy,
+    [new GymBadgeRequirement(BadgeEnums.Elite_BlueberryChampion), new RouteKillRequirement(10, GameConstants.Region.paldea, 38)],
+    [TemporaryBattleList['Kieran 3'], TemporaryBattleList.Terapagos]
+);
+
+// Endgame+: Masters Eight and Apex Legendaries return to the older regions
+TownList['Indigo Plateau Kanto'].content.push(TemporaryBattleList['Masters Lance']);
+TownList['Pokémon League Hoenn'].content.push(TemporaryBattleList['Masters Steven']);
+TownList['Pokémon League Sinnoh'].content.push(TemporaryBattleList['Masters Cynthia']);
+TownList['Pokémon League Unova'].content.push(TemporaryBattleList['Masters Iris']);
+TownList['Pokémon League Kalos'].content.push(TemporaryBattleList['Masters Diantha']);
+TownList['Lumiose City'].content.push(TemporaryBattleList['Masters Alain']);
+TownList.Wyndon.content.push(TemporaryBattleList['Masters Leon']);
+TownList['Pallet Town'].content.push(TemporaryBattleList['Monarch Ash']);
+TownList['Cerulean Cave'].content.push(TemporaryBattleList['Apex Mewtwo']);
+TownList['Tin Tower'].content.push(TemporaryBattleList['Apex Ho-Oh']);
+TownList['Sky Pillar'].content.push(TemporaryBattleList['Apex Rayquaza']);
+TownList['Hall of Origin'].content.push(TemporaryBattleList['Apex Arceus']);
+TownList['Giant Chasm'].content.push(TemporaryBattleList['Apex Kyurem']);
+TownList['Terminus Cave'].content.push(TemporaryBattleList['Apex Zygarde']);
+TownList['Altar of the Sunne and Moone'].content.push(TemporaryBattleList['Apex Necrozma']);
+TownList['Energy Plant'].content.push(TemporaryBattleList['Apex Eternatus']);
 
 // Used to check if next region can be reached, for example for professor NPC
 TownList['Final Region Town'] = new Town(
@@ -10464,3 +10852,14 @@ TownList['Final Region Town'] = new Town(
         requirements: [new GymBadgeRequirement(BadgeEnums.Elite_PaldeaChampion)],
     }
 );
+
+// Festival Archipelago heralds
+TownList['Vermilion City'].npcs = [FestivalHerald1].concat(TownList['Vermilion City'].npcs || []);
+TownList['Olivine City'].npcs = [FestivalHerald2].concat(TownList['Olivine City'].npcs || []);
+TownList['Slateport City'].npcs = [FestivalHerald3].concat(TownList['Slateport City'].npcs || []);
+TownList['Hearthome City'].npcs = [FestivalHerald4].concat(TownList['Hearthome City'].npcs || []);
+TownList['Castelia City'].npcs = [FestivalHerald5].concat(TownList['Castelia City'].npcs || []);
+TownList['Lumiose City'].npcs = [FestivalHerald6].concat(TownList['Lumiose City'].npcs || []);
+TownList['Hau\'oli City'].npcs = [FestivalHerald7].concat(TownList['Hau\'oli City'].npcs || []);
+TownList.Hulbury.npcs = [FestivalHerald8].concat(TownList.Hulbury.npcs || []);
+TownList.Mesagoza.npcs = [FestivalHerald9].concat(TownList.Mesagoza.npcs || []);

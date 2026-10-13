@@ -1,0 +1,205 @@
+<div class="automation-fab" data-bind="visible: App.game.automation.unlockedCount() > 0">
+  <button class="btn btn-sm" title="Automatik"
+    data-bind="click: () => Automation.open(), css: App.game.automation.paused() ? 'btn-warning' : (App.game.automation.enabledCount() ? 'btn-success' : 'btn-secondary'),
+      text: `🤖 ${App.game.automation.paused() ? '⏸' : App.game.automation.enabledCount()}`"></button>
+</div>
+
+<div class="modal noselect fade" id="automationModal" tabindex="-1" role="dialog" aria-labelledby="automationModalLabel">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header align-items-center">
+        <h5 class="modal-title" id="automationModalLabel">🤖 Automatik</h5>
+        <span class="small text-muted ml-3" data-bind="text: `${App.game.automation.enabledCount()} aktiv · ${App.game.automation.unlockedCount()} / ${App.game.automation.features.length} freigeschaltet`"></span>
+        <button class="btn btn-sm ml-auto" data-bind="click: () => App.game.automation.paused(!App.game.automation.paused()),
+          css: App.game.automation.paused() ? 'btn-success' : 'btn-warning',
+          text: App.game.automation.paused() ? '▶ Fortsetzen' : '⏸ Alles pausieren'"></button>
+        <button type="button" class="close ml-2" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <!-- ko if: DisplayObservables.modalState.automationModal !== 'hidden' -->
+      <div class="modal-body p-0 text-left automation">
+        <ul class="nav nav-tabs nav-fill">
+          <!-- ko foreach: Automation.groups -->
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-bind="click: () => App.game.automation.selectedGroup(id), css: { active: App.game.automation.selectedGroup() === id }">
+              <span data-bind="text: name"></span>
+              <span class="badge badge-pill badge-success" data-bind="visible: App.game.automation.featuresOf(id).some((f) => f.unlocked() && f.enabled()),
+                text: App.game.automation.featuresOf(id).filter((f) => f.unlocked() && f.enabled()).length"></span>
+            </a>
+          </li>
+          <!-- /ko -->
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-bind="click: () => App.game.automation.selectedGroup('overview'), css: { active: App.game.automation.selectedGroup() === 'overview' }">Übersicht</a>
+          </li>
+        </ul>
+        <div class="p-2">
+          <!-- ko if: App.game.automation.paused() -->
+          <div class="alert alert-warning py-1 small mb-2">Die Automatik ist pausiert. Einstellungen bleiben erhalten.</div>
+          <!-- /ko -->
+
+          <!-- ko foreach: App.game.automation.featuresOf(App.game.automation.selectedGroup()) -->
+          <div class="card mb-2 automation-feature" data-bind="css: { 'automation-locked': !unlocked(), 'automation-on': unlocked() && enabled() }">
+            <div class="card-body p-2">
+              <div class="d-flex align-items-center">
+                <span class="automation-icon mr-2" data-bind="text: icon"></span>
+                <div class="flex-grow-1">
+                  <b data-bind="text: name"></b>
+                  <div class="small text-muted" data-bind="text: description"></div>
+                </div>
+                <!-- ko if: unlocked() -->
+                <button class="btn btn-sm btn-outline-secondary mr-1" title="Einstellungen" data-bind="visible: settingDefs.some((d) => d.label) || settingsTemplate,
+                  click: () => showSettings(!showSettings())">⚙️</button>
+                <button class="btn btn-sm automation-toggle" data-bind="click: () => toggle(), css: enabled() ? 'btn-success' : 'btn-secondary', text: enabled() ? 'AN' : 'AUS'"></button>
+                <!-- /ko -->
+                <!-- ko ifnot: unlocked() -->
+                <span class="badge badge-dark">🔒 gesperrt</span>
+                <!-- /ko -->
+              </div>
+              <!-- ko ifnot: unlocked() -->
+              <div class="small mt-1"><i data-bind="text: unlockHint"></i></div>
+              <!-- /ko -->
+              <!-- ko if: unlocked() && status() -->
+              <div class="small mt-1 text-info" data-bind="html: status()"></div>
+              <!-- /ko -->
+              <!-- ko if: unlocked() && showSettings() -->
+              <div class="automation-settings mt-2 p-2">
+                <!-- ko foreach: settingDefs.filter((d) => d.label) -->
+                <div class="form-row align-items-center mb-1">
+                  <!-- ko if: type === 'bool' -->
+                  <div class="col">
+                    <label class="mb-0 small"><input type="checkbox" class="mr-1" data-bind="checked: $parent.settings[key]"><span data-bind="text: label"></span></label>
+                  </div>
+                  <!-- /ko -->
+                  <!-- ko if: type === 'number' -->
+                  <div class="col-7 small" data-bind="text: label"></div>
+                  <div class="col-5"><input type="number" class="form-control form-control-sm" data-bind="value: $parent.settings[key], attr: { min: $data.min, max: $data.max }"></div>
+                  <!-- /ko -->
+                  <!-- ko if: type === 'select' -->
+                  <div class="col-7 small" data-bind="text: label"></div>
+                  <div class="col-5">
+                    <select class="form-control form-control-sm" data-bind="options: options(), optionsText: 'text', optionsValue: 'value', value: $parent.settings[key]"></select>
+                  </div>
+                  <!-- /ko -->
+                  <!-- ko if: $data.hint -->
+                  <div class="col-12 small text-muted" data-bind="text: hint"></div>
+                  <!-- /ko -->
+                </div>
+                <!-- /ko -->
+                <!-- ko if: $data.settingsTemplate -->
+                <div data-bind="template: { name: $data.settingsTemplate, data: $data }"></div>
+                <!-- /ko -->
+              </div>
+              <!-- /ko -->
+            </div>
+          </div>
+          <!-- /ko -->
+
+          <!-- ko if: App.game.automation.selectedGroup() === 'overview' -->
+          <div data-bind="template: { name: 'automationOverviewTemplate' }"></div>
+          <!-- /ko -->
+
+          <div class="d-flex flex-wrap align-items-center small mt-2">
+            <label class="mb-0 mr-3"><input type="checkbox" class="mr-1" data-bind="checked: App.game.automation.showNotifications">Meldungen der Automatik anzeigen</label>
+            <button class="btn btn-sm btn-outline-success mr-1" data-bind="click: () => App.game.automation.toggleAll(true)">Alle freigeschalteten an</button>
+            <button class="btn btn-sm btn-outline-danger" data-bind="click: () => App.game.automation.toggleAll(false)">Alle aus</button>
+          </div>
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+  </div>
+</div>
+
+<script type="text/html" id="automationShopSettingsTemplate">
+  <table class="table table-sm table-striped small mb-0 automation-shop">
+    <thead>
+      <tr><th></th><th>Gegenstand</th><th>Bestand</th><th title="Bis zu dieser Menge nachkaufen">Ziel</th><th title="Höchstens so viele pro Einkauf">Je Kauf</th><th title="Nicht kaufen, wenn der Stückpreis höher ist (0 = egal)">Max. Preis</th></tr>
+    </thead>
+    <tbody data-bind="foreach: visibleEntries">
+      <tr data-bind="with: { e: $data, s: $parent.itemSettings($data.item.name), f: $parent }">
+        <td><input type="checkbox" data-bind="checked: s.enabled, event: { change: (_, ev) => f.updateItem(e.item.name, 'enabled', ev.target.checked) }"></td>
+        <td>
+          <img data-bind="attr: { src: e.item.image }" height="18">
+          <span data-bind="text: e.item.displayName"></span>
+          <small class="text-muted" data-bind="text: e.group"></small>
+        </td>
+        <td data-bind="text: AutoShop.quantity(e.item).toLocaleString('de-DE')"></td>
+        <td><input type="number" min="0" class="form-control form-control-sm" data-bind="value: s.target, event: { change: (_, ev) => f.updateItem(e.item.name, 'target', ev.target.value) }"></td>
+        <td><input type="number" min="0" class="form-control form-control-sm" data-bind="value: s.buyAmount, event: { change: (_, ev) => f.updateItem(e.item.name, 'buyAmount', ev.target.value) }"></td>
+        <td><input type="number" min="0" class="form-control form-control-sm" data-bind="value: s.maxPrice, event: { change: (_, ev) => f.updateItem(e.item.name, 'maxPrice', ev.target.value) }"></td>
+      </tr>
+    </tbody>
+  </table>
+</script>
+
+<script type="text/html" id="automationFarmSettingsTemplate">
+  <!-- ko if: !AutoFarm.mutationsUnlocked() -->
+  <div class="small text-muted">🔒 Mutations-Strategien werden nach dem Johto-Champion freigeschaltet.</div>
+  <!-- /ko -->
+  <!-- ko if: plan() -->
+  <div class="small mb-1">Geplantes Feld für <b data-bind="text: BerryType[plan().target]"></b> (★ = hier kann die Mutation entstehen):</div>
+  <div class="automation-farm-grid" data-bind="foreach: layoutPreview()">
+    <div class="automation-farm-cell" data-bind="css: { locked: locked, target: target }">
+      <!-- ko if: berry -->
+      <img data-bind="attr: { src: `assets/images/items/berry/${berry}.png`, title: berry }">
+      <!-- /ko -->
+      <!-- ko if: target -->★<!-- /ko -->
+    </div>
+  </div>
+  <!-- /ko -->
+</script>
+
+<script type="text/html" id="automationFocusSettingsTemplate">
+  <div class="form-row align-items-center mb-1">
+    <div class="col-7 small">Ziel</div>
+    <div class="col-5">
+      <select class="form-control form-control-sm" data-bind="options: availableModes(), optionsText: 'name', optionsValue: 'id', value: settings.mode"></select>
+    </div>
+  </div>
+  <div class="small text-muted">
+    Noch gesperrte Ziele:
+    <span data-bind="text: AutoFocus.modes.filter((m) => !m.id.startsWith('gem:') && !availableModes().includes(m)).map((m) => `${m.name} (${m.hint})`).join(' · ') || 'keine'"></span>
+  </div>
+  <div class="small text-muted mt-1">Für Tokens, Quests und Pokérus legt der Fokus vorübergehend einen eigenen Fangfilter „🤖 Automatik“ an und entfernt ihn wieder.</div>
+</script>
+
+<script type="text/html" id="automationOverviewTemplate">
+  <div class="card mb-2"><div class="card-body p-2">
+    <b>🧭 Gehe zu</b>
+    <div class="form-row mt-1">
+      <div class="col"><select class="form-control form-control-sm" data-bind="options: AutomationOverview.towns(), value: AutomationOverview.goToTarget"></select></div>
+      <div class="col-auto"><button class="btn btn-sm btn-primary" data-bind="click: () => AutomationOverview.goTo()">Reisen</button></div>
+    </div>
+  </div></div>
+
+  <div class="card mb-2"><div class="card-body p-2">
+    <b>🐾 Wandernde Pokémon</b> <small class="text-muted">(Route mit erhöhter Chance)</small>
+    <table class="table table-sm small mb-0">
+      <tbody data-bind="foreach: AutomationOverview.roamers()">
+        <tr>
+          <td data-bind="text: `${region} · ${group}`"></td>
+          <td><a href="#" data-bind="text: route, click: () => AutomationOverview.goToRoamers(region, route)"></a></td>
+          <td data-bind="foreach: pokemon">
+            <span class="mr-2" data-bind="text: `${name}${shiny ? ' ✨' : caught ? ' ✔' : ' ✖'}`, css: { 'text-success': caught, 'text-danger': !caught }"></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div></div>
+
+  <div class="card mb-2"><div class="card-body p-2">
+    <b>💎 Entwicklungs-Items mit Nutzen</b>
+    <!-- ko if: !AutomationOverview.stones().length --><div class="small text-muted">Keine Items, die gerade etwas Neues bringen.</div><!-- /ko -->
+    <div class="small" data-bind="foreach: AutomationOverview.stones()">
+      <div><img data-bind="attr: { src: image }" height="20"> <span data-bind="text: `${name} ×${amount}: ${text}`"></span></div>
+    </div>
+    <!-- ko if: AutomationOverview.stones().length --><a href="#" class="small" data-bind="click: () => { $('#automationModal').modal('hide'); $('#showItemsModal').modal('show'); }">Item-Beutel öffnen</a><!-- /ko -->
+  </div></div>
+
+  <div class="card mb-2"><div class="card-body p-2">
+    <b>📋 Questreihen am Schwarzen Brett</b>
+    <!-- ko if: !AutomationOverview.questLines().length --><div class="small text-muted">Keine offenen Questreihen.</div><!-- /ko -->
+    <div class="small" data-bind="foreach: AutomationOverview.questLines()">
+      <div><span data-bind="text: name"></span> · <a href="#" data-bind="text: town, click: () => AutomationOverview.goTo(town)"></a></div>
+    </div>
+  </div></div>
+</script>

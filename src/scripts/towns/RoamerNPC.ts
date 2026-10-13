@@ -19,7 +19,7 @@ class RoamerNPC extends NPC {
         if (!roamers.length) {
             const regionName = RoamingPokemonList.roamerGroups[this.region]?.[this.subRegionRoamerGroup]?.name
                 ?? GameConstants.camelCaseToString(GameConstants.Region[this.region]);
-            return `There haven't been any reports of roaming Pokémon around ${regionName} lately.`;
+            return NPC.translate('There haven\'t been any reports of roaming Pokémon around {REGION} lately.').replace('{REGION}', regionName);
         }
 
         roamers.forEach((roamer) => {

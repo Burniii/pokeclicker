@@ -1,0 +1,126 @@
+// Battle effects (BattleEffects.ts)
+#battleContainer .battle-view {
+  position: relative;
+  overflow: hidden;
+}
+
+.battle-effect {
+  position: absolute;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.battle-effect-damage {
+  font-weight: bold;
+  font-size: 0.85rem;
+  color: #fff;
+  text-shadow: 0 0 2px #000, 0 0 3px #000;
+  transform: translate(-50%, -50%);
+  animation: battle-effect-float 0.8s ease-out forwards;
+}
+
+.battle-effect-particle {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 80%);
+  transform: translate(-50%, -50%);
+  animation: battle-effect-scatter 0.45s ease-out forwards;
+}
+
+.battle-effect-burst {
+  width: 9px;
+  height: 9px;
+  animation-duration: 0.6s;
+}
+
+.battle-effect-sparkle {
+  color: #fff6a8;
+  font-size: 1.2rem;
+  text-shadow: 0 0 6px #ffe94d;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.2);
+  animation: battle-effect-sparkle 1s ease-in-out forwards;
+}
+
+.battle-effect-banner {
+  left: 0;
+  right: 0;
+  top: 35%;
+  padding: 6px 0;
+  color: #fff;
+  text-align: center;
+  background: linear-gradient(90deg, transparent, rgba(160, 20, 20, 90%) 20%, rgba(160, 20, 20, 90%) 80%, transparent);
+  text-shadow: 0 0 3px #000;
+  animation: battle-effect-banner 2.2s ease-in-out forwards;
+
+  strong {
+    display: block;
+    font-size: 1.3rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  span {
+    font-size: 0.9rem;
+  }
+}
+
+@keyframes battle-effect-float {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate(-50%, -250%);
+  }
+}
+
+@keyframes battle-effect-scatter {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.4);
+  }
+}
+
+@keyframes battle-effect-sparkle {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2) rotate(45deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3) rotate(90deg);
+  }
+}
+
+@keyframes battle-effect-banner {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+
+  20%,
+  75% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}

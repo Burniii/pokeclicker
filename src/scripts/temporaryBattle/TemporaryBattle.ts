@@ -34,6 +34,9 @@ class TemporaryBattle extends TownContent implements TmpTemporaryBattleType {
         if (!this.isUnlocked()) {
             return [areaStatus.locked];
         }
+        if (QuestNavigation.isTemporaryBattleTarget(this.name)) {
+            return [areaStatus.questAtLocation];
+        }
         if (App.game.statistics.temporaryBattleDefeated[GameConstants.getTemporaryBattlesIndex(this.name)]() == 0 && this.isVisible()) {
             return [areaStatus.incomplete];
         }

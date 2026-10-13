@@ -155,6 +155,9 @@
 
                     <!-- Pokémon List container-->
                     @import "pokemonListContainer.html"
+
+                    <!-- Fusion world team (separate game) -->
+                    @import "fusionTeam.html"
                 </div>
             </div>
         </div>
@@ -177,13 +180,20 @@
 
                 <div class="battle-view card-body p-0 justify-content-center no-gutters no-select"
                     data-bind="if: (App.game.gameState === GameConstants.GameState.fighting || App.game.gameState === GameConstants.GameState.dungeon || App.game.gameState === GameConstants.GameState.paused || App.game.gameState === GameConstants.GameState.town || App.game.gameState === GameConstants.GameState.gym || App.game.gameState == GameConstants.GameState.battleFrontier || App.game.gameState == GameConstants.GameState.temporaryBattle),
-                        class: MapHelper.calculateBattleCssClass()">
+                        class: App.game.festivalWorld.active() ? FestivalUI.battleClass() : MapHelper.calculateBattleCssClass()">
+
+                    <!-- Festival Archipelago (other region) -->
+                    @import "festivalBattle.html"
 
                     <!-- Route Battles -->
-                    <div id="routeBattleContainer" class="row justify-content-center no-gutters" data-bind="if: App.game.gameState === GameConstants.GameState.fighting">
+                    <div id="routeBattleContainer" class="row justify-content-center no-gutters" data-bind="if: App.game.gameState === GameConstants.GameState.fighting && !App.game.festivalWorld.active()">
                         <div class="col no-gutters clickable" data-bind="click: function() {Battle.clickAttack()}" style="height: 280px; display: block;">
                             <div class="pageItemTitle d-flex justify-content-center">
-                                <div class="title-left"></div>
+                                <div class="title-left">
+                                    <!-- ko if: App.game.fishing.canFishHere() -->
+                                    <button class="btn btn-sm btn-info py-0 px-1 ml-1" title="Go fishing" data-bind="click: (_, e) => { e.stopPropagation(); App.game.fishing.open(); }, clickBubble: false">🎣</button>
+                                    <!-- /ko -->
+                                </div>
                                 <div class="d-flex align-items-center px-2">
                                     <knockout data-bind="template: { name: 'pokemonNameTemplate', data: { 'pokemon': Battle.enemyPokemon() } }" style="font-size: 1.6rem;">Pokémon name</knockout>
                                     <knockout class="ml-2" data-bind="template: { name: 'caughtStatusTemplate', data: {'status': PartyController.getCaughtStatus(Battle.enemyPokemon().id)}}"></knockout>
@@ -401,6 +411,23 @@
 <!-- Log Book Modal-->
 @import "logBookModal.html"
 
+<!-- Notification History Modal -->
+@import "notificationHistoryModal.html"
+
+<!-- Cutscene Modals -->
+@import "cutsceneModal.html"
+
+<!-- Activities Modals -->
+@import "activitiesModal.html"
+
+<!-- Automation Modal -->
+@import "automationModal.html"
+
+<!-- Fusion world window -->
+@import "fusionDexModal.html"
+@import "fusionModals.html"
+@import "areaPokemonModal.html"
+
 <!-- Settings Modal-->
 @import "settingsModal.html"
 
@@ -451,6 +478,12 @@
 
 <!-- Statistics Modal-->
 @import "pokemonStatisticsModal.html"
+
+<!-- Missing Pokémon Modal -->
+@import "missingPokemonModal.html"
+
+<!-- Bulk Actions Modal -->
+@import "bulkActionsModal.html"
 
 <!-- Expanded Vitamin Modal -->
 @import "pokemonVitaminExpandedModal.html"

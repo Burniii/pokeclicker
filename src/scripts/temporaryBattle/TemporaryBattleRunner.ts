@@ -91,7 +91,9 @@ class TemporaryBattleRunner {
     public static battleWon(battle: TemporaryBattle) {
         if (this.running()) {
             this.running(false);
+            BattleSounds.play('victory');
             if (App.game.statistics.temporaryBattleDefeated[GameConstants.getTemporaryBattlesIndex(battle.name)]() == 0) {
+                App.game.cutscenes.trigger(`tb:${battle.name}`);
                 battle.optionalArgs.firstTimeRewardFunction?.();
                 if (battle.defeatMessage) {
                     $('#temporaryBattleWonModal').modal('show');
