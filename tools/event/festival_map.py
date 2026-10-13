@@ -455,7 +455,7 @@ for name, ids in ma.CATALOG.items():
     for k in range(len(ids)):
         SP[f'{name}{k}'] = ma.pick(name, k)
 # landmarks and trees from the Pinterest tile sheets (see resources/CREDITS.md)
-for name in ('contest_hall', 'stadium', 'hut', 'lighthouse', 'bell_tower', 'restaurant', 'kalos_house0', 'kalos_house4', 'tree_gold', 'tree_gold2', 'tree_pine', 'tree_pine2', 'tree_pine3'):
+for name in ('fusion_lab', 'helix_gym', 'station', 'contest_hall', 'stadium', 'hut', 'lighthouse', 'bell_tower', 'restaurant', 'kalos_house0', 'kalos_house4', 'tree_gold', 'tree_gold2', 'tree_pine', 'tree_pine2', 'tree_pine3'):
     SP[name] = sa.landmark(name)
 kanto = Image.open('src/assets/images/kanto-kanto.png').convert('RGBA')
 

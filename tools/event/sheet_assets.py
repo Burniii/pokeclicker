@@ -157,6 +157,14 @@ if __name__ == '__main__':
 
 
 # Named landmarks for the Festival Archipelago (sheet, pixel box or object index, optional sub-split)
+def opaque(o):
+    """Drop semi-transparent drop shadows that some sheets bake in."""
+    a = np.array(o)
+    a[..., 3] = np.where(a[..., 3] == 255, 255, 0)
+    o = Image.fromarray(a, 'RGBA')
+    return o.crop(o.getbbox())
+
+
 def landmark(name):
     if name == 'bell_tower':
         # the sheet's drop shadow is a semi-transparent box; keep only opaque pixels
@@ -165,6 +173,12 @@ def landmark(name):
         a[..., 3] = np.where(a[..., 3] == 255, 255, 0)
         o = Image.fromarray(a, 'RGBA')
         return o.crop(o.getbbox())
+    if name == 'fusion_lab':
+        return obj('frlg2', 50)
+    if name == 'helix_gym':
+        return region('saurav_b', (117, 10, 203, 80))
+    if name == 'station':
+        return opaque(obj('cherry', 169))
     if name == 'contest_hall':
         return region('saurav_b', (12, 11, 99, 80))
     if name == 'stadium':
